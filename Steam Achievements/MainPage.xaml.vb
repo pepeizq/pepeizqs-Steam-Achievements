@@ -29,6 +29,7 @@ Public NotInheritable Class MainPage
 
         Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
 
+        botonLogrosIntroTexto.Text = recursos.GetString("Logros")
         botonVotarTexto.Text = recursos.GetString("Boton Votar")
         botonMasCosasTexto.Text = recursos.GetString("Boton Cosas")
 
@@ -37,9 +38,13 @@ Public NotInheritable Class MainPage
         botonReportarTexto.Text = recursos.GetString("Boton Reportar")
         botonCodigoFuenteTexto.Text = recursos.GetString("Boton Codigo Fuente")
 
+        tbInfoUsuarioCuenta.Text = recursos.GetString("Info Agregar Usuario")
+        botonAgregarUsuarioTexto.Text = recursos.GetString("Boton Agregar Usuario")
+
         '----------------------------------------------
 
-
+        GridVisibilidad(gridLogrosIntro, botonLogrosIntro)
+        Steam.CargarCuentas()
 
     End Sub
 
@@ -47,33 +52,29 @@ Public NotInheritable Class MainPage
 
         tbTitulo.Text = "Steam Achievements (" + SystemInformation.ApplicationVersion.Major.ToString + "." + SystemInformation.ApplicationVersion.Minor.ToString + "." + SystemInformation.ApplicationVersion.Build.ToString + "." + SystemInformation.ApplicationVersion.Revision.ToString + ")"
 
-        gridCategorias.Visibility = Visibility.Collapsed
-        gridConfig.Visibility = Visibility.Collapsed
+        gridLogrosIntro.Visibility = Visibility.Collapsed
+        gridLogrosExpandido.Visibility = Visibility.Collapsed
 
         grid.Visibility = Visibility.Visible
 
-        botonCategorias.Background = New SolidColorBrush(Colors.Transparent)
-        botonConfig.Background = New SolidColorBrush(Colors.Transparent)
+        botonLogrosIntro.Background = New SolidColorBrush(Colors.Transparent)
+        botonLogrosExpandido.Background = New SolidColorBrush(Colors.Transparent)
 
         If Not boton Is Nothing Then
-            boton.Background = New SolidColorBrush(Colors.SteelBlue)
+            boton.Background = New SolidColorBrush(Colors.IndianRed)
         End If
 
     End Sub
 
-    Private Sub BotonCategorias_Click(sender As Object, e As RoutedEventArgs) Handles botonCategorias.Click
+    Private Sub BotonLogrosIntro_Click(sender As Object, e As RoutedEventArgs) Handles botonLogrosIntro.Click
 
-        Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
-        GridVisibilidad(gridCategorias, botonCategorias, recursos.GetString("Categorias"))
-        GridSeleccionVisibilidad(gridSeleccionUserscore, buttonSeleccionUserscore)
+        GridVisibilidad(gridLogrosIntro, botonLogrosIntro)
 
     End Sub
 
-    Private Sub BotonConfig_Click(sender As Object, e As RoutedEventArgs) Handles botonConfig.Click
+    Private Sub BotonLogrosExpandido_Click(sender As Object, e As RoutedEventArgs) Handles botonLogrosExpandido.Click
 
-        Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
-        GridVisibilidad(gridConfig, botonConfig, recursos.GetString("Boton Config"))
-        GridVisibilidadConfig(gridConfigCategorias, botonConfigCategorias)
+        GridVisibilidad(gridLogrosExpandido, botonLogrosExpandido)
 
     End Sub
 
@@ -89,7 +90,7 @@ Public NotInheritable Class MainPage
             botonMasCosas.Background = New SolidColorBrush(Colors.Transparent)
             popupMasCosas.IsOpen = False
         Else
-            botonMasCosas.Background = New SolidColorBrush(Colors.SteelBlue)
+            botonMasCosas.Background = New SolidColorBrush(Colors.IndianRed)
             popupMasCosas.IsOpen = True
         End If
 
@@ -126,7 +127,25 @@ Public NotInheritable Class MainPage
 
     Private Async Sub BotonCodigoFuente_Click(sender As Object, e As RoutedEventArgs) Handles botonCodigoFuente.Click
 
-        Await Launcher.LaunchUriAsync(New Uri("https://github.com/pepeizq/Steam-Categories"))
+        Await Launcher.LaunchUriAsync(New Uri("https://github.com/pepeizq/Steam-Achievements"))
+
+    End Sub
+
+    'LOGROS-----------------------------------------------
+
+    Private Sub TbUsuarioCuenta_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbUsuarioCuenta.TextChanged
+
+        If tbInfoUsuarioCuenta.Text.Length > 4 Then
+            botonAgregarUsuario.IsEnabled = True
+        Else
+            botonAgregarUsuario.IsEnabled = False
+        End If
+
+    End Sub
+
+    Private Sub BotonAgregarUsuario_Click(sender As Object, e As RoutedEventArgs) Handles botonAgregarUsuario.Click
+
+        Steam.AñadirCuenta(tbUsuarioCuenta.Text)
 
     End Sub
 
