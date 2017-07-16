@@ -141,6 +141,9 @@
   <data name="Info Agregar Usuario" xml:space="preserve">
     <value>Añade tu usuario del perfil de Steam, por ejemplo, si tu enlace del perfil http://steamcommunity.com/id/pepeizq/ añade solo pepeizq</value>
   </data>
+  <data name="Info Seleccionar Usuario" xml:space="preserve">
+    <value>Selecciona un usuario para cargar los logros</value>
+  </data>
   <data name="Logros" xml:space="preserve">
     <value>Logros</value>
   </data>

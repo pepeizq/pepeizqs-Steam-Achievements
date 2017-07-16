@@ -40,6 +40,7 @@ Public NotInheritable Class MainPage
 
         tbInfoUsuarioCuenta.Text = recursos.GetString("Info Agregar Usuario")
         botonAgregarUsuarioTexto.Text = recursos.GetString("Boton Agregar Usuario")
+        tbInfoUsuarioSeleccionar.Text = recursos.GetString("Info Seleccionar Usuario")
 
         '----------------------------------------------
 
@@ -149,5 +150,27 @@ Public NotInheritable Class MainPage
 
     End Sub
 
+    Private Sub LvUsuarios_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvUsuarios.ItemClick
 
+        GridVisibilidad(gridLogrosExpandido, botonLogrosExpandido)
+
+        Dim grid As Grid = e.ClickedItem
+        Dim cuenta As Cuenta = grid.Tag
+
+        imagenLogrosExpandido.Source = New Uri(cuenta.Avatar)
+        botonLogrosExpandidoTexto.Text = cuenta.Nombre
+        botonLogrosExpandido.Visibility = Visibility.Visible
+
+        Steam.CargarJuegos(cuenta)
+
+    End Sub
+
+    Private Sub LvJuegos_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvJuegos.ItemClick
+
+        Dim grid As Grid = e.ClickedItem
+        Dim juego As Juego = grid.Tag
+
+        Steam.CargarLogros(juego)
+
+    End Sub
 End Class

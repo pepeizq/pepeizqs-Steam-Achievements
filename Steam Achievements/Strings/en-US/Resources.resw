@@ -141,6 +141,9 @@
   <data name="Info Agregar Usuario" xml:space="preserve">
     <value>Add your Steam profile user, for example, if you url is http://steamcommunity.com/id/pepeizq/ add only pepeizq</value>
   </data>
+  <data name="Info Seleccionar Usuario" xml:space="preserve">
+    <value>Select a user to load the achievements</value>
+  </data>
   <data name="Logros" xml:space="preserve">
     <value>Achievements</value>
   </data>
