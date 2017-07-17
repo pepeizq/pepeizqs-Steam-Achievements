@@ -146,31 +146,40 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="gridColumnaJuegos" Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition x:Name="gridColumnaLogros" Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <ProgressRing x:Name="prJuegos" Grid.Column="0" Visibility="Collapsed" IsActive="true" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkRed" Height="50" Width="50"/>
 
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
-                    <ListView x:Name="lvJuegos" Grid.Row="0" IsItemClickEnabled="True"/>
-
-                    <Grid x:Name="gridBusquedaJuegos" Grid.Row="1" Visibility="Collapsed">
+                                     
+                    <Grid x:Name="gridBusquedaJuegos" Grid.Row="0" Visibility="Collapsed" Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" FontFamily="Segoe MDL2 Assets" Text="&#xE71E;" FontSize="20" VerticalAlignment="Center" Margin="10,5,5,5"/>
+                        <TextBlock Grid.Column="0" FontFamily="Segoe MDL2 Assets" Text="&#xE71E;" FontSize="20" VerticalAlignment="Center" Margin="5"/>
                         <TextBox x:Name="tbBuscarJuegos" Grid.Column="1" Margin="5" TextWrapping="Wrap"/>
                     </Grid>
+
+                    <ListView x:Name="lvJuegos" Grid.Row="1" IsItemClickEnabled="True"/>
+                </Grid>
+
+                <Grid x:Name="gridLogros" Grid.Column="1" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition x:Name="gridSubColumnaLogros" Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="tbAvisoLogros" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <ProgressRing x:Name="prLogros" Grid.Column="0" Visibility="Collapsed" IsActive="true" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkRed" Height="50" Width="50"/>
+                    <ListView x:Name="lvLogros" Grid.Column="0" IsItemClickEnabled="True" Visibility="Collapsed"/>
                 </Grid>
                 
-                <ListView x:Name="lvLogros" Grid.Column="1" IsItemClickEnabled="True"/>
             </Grid>
 
             <Popup x:Name="popupMasCosas" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">

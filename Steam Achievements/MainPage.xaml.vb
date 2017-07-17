@@ -2,14 +2,13 @@
 Imports Microsoft.Toolkit.Uwp
 Imports Microsoft.Toolkit.Uwp.Helpers
 Imports Windows.ApplicationModel.Core
-Imports Windows.Storage
 Imports Windows.System
 Imports Windows.UI
 
 Public NotInheritable Class MainPage
     Inherits Page
 
-    Private Async Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
+    Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
 
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "es-ES"
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
@@ -41,6 +40,8 @@ Public NotInheritable Class MainPage
         tbInfoUsuarioCuenta.Text = recursos.GetString("Info Agregar Usuario")
         botonAgregarUsuarioTexto.Text = recursos.GetString("Boton Agregar Usuario")
         tbInfoUsuarioSeleccionar.Text = recursos.GetString("Info Seleccionar Usuario")
+
+        tbAvisoLogros.Text = recursos.GetString("Info Aviso Logros")
 
         '----------------------------------------------
 
@@ -154,14 +155,51 @@ Public NotInheritable Class MainPage
 
         GridVisibilidad(gridLogrosExpandido, botonLogrosExpandido)
 
+        tbBuscarJuegos.Text = String.Empty
+        lvLogros.Items.Clear()
+
         Dim grid As Grid = e.ClickedItem
         Dim cuenta As Cuenta = grid.Tag
 
         imagenLogrosExpandido.Source = New Uri(cuenta.Avatar)
+        imagenLogrosExpandido.Tag = cuenta
+
         botonLogrosExpandidoTexto.Text = cuenta.Nombre
         botonLogrosExpandido.Visibility = Visibility.Visible
 
         Steam.CargarJuegos(cuenta)
+
+    End Sub
+
+    Private Async Sub TbBuscarJuegos_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbBuscarJuegos.TextChanged
+
+        lvJuegos.IsEnabled = False
+
+        Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
+        Dim listaJuegosPrevia As List(Of Juego) = Nothing
+
+        If Await helper.FileExistsAsync("listaJuegos") = True Then
+            listaJuegosPrevia = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos")
+        Else
+            listaJuegosPrevia = New List(Of Juego)
+        End If
+
+        Dim listaJuegosNueva As List(Of Juego) = New List(Of Juego)
+
+        If tbBuscarJuegos.Text.Length > 0 Then
+            For Each juego In listaJuegosPrevia
+                If juego.Titulo.ToLower.Contains(tbBuscarJuegos.Text.ToLower) = True Then
+                    listaJuegosNueva.Add(juego)
+                End If
+            Next
+        Else
+            For Each juego In listaJuegosPrevia
+                listaJuegosNueva.Add(juego)
+            Next
+        End If
+
+        Steam.CargarListadoJuegos(listaJuegosNueva)
+        lvJuegos.IsEnabled = True
 
     End Sub
 
@@ -170,7 +208,11 @@ Public NotInheritable Class MainPage
         Dim grid As Grid = e.ClickedItem
         Dim juego As Juego = grid.Tag
 
-        Steam.CargarLogros(juego)
+        Dim cuenta As Cuenta = imagenLogrosExpandido.Tag
+
+        Steam.CargarLogros(cuenta, juego)
 
     End Sub
+
+
 End Class
