@@ -129,6 +129,12 @@
   <data name="Boton Cosas" xml:space="preserve">
     <value>More Things</value>
   </data>
+  <data name="Boton Logro Buscar Google" xml:space="preserve">
+    <value>Search in Google</value>
+  </data>
+  <data name="Boton Logro Buscar Youtube" xml:space="preserve">
+    <value>Search in Youtube</value>
+  </data>
   <data name="Boton Reportar" xml:space="preserve">
     <value>Report a Bug</value>
   </data>
@@ -143,6 +149,9 @@
   </data>
   <data name="Info Aviso Logros" xml:space="preserve">
     <value>Select a game</value>
+  </data>
+  <data name="Info Cuentas Logro" xml:space="preserve">
+    <value>Users with this achievement:</value>
   </data>
   <data name="Info Seleccionar Usuario" xml:space="preserve">
     <value>Select a user to load the achievements</value>

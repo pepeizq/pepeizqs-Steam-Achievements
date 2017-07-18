@@ -19,10 +19,14 @@ Public NotInheritable Class MainPage
         Dim barra As ApplicationViewTitleBar = ApplicationView.GetForCurrentView().TitleBar
         barra.ButtonBackgroundColor = Colors.Transparent
         barra.ButtonForegroundColor = Colors.White
-        barra.ButtonPressedBackgroundColor = Colors.DarkRed
+        barra.ButtonPressedBackgroundColor = Colors.SaddleBrown
         barra.ButtonInactiveBackgroundColor = Colors.Transparent
         Dim coreBarra As CoreApplicationViewTitleBar = CoreApplication.GetCurrentView.TitleBar
         coreBarra.ExtendViewIntoTitleBar = True
+
+        Application.Current.Resources("SystemControlHighlightListAccentLowBrush") = New SolidColorBrush(Colors.Sienna)
+        Application.Current.Resources("SystemControlHighlightListAccentMediumBrush") = New SolidColorBrush(Colors.Sienna)
+        Application.Current.Resources("SystemControlHighlightAltBaseHighBrush") = New SolidColorBrush(Colors.White)
 
         '--------------------------------------------------------
 
@@ -42,6 +46,10 @@ Public NotInheritable Class MainPage
         tbInfoUsuarioSeleccionar.Text = recursos.GetString("Info Seleccionar Usuario")
 
         tbAvisoLogros.Text = recursos.GetString("Info Aviso Logros")
+
+        tbCuentasLogro.Text = recursos.GetString("Info Cuentas Logro")
+        botonBuscarGoogleLogroTexto.Text = recursos.GetString("Boton Logro Buscar Google")
+        botonBuscarYoutubeLogroTexto.Text = recursos.GetString("Boton Logro Buscar Youtube")
 
         '----------------------------------------------
 
@@ -63,7 +71,7 @@ Public NotInheritable Class MainPage
         botonLogrosExpandido.Background = New SolidColorBrush(Colors.Transparent)
 
         If Not boton Is Nothing Then
-            boton.Background = New SolidColorBrush(Colors.IndianRed)
+            boton.Background = New SolidColorBrush(Colors.Sienna)
         End If
 
     End Sub
@@ -92,7 +100,7 @@ Public NotInheritable Class MainPage
             botonMasCosas.Background = New SolidColorBrush(Colors.Transparent)
             popupMasCosas.IsOpen = False
         Else
-            botonMasCosas.Background = New SolidColorBrush(Colors.IndianRed)
+            botonMasCosas.Background = New SolidColorBrush(Colors.Sienna)
             popupMasCosas.IsOpen = True
         End If
 
@@ -156,7 +164,14 @@ Public NotInheritable Class MainPage
         GridVisibilidad(gridLogrosExpandido, botonLogrosExpandido)
 
         tbBuscarJuegos.Text = String.Empty
+        gridColumnaLogros.Width = New GridLength(1, GridUnitType.Star)
+        gridSubColumnaLogros.Width = New GridLength(1, GridUnitType.Star)
+        gridColumnaLogrosDatos.Width = New GridLength(1, GridUnitType.Auto)
+        panelMensajeLogros.Visibility = Visibility.Visible
         lvLogros.Items.Clear()
+
+        gridLogros.Visibility = Visibility.Collapsed
+        gridLogrosMasDatos.Visibility = Visibility.Collapsed
 
         Dim grid As Grid = e.ClickedItem
         Dim cuenta As Cuenta = grid.Tag
@@ -205,6 +220,9 @@ Public NotInheritable Class MainPage
 
     Private Sub LvJuegos_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvJuegos.ItemClick
 
+        gridLogrosMasDatos.Visibility = Visibility.Collapsed
+        gridBotonesLogro.Visibility = Visibility.Collapsed
+
         Dim grid As Grid = e.ClickedItem
         Dim juego As Juego = grid.Tag
 
@@ -214,5 +232,57 @@ Public NotInheritable Class MainPage
 
     End Sub
 
+    Private Async Sub LvLogros_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvLogros.ItemClick
+
+        gridColumnaLogrosDatos.Width = New GridLength(1, GridUnitType.Star)
+
+        Dim grid As Grid = e.ClickedItem
+        Dim logro As Logro = grid.Tag
+
+        If logro.Estado = False Then
+            gridBotonesLogro.Visibility = Visibility.Visible
+        Else
+            gridBotonesLogro.Visibility = Visibility.Collapsed
+        End If
+
+        botonBuscarGoogleLogro.Tag = logro
+        botonBuscarYoutubeLogro.Tag = logro
+
+        Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
+        Dim listaCuentas As List(Of Cuenta) = Nothing
+
+        If Await helper.FileExistsAsync("listaCuentas") = True Then
+            listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas")
+
+            gridLogrosMasDatos.Visibility = Visibility.Visible
+
+            Dim cuenta As Cuenta = imagenLogrosExpandido.Tag
+
+            Steam.CargarLogroDatos(cuenta, logro, listaCuentas)
+        End If
+
+    End Sub
+
+    Private Async Sub BotonBuscarGoogleLogro_Click(sender As Object, e As RoutedEventArgs) Handles botonBuscarGoogleLogro.Click
+
+        Dim boton As Button = e.OriginalSource
+        Dim logro As Logro = boton.Tag
+
+        Dim cadenaBusqueda As String = logro.Juego.Titulo.Replace(" ", "+") + "+" + logro.Nombre.Replace(" ", "+")
+
+        Await Launcher.LaunchUriAsync(New Uri("https://www.google.com/?gws_rd=ssl#q=" + cadenaBusqueda))
+
+    End Sub
+
+    Private Async Sub BotonBuscarYoutubeLogro_Click(sender As Object, e As RoutedEventArgs) Handles botonBuscarYoutubeLogro.Click
+
+        Dim boton As Button = e.OriginalSource
+        Dim logro As Logro = boton.Tag
+
+        Dim cadenaBusqueda As String = logro.Juego.Titulo.Replace(" ", "+") + "+" + logro.Nombre.Replace(" ", "+")
+
+        Await Launcher.LaunchUriAsync(New Uri("https://www.youtube.com/results?search_query=" + cadenaBusqueda))
+
+    End Sub
 
 End Class

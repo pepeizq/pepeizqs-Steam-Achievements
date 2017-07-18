@@ -16,7 +16,7 @@
         <Grid x:Name="gridTopAcrilico" Grid.Row="0" Height="32"/>
         <Grid Grid.Row="0">
             <Grid.Background>
-                <SolidColorBrush Color="DarkRed" Opacity="0.6"/>
+                <SolidColorBrush Color="SaddleBrown" Opacity="0.6"/>
             </Grid.Background>
 
             <TextBlock x:Name="tbTitulo" Foreground="White" Margin="65,0,0,0" VerticalAlignment="Center" FontSize="13"/>
@@ -30,7 +30,7 @@
             <Grid x:Name="gridMenuAcrilico" Grid.Column="0"/>
             <Grid x:Name="gridMenu" Grid.Column="0">
                 <Grid.Background>
-                    <SolidColorBrush Color="DarkRed" Opacity="0.6"/>
+                    <SolidColorBrush Color="SaddleBrown" Opacity="0.6"/>
                 </Grid.Background>
 
                 <Grid.RowDefinitions>
@@ -105,7 +105,7 @@
 
                     <controls:DropShadowPanel Grid.Row="2" Margin="10" Color="Black" HorizontalAlignment="Center"
                                               BlurRadius="4" ShadowOpacity="0.5" OffsetZ="5">
-                        <Button x:Name="botonAgregarUsuario" Padding="10,15" HorizontalAlignment="Center" IsEnabled="False" Background="IndianRed">
+                        <Button x:Name="botonAgregarUsuario" Padding="10,15" HorizontalAlignment="Center" IsEnabled="False" Background="Sienna">
                             <StackPanel Orientation="Horizontal">
                                 <FontIcon Glyph="&#xE72A;" FontFamily="Segoe MDL2 Assets" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
                                 <TextBlock x:Name="botonAgregarUsuarioTexto" Foreground="White"/>
@@ -131,12 +131,12 @@
                             </TransitionCollection>
                         </controls:DropShadowPanel.Transitions>
 
-                        <ListView x:Name="lvUsuarios" Background="IndianRed" IsItemClickEnabled="True" HorizontalAlignment="Center" MaxHeight="500"/>
+                        <ListView x:Name="lvUsuarios" Background="Sienna" IsItemClickEnabled="True" HorizontalAlignment="Center" MaxHeight="500"/>
                     </controls:DropShadowPanel>                        
                 </Grid>
             </Grid>
 
-            <Grid x:Name="gridLogrosExpandido" Grid.Column="1" Visibility="Collapsed">
+            <Grid x:Name="gridLogrosExpandido" Grid.Column="1" Visibility="Collapsed" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                 <Grid.Background>
                     <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                         <GradientStop Color="#FFE4E4E4" Offset="0.5" />
@@ -147,9 +147,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="gridColumnaJuegos" Width="*"/>
                     <ColumnDefinition x:Name="gridColumnaLogros" Width="Auto"/>
+                    <ColumnDefinition x:Name="gridColumnaLogrosDatos" Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <ProgressRing x:Name="prJuegos" Grid.Column="0" Visibility="Collapsed" IsActive="true" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkRed" Height="50" Width="50"/>
+                <ProgressRing x:Name="prJuegos" Grid.Column="0" Visibility="Collapsed" IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="SaddleBrown" Height="50" Width="50"/>
 
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -170,16 +171,63 @@
                     <ListView x:Name="lvJuegos" Grid.Row="1" IsItemClickEnabled="True"/>
                 </Grid>
 
-                <Grid x:Name="gridLogros" Grid.Column="1" Visibility="Collapsed">
+                <Grid x:Name="gridLogros" Grid.Column="1" Margin="5,0" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition x:Name="gridSubColumnaLogros" Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="tbAvisoLogros" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <ProgressRing x:Name="prLogros" Grid.Column="0" Visibility="Collapsed" IsActive="true" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkRed" Height="50" Width="50"/>
+                    <controls:DropShadowPanel x:Name="panelMensajeLogros" Margin="10" Color="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              BlurRadius="4" ShadowOpacity="0.5" OffsetZ="5">
+                        <Grid Padding="10" Background="IndianRed">
+                            <TextBlock x:Name="tbAvisoLogros" TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </controls:DropShadowPanel>
+                 
+                    <ProgressRing x:Name="prLogros" Grid.Column="0" Visibility="Collapsed" IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="SaddleBrown" Height="50" Width="50"/>
                     <ListView x:Name="lvLogros" Grid.Column="0" IsItemClickEnabled="True" Visibility="Collapsed"/>
                 </Grid>
-                
+
+                <Grid x:Name="gridLogrosMasDatos" Grid.Column="2" Margin="5,0" Visibility="Collapsed" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Padding="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock x:Name="tbCuentasLogro" Grid.Row="0" Visibility="Collapsed" Margin="5"/>
+                        <GridView x:Name="gvCuentasLogro" Grid.Row="1"/>
+                    </Grid>
+
+                    <Grid x:Name="gridBotonesLogro" Grid.Row="1" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <controls:DropShadowPanel Grid.Row="0" Margin="10" Color="Black"
+                                              BlurRadius="4" ShadowOpacity="0.5" OffsetZ="5">
+                            <Button x:Name="botonBuscarGoogleLogro" Padding="10,15" Width="150" Background="Sienna">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="botonBuscarGoogleLogroTexto" Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+                        </controls:DropShadowPanel>
+
+                        <controls:DropShadowPanel Grid.Row="1" Margin="10" Color="Black"
+                                              BlurRadius="4" ShadowOpacity="0.5" OffsetZ="5">
+                            <Button x:Name="botonBuscarYoutubeLogro" Padding="10,15" Width="150" Background="Sienna">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="botonBuscarYoutubeLogroTexto" Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+                        </controls:DropShadowPanel>
+                    </Grid>
+                </Grid>
             </Grid>
 
             <Popup x:Name="popupMasCosas" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
@@ -189,11 +237,11 @@
                     </TransitionCollection>
                 </Popup.ChildTransitions>
 
-                <StackPanel x:Name="spMasCosas" Orientation="Vertical" Width="200" Background="IndianRed">
+                <StackPanel x:Name="spMasCosas" Orientation="Vertical" Width="200" Background="Sienna">
                     <Button x:Name="botonMasApps" Padding="10" Foreground="White" Width="200" HorizontalContentAlignment="Left">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Assets\social_pepeizq.png" Margin="0,0,10,0" Width="20" Height="20"/>
+                                <controls:ImageEx Source="Assets\social_pepeizq.png" Margin="0,0,10,0" Width="20" Height="20" IsCacheEnabled="True"/>
                                 <TextBlock x:Name="botonMasAppsTexto" Foreground="White" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button.Content>
@@ -201,7 +249,7 @@
                     <Button x:Name="botonContacto" Padding="10" Foreground="White" Width="200" HorizontalContentAlignment="Left">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Assets\social_contacto.png" Margin="0,0,10,0" Width="20" Height="20"/>
+                                <controls:ImageEx Source="Assets\social_contacto.png" Margin="0,0,10,0" Width="20" Height="20" IsCacheEnabled="True"/>
                                 <TextBlock x:Name="botonContactoTexto" Foreground="White" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button.Content>
@@ -209,7 +257,7 @@
                     <Button x:Name="botonReportar" Padding="10" Foreground="White" Width="200" HorizontalContentAlignment="Left">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Assets\social_feedback.png" Margin="0,0,10,0" Width="20" Height="20"/>
+                                <controls:ImageEx Source="Assets\social_feedback.png" Margin="0,0,10,0" Width="20" Height="20" IsCacheEnabled="True"/>
                                 <TextBlock x:Name="botonReportarTexto" Foreground="White" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button.Content>
@@ -217,7 +265,7 @@
                     <Button x:Name="botonCodigoFuente" Padding="10" Foreground="White" Width="200" HorizontalContentAlignment="Left">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Assets\social_github.png" Margin="0,0,10,0" Width="20" Height="20"/>
+                                <controls:ImageEx Source="Assets\social_github.png" Margin="0,0,10,0" Width="20" Height="20" IsCacheEnabled="True"/>
                                 <TextBlock x:Name="botonCodigoFuenteTexto" Foreground="White" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button.Content>
