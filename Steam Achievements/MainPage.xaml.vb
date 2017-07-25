@@ -32,7 +32,7 @@ Public NotInheritable Class MainPage
 
         Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
 
-        botonLogrosIntroTexto.Text = recursos.GetString("Logros")
+        botonCuentasTexto.Text = recursos.GetString("Cuentas")
         botonVotarTexto.Text = recursos.GetString("Boton Votar")
         botonMasCosasTexto.Text = recursos.GetString("Boton Cosas")
 
@@ -53,22 +53,24 @@ Public NotInheritable Class MainPage
 
         '----------------------------------------------
 
-        GridVisibilidad(gridLogrosIntro, botonLogrosIntro)
-        Steam.CargarCuentas()
+        GridVisibilidad(gridCuentas, botonCuentas, recursos.GetString("Cuentas"))
+        Cuentas.CargarXaml()
 
     End Sub
 
-    Private Sub GridVisibilidad(grid As Grid, boton As Button)
+    Private Sub GridVisibilidad(grid As Grid, boton As Button, mensaje As String)
 
-        tbTitulo.Text = "Steam Achievements (" + SystemInformation.ApplicationVersion.Major.ToString + "." + SystemInformation.ApplicationVersion.Minor.ToString + "." + SystemInformation.ApplicationVersion.Build.ToString + "." + SystemInformation.ApplicationVersion.Revision.ToString + ")"
+        tbTitulo.Text = "Steam Games Achievements (" + SystemInformation.ApplicationVersion.Major.ToString + "." + SystemInformation.ApplicationVersion.Minor.ToString + "." + SystemInformation.ApplicationVersion.Build.ToString + "." + SystemInformation.ApplicationVersion.Revision.ToString + ") - " + mensaje
 
-        gridLogrosIntro.Visibility = Visibility.Collapsed
-        gridLogrosExpandido.Visibility = Visibility.Collapsed
+        gridCuentas.Visibility = Visibility.Collapsed
+        gridJuegos.Visibility = Visibility.Collapsed
+        gridLogros.Visibility = Visibility.Collapsed
 
         grid.Visibility = Visibility.Visible
 
-        botonLogrosIntro.Background = New SolidColorBrush(Colors.Transparent)
-        botonLogrosExpandido.Background = New SolidColorBrush(Colors.Transparent)
+        botonCuentas.Background = New SolidColorBrush(Colors.Transparent)
+        botonCuentaSeleccionada.Background = New SolidColorBrush(Colors.Transparent)
+        botonJuegoSeleccionado.Background = New SolidColorBrush(Colors.Transparent)
 
         If Not boton Is Nothing Then
             boton.Background = New SolidColorBrush(Colors.Sienna)
@@ -76,15 +78,26 @@ Public NotInheritable Class MainPage
 
     End Sub
 
-    Private Sub BotonLogrosIntro_Click(sender As Object, e As RoutedEventArgs) Handles botonLogrosIntro.Click
+    Private Sub BotonCuentas_Click(sender As Object, e As RoutedEventArgs) Handles botonCuentas.Click
 
-        GridVisibilidad(gridLogrosIntro, botonLogrosIntro)
+        Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
+        GridVisibilidad(gridCuentas, botonCuentas, recursos.GetString("Cuentas"))
 
     End Sub
 
-    Private Sub BotonLogrosExpandido_Click(sender As Object, e As RoutedEventArgs) Handles botonLogrosExpandido.Click
+    Private Sub BotonCuentaSeleccionada_Click(sender As Object, e As RoutedEventArgs) Handles botonCuentaSeleccionada.Click
 
-        GridVisibilidad(gridLogrosExpandido, botonLogrosExpandido)
+        Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
+
+        GridVisibilidad(gridJuegos, botonCuentaSeleccionada, cuenta.Nombre)
+
+    End Sub
+
+    Private Sub BotonJuegoSeleccionado_Click(sender As Object, e As RoutedEventArgs) Handles botonJuegoSeleccionado.Click
+
+        Dim juego As Juego = imagenJuegoSeleccionado.Tag
+
+        GridVisibilidad(gridLogros, botonJuegoSeleccionado, juego.Titulo)
 
     End Sub
 
@@ -155,40 +168,37 @@ Public NotInheritable Class MainPage
 
     Private Sub BotonAgregarUsuario_Click(sender As Object, e As RoutedEventArgs) Handles botonAgregarUsuario.Click
 
-        Steam.AñadirCuenta(tbUsuarioCuenta.Text)
+        Cuentas.Añadir(tbUsuarioCuenta.Text)
 
     End Sub
 
     Private Sub LvUsuarios_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvUsuarios.ItemClick
 
-        GridVisibilidad(gridLogrosExpandido, botonLogrosExpandido)
-
         tbBuscarJuegos.Text = String.Empty
-        gridColumnaLogros.Width = New GridLength(1, GridUnitType.Star)
-        gridSubColumnaLogros.Width = New GridLength(1, GridUnitType.Star)
-        gridColumnaLogrosDatos.Width = New GridLength(1, GridUnitType.Auto)
+
         panelMensajeLogros.Visibility = Visibility.Visible
         lvLogros.Items.Clear()
-
-        gridLogros.Visibility = Visibility.Collapsed
-        gridLogrosMasDatos.Visibility = Visibility.Collapsed
 
         Dim grid As Grid = e.ClickedItem
         Dim cuenta As Cuenta = grid.Tag
 
-        imagenLogrosExpandido.Source = New Uri(cuenta.Avatar)
-        imagenLogrosExpandido.Tag = cuenta
+        imagenCuentaSeleccionada.Source = New Uri(cuenta.Avatar)
+        imagenCuentaSeleccionada.Tag = cuenta
 
-        botonLogrosExpandidoTexto.Text = cuenta.Nombre
-        botonLogrosExpandido.Visibility = Visibility.Visible
+        botonCuentaSeleccionada.Visibility = Visibility.Visible
+        botonCuentaSeleccionadaTexto.Text = cuenta.Nombre
 
-        Steam.CargarJuegos(cuenta)
+        botonJuegoSeleccionado.Visibility = Visibility.Collapsed
+
+        GridVisibilidad(gridJuegos, botonCuentaSeleccionada, cuenta.Nombre)
+
+        Juegos.Cargar(cuenta)
 
     End Sub
 
     Private Async Sub TbBuscarJuegos_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbBuscarJuegos.TextChanged
 
-        lvJuegos.IsEnabled = False
+        gvJuegos.IsEnabled = False
 
         Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
         Dim listaJuegosPrevia As List(Of Juego) = Nothing
@@ -213,12 +223,12 @@ Public NotInheritable Class MainPage
             Next
         End If
 
-        Steam.CargarListadoJuegos(listaJuegosNueva)
-        lvJuegos.IsEnabled = True
+        Juegos.CargarXaml(listaJuegosNueva)
+        gvJuegos.IsEnabled = True
 
     End Sub
 
-    Private Sub LvJuegos_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvJuegos.ItemClick
+    Private Sub GvJuegos_ItemClick(sender As Object, e As ItemClickEventArgs) Handles gvJuegos.ItemClick
 
         gridLogrosMasDatos.Visibility = Visibility.Collapsed
         gridBotonesLogro.Visibility = Visibility.Collapsed
@@ -226,15 +236,21 @@ Public NotInheritable Class MainPage
         Dim grid As Grid = e.ClickedItem
         Dim juego As Juego = grid.Tag
 
-        Dim cuenta As Cuenta = imagenLogrosExpandido.Tag
+        Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
 
-        Steam.CargarLogros(cuenta, juego)
+        imagenJuegoSeleccionado.Source = New Uri(juego.Icono)
+        imagenJuegoSeleccionado.Tag = cuenta
+
+        botonJuegoSeleccionado.Visibility = Visibility.Visible
+        botonJuegoSeleccionadoTexto.Text = juego.Titulo
+
+        GridVisibilidad(gridLogros, botonJuegoSeleccionado, juego.Titulo)
+
+        Logros.Cargar(cuenta, juego)
 
     End Sub
 
     Private Async Sub LvLogros_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvLogros.ItemClick
-
-        gridColumnaLogrosDatos.Width = New GridLength(1, GridUnitType.Star)
 
         Dim grid As Grid = e.ClickedItem
         Dim logro As Logro = grid.Tag
@@ -256,9 +272,9 @@ Public NotInheritable Class MainPage
 
             gridLogrosMasDatos.Visibility = Visibility.Visible
 
-            Dim cuenta As Cuenta = imagenLogrosExpandido.Tag
+            Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
 
-            Steam.CargarLogroDatos(cuenta, logro, listaCuentas)
+            Logros.CargarDatos(cuenta, logro, listaCuentas)
         End If
 
     End Sub

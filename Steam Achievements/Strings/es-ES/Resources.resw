@@ -144,11 +144,14 @@
   <data name="Boton Web" xml:space="preserve">
     <value>Más Apps</value>
   </data>
+  <data name="Cuentas" xml:space="preserve">
+    <value>Cuentas</value>
+  </data>
   <data name="Info Agregar Usuario" xml:space="preserve">
     <value>Añade tu usuario del perfil de Steam, por ejemplo, si tu enlace del perfil http://steamcommunity.com/id/pepeizq/ añade solo pepeizq</value>
   </data>
   <data name="Info Aviso Logros" xml:space="preserve">
-    <value>Selecciona un juego</value>
+    <value>Busca y selecciona un juego</value>
   </data>
   <data name="Info Cuentas Logro" xml:space="preserve">
     <value>Usuarios con este logro:</value>
