@@ -144,15 +144,6 @@ Module Juegos
                 .Tag = juego
             }
 
-            Dim col1 As New ColumnDefinition
-            Dim col2 As New ColumnDefinition
-
-            col1.Width = New GridLength(1, GridUnitType.Auto)
-            col2.Width = New GridLength(1, GridUnitType.Auto)
-
-            grid.ColumnDefinitions.Add(col1)
-            grid.ColumnDefinitions.Add(col2)
-
             Dim imagen As New ImageEx With {
                 .Stretch = Stretch.UniformToFill,
                 .IsCacheEnabled = True,
@@ -160,29 +151,18 @@ Module Juegos
                 .Height = 69
             }
 
+            Dim boolImagen As Boolean = False
+
             Try
                 imagen.Source = New BitmapImage(New Uri(juego.Imagen))
             Catch ex As Exception
-
+                boolImagen = True
             End Try
 
-            imagen.SetValue(Grid.ColumnProperty, 0)
-            grid.Children.Add(imagen)
-
-            '-------------------------------
-
-            'Dim textoTitulo As New TextBlock With {
-            '    .Text = juego.Titulo,
-            '    .VerticalAlignment = VerticalAlignment.Center,
-            '    .TextWrapping = TextWrapping.Wrap,
-            '    .MaxWidth = 200,
-            '    .Margin = New Thickness(10, 0, 10, 0)
-            '}
-
-            'textoTitulo.SetValue(Grid.ColumnProperty, 1)
-            'grid.Children.Add(textoTitulo)
-
-            gvJuegos.Items.Add(grid)
+            If boolImagen = False Then
+                grid.Children.Add(imagen)
+                gvJuegos.Items.Add(grid)
+            End If
         Next
 
     End Sub

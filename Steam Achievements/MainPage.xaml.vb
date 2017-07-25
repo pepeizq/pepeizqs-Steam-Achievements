@@ -46,6 +46,7 @@ Public NotInheritable Class MainPage
         tbInfoUsuarioSeleccionar.Text = recursos.GetString("Info Seleccionar Usuario")
 
         tbAvisoLogros.Text = recursos.GetString("Info Aviso Logros")
+        tbAvisoNoLogros.Text = recursos.GetString("Info Aviso No Logros")
 
         tbCuentasLogro.Text = recursos.GetString("Info Cuentas Logro")
         botonBuscarGoogleLogroTexto.Text = recursos.GetString("Boton Logro Buscar Google")
@@ -95,7 +96,7 @@ Public NotInheritable Class MainPage
 
     Private Sub BotonJuegoSeleccionado_Click(sender As Object, e As RoutedEventArgs) Handles botonJuegoSeleccionado.Click
 
-        Dim juego As Juego = imagenJuegoSeleccionado.Tag
+        Dim juego As Juego = iconoJuegoSeleccionado.Tag
 
         GridVisibilidad(gridLogros, botonJuegoSeleccionado, juego.Titulo)
 
@@ -238,8 +239,11 @@ Public NotInheritable Class MainPage
 
         Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
 
-        imagenJuegoSeleccionado.Source = New Uri(juego.Icono)
-        imagenJuegoSeleccionado.Tag = cuenta
+        iconoJuegoSeleccionado.Source = New Uri(juego.Icono)
+        iconoJuegoSeleccionado.Tag = cuenta
+
+        imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
+        tbJuegoSeleccionado.Text = juego.Titulo
 
         botonJuegoSeleccionado.Visibility = Visibility.Visible
         botonJuegoSeleccionadoTexto.Text = juego.Titulo

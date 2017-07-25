@@ -14,6 +14,17 @@ Module Logros
         lvLogros.Items.Clear()
         lvLogros.Visibility = Visibility.Visible
 
+        Dim panel As DropShadowPanel = pagina.FindName("panelMensajeNoLogros")
+        panel.Visibility = Visibility.Collapsed
+
+        Dim pb As ProgressBar = pagina.FindName("pbJuegoSeleccionado")
+        pb.Visibility = Visibility.Collapsed
+        pb.Maximum = 100
+        pb.Value = 0
+
+        Dim tb As TextBlock = pagina.FindName("tbJuegoSeleccionadoLogros")
+        tb.Visibility = Visibility.Collapsed
+
         Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=488AE837ADDDA0201B51693B28F1B389&steamid=" + cuenta.ID64 + "&appid=" + juego.ID))
         Dim htmlInfo As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=488AE837ADDDA0201B51693B28F1B389&appid=" + juego.ID))
 
@@ -158,6 +169,9 @@ Module Logros
             End If
         End If
 
+        Dim totalLogros As Integer = listaLogros.Count
+        Dim conseguidosLogros As Integer = 0
+
         If listaLogros.Count > 0 Then
 
             listaLogros.Sort(Function(x As Logro, y As Logro)
@@ -169,9 +183,13 @@ Module Logros
                              End Function)
 
             For Each logro In listaLogros
+                If logro.Estado = True Then
+                    conseguidosLogros += 1
+                End If
+
                 Dim grid As New Grid With {
                     .Tag = logro,
-                    .Padding = New Thickness(5, 5, 5, 5)
+                    .Padding = New Thickness(0, 5, 0, 5)
                 }
 
                 Dim col1 As New ColumnDefinition
@@ -243,6 +261,19 @@ Module Logros
 
                 lvLogros.Items.Add(grid)
             Next
+        End If
+
+        If totalLogros > 0 Then
+            panel.Visibility = Visibility.Collapsed
+
+            pb.Visibility = Visibility.Visible
+            pb.Maximum = totalLogros
+            pb.Value = conseguidosLogros
+
+            tb.Visibility = Visibility.Visible
+            tb.Text = "(" + conseguidosLogros.ToString + "/" + totalLogros.ToString + ")"
+        Else
+            panel.Visibility = Visibility.Visible
         End If
 
         pr.Visibility = Visibility.Collapsed

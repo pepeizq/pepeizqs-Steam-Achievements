@@ -153,6 +153,9 @@
   <data name="Info Aviso Logros" xml:space="preserve">
     <value>Search and select a game</value>
   </data>
+  <data name="Info Aviso No Logros" xml:space="preserve">
+    <value>This game has no achievements</value>
+  </data>
   <data name="Info Cuentas Logro" xml:space="preserve">
     <value>Users with this achievement:</value>
   </data>

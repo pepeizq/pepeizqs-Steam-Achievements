@@ -153,6 +153,9 @@
   <data name="Info Aviso Logros" xml:space="preserve">
     <value>Busca y selecciona un juego</value>
   </data>
+  <data name="Info Aviso No Logros" xml:space="preserve">
+    <value>Este juego no tiene logros</value>
+  </data>
   <data name="Info Cuentas Logro" xml:space="preserve">
     <value>Usuarios con este logro:</value>
   </data>
