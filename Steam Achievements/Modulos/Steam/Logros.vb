@@ -2,7 +2,7 @@
 
 Module Logros
 
-    Public Async Sub Cargar(cuenta As Cuenta, juego As Juego)
+    Public Async Sub Cargar(cuentaMaestra As Cuenta, juego As Juego, listaCuentas As List(Of Cuenta))
 
         Dim frame As Frame = Window.Current.Content
         Dim pagina As Page = frame.Content
@@ -25,7 +25,16 @@ Module Logros
         Dim tb As TextBlock = pagina.FindName("tbJuegoSeleccionadoLogros")
         tb.Visibility = Visibility.Collapsed
 
-        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=488AE837ADDDA0201B51693B28F1B389&steamid=" + cuenta.ID64 + "&appid=" + juego.ID))
+        Dim listaCuentasHtml As New List(Of CuentaHtml)
+
+        If Not listaCuentas Is Nothing Then
+            For Each cuenta In listaCuentas
+                Dim htmlCuenta As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=488AE837ADDDA0201B51693B28F1B389&steamid=" + cuenta.ID64 + "&appid=" + juego.ID))
+                listaCuentasHtml.Add(New CuentaHtml(cuenta, htmlCuenta))
+            Next
+        End If
+
+        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=488AE837ADDDA0201B51693B28F1B389&steamid=" + cuentaMaestra.ID64 + "&appid=" + juego.ID))
         Dim htmlInfo As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=488AE837ADDDA0201B51693B28F1B389&appid=" + juego.ID))
 
         Dim listaLogros As New List(Of Logro)
@@ -194,18 +203,22 @@ Module Logros
 
                 Dim col1 As New ColumnDefinition
                 Dim col2 As New ColumnDefinition
+                Dim col3 As New ColumnDefinition
 
                 col1.Width = New GridLength(1, GridUnitType.Auto)
-                col2.Width = New GridLength(1, GridUnitType.Auto)
+                col2.Width = New GridLength(1, GridUnitType.Star)
+                col3.Width = New GridLength(1, GridUnitType.Auto)
 
                 grid.ColumnDefinitions.Add(col1)
                 grid.ColumnDefinitions.Add(col2)
+                grid.ColumnDefinitions.Add(col3)
 
                 Dim imagen As New ImageEx With {
                     .Stretch = Stretch.UniformToFill,
                     .IsCacheEnabled = True,
                     .Width = 64,
-                    .Height = 64
+                    .Height = 64,
+                    .Margin = New Thickness(5, 0, 0, 0)
                 }
 
                 Try
@@ -219,23 +232,23 @@ Module Logros
 
                 '-------------------------------
 
-                Dim gridDatos As New Grid
+                Dim gridDatos As New Grid With {
+                    .Padding = New Thickness(0, 5, 0, 5)
+                }
 
                 Dim row1 As New RowDefinition
                 Dim row2 As New RowDefinition
 
-                row1.Height = New GridLength(1, GridUnitType.Auto)
-                row2.Height = New GridLength(1, GridUnitType.Auto)
+                row1.Height = New GridLength(1, GridUnitType.Star)
+                row2.Height = New GridLength(1, GridUnitType.Star)
 
                 gridDatos.RowDefinitions.Add(row1)
                 gridDatos.RowDefinitions.Add(row2)
 
                 Dim textoNombre As New TextBlock With {
                     .Text = logro.Nombre,
-                    .VerticalAlignment = VerticalAlignment.Center,
-                    .TextWrapping = TextWrapping.Wrap,
-                    .MaxWidth = 600,
-                    .Margin = New Thickness(10, 5, 10, 5)
+                    .Margin = New Thickness(10, 5, 10, 5),
+                    .TextWrapping = TextWrapping.Wrap
                 }
 
                 textoNombre.SetValue(Grid.RowProperty, 0)
@@ -243,12 +256,10 @@ Module Logros
 
                 If Not logro.Descripcion = Nothing Then
                     Dim textoDescripcion As New TextBlock With {
-                    .Text = logro.Descripcion,
-                    .VerticalAlignment = VerticalAlignment.Center,
-                    .TextWrapping = TextWrapping.Wrap,
-                    .MaxWidth = 600,
-                    .Margin = New Thickness(10, 5, 10, 5)
-                }
+                        .Text = logro.Descripcion,
+                        .Margin = New Thickness(10, 5, 10, 5),
+                        .TextWrapping = TextWrapping.Wrap
+                    }
 
                     textoDescripcion.SetValue(Grid.RowProperty, 1)
                     gridDatos.Children.Add(textoDescripcion)
@@ -258,6 +269,76 @@ Module Logros
 
                 gridDatos.SetValue(Grid.ColumnProperty, 1)
                 grid.Children.Add(gridDatos)
+
+                '-------------------------------
+
+                If listaCuentasHtml.Count > 0 Then
+                    Dim sp As New StackPanel With {
+                        .Orientation = Orientation.Horizontal
+                    }
+
+                    For Each cuenta In listaCuentasHtml
+                        If Not cuenta.HtmlLogros = Nothing Then
+                            If cuenta.HtmlLogros.Contains(ChrW(34) + logro.ID + ChrW(34)) Then
+                                Dim temp As String
+                                Dim int As Integer
+
+                                int = cuenta.HtmlLogros.IndexOf(ChrW(34) + logro.ID + ChrW(34))
+                                temp = cuenta.HtmlLogros.Remove(0, int)
+
+                                Dim temp2, temp3 As String
+                                Dim int2, int3 As Integer
+
+                                int2 = temp.IndexOf(ChrW(34) + "achieved" + ChrW(34))
+                                temp2 = temp.Remove(0, int2)
+
+                                int2 = temp2.IndexOf(":")
+                                temp2 = temp2.Remove(0, int2 + 1)
+
+                                int3 = temp2.IndexOf(",")
+                                temp3 = temp2.Remove(int3, temp2.Length - int3)
+
+                                Dim estado As Boolean = False
+
+                                If temp3.Trim = "1" Then
+                                    estado = True
+                                End If
+
+                                If estado = True Then
+                                    If Not cuenta.Cuenta.ID64 = cuentaMaestra.ID64 Then
+                                        Dim imagenCuenta As New ImageEx With {
+                                           .Stretch = Stretch.UniformToFill,
+                                           .IsCacheEnabled = True,
+                                           .Width = 50,
+                                           .Height = 50,
+                                           .Margin = New Thickness(5, 0, 5, 0)
+                                       }
+
+                                        Try
+                                            imagenCuenta.Source = New BitmapImage(New Uri(cuenta.Cuenta.Avatar))
+                                        Catch ex As Exception
+
+                                        End Try
+
+                                        Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
+                                        Dim tbToolTip As TextBlock = New TextBlock With {
+                                            .Text = cuenta.Cuenta.Nombre + " " + recursos.GetString("Tiene Logro"),
+                                            .FontSize = 16
+                                        }
+
+                                        ToolTipService.SetToolTip(imagenCuenta, tbToolTip)
+                                        ToolTipService.SetPlacement(imagenCuenta, PlacementMode.Mouse)
+
+                                        sp.Children.Add(imagenCuenta)
+                                    End If
+                                End If
+                            End If
+                        End If
+                    Next
+
+                    sp.SetValue(Grid.ColumnProperty, 2)
+                    grid.Children.Add(sp)
+                End If
 
                 lvLogros.Items.Add(grid)
             Next
@@ -277,94 +358,6 @@ Module Logros
         End If
 
         pr.Visibility = Visibility.Collapsed
-
-    End Sub
-
-    Public Async Sub CargarDatos(cuentaMaestra As Cuenta, logro As Logro, listaCuentas As List(Of Cuenta))
-
-        Dim frame As Frame = Window.Current.Content
-        Dim pagina As Page = frame.Content
-
-        Dim listaNuevaCuentas As New List(Of Cuenta)
-
-        For Each cuenta In listaCuentas
-            Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=488AE837ADDDA0201B51693B28F1B389&steamid=" + cuenta.ID64 + "&appid=" + logro.Juego.ID))
-
-            If Not htmlLogros = Nothing Then
-                If htmlLogros.Contains(ChrW(34) + logro.ID + ChrW(34)) Then
-                    Dim temp As String
-                    Dim int As Integer
-
-                    int = htmlLogros.IndexOf(ChrW(34) + logro.ID + ChrW(34))
-                    temp = htmlLogros.Remove(0, int)
-
-                    Dim temp2, temp3 As String
-                    Dim int2, int3 As Integer
-
-                    int2 = temp.IndexOf(ChrW(34) + "achieved" + ChrW(34))
-                    temp2 = temp.Remove(0, int2)
-
-                    int2 = temp2.IndexOf(":")
-                    temp2 = temp2.Remove(0, int2 + 1)
-
-                    int3 = temp2.IndexOf(",")
-                    temp3 = temp2.Remove(int3, temp2.Length - int3)
-
-                    Dim estado As Boolean = False
-
-                    If temp3.Trim = "1" Then
-                        estado = True
-                    End If
-
-                    If estado = True Then
-                        If Not cuenta.ID64 = cuentaMaestra.ID64 Then
-                            listaNuevaCuentas.Add(cuenta)
-                        End If
-                    End If
-                End If
-            End If
-        Next
-
-        Dim gvCuentas As GridView = pagina.FindName("gvCuentasLogro")
-        gvCuentas.Items.Clear()
-
-        Dim tbCuentas As TextBlock = pagina.FindName("tbCuentasLogro")
-
-        If listaNuevaCuentas.Count > 0 Then
-            tbCuentas.Visibility = Visibility.Visible
-
-            For Each cuenta In listaNuevaCuentas
-                Dim grid As New Grid With {
-                    .Padding = New Thickness(5, 5, 5, 5)
-                }
-
-                Dim col1 As New ColumnDefinition With {
-                    .Width = New GridLength(1, GridUnitType.Auto)
-                }
-
-                grid.ColumnDefinitions.Add(col1)
-
-                Dim imagen As New ImageEx With {
-                    .Stretch = Stretch.UniformToFill,
-                    .IsCacheEnabled = True,
-                    .Width = 64,
-                    .Height = 64
-                }
-
-                Try
-                    imagen.Source = New BitmapImage(New Uri(cuenta.Avatar))
-                Catch ex As Exception
-
-                End Try
-
-                imagen.SetValue(Grid.ColumnProperty, 0)
-                grid.Children.Add(imagen)
-
-                gvCuentas.Items.Add(grid)
-            Next
-        Else
-            tbCuentas.Visibility = Visibility.Collapsed
-        End If
 
     End Sub
 

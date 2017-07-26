@@ -144,6 +144,14 @@ Module Juegos
                 .Tag = juego
             }
 
+            Dim tbToolTip As TextBlock = New TextBlock With {
+                .Text = juego.Titulo,
+                .FontSize = 16
+            }
+
+            ToolTipService.SetToolTip(grid, tbToolTip)
+            ToolTipService.SetPlacement(grid, PlacementMode.Mouse)
+
             Dim imagen As New ImageEx With {
                 .Stretch = Stretch.UniformToFill,
                 .IsCacheEnabled = True,

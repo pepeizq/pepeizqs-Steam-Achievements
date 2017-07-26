@@ -165,4 +165,10 @@
   <data name="Logros" xml:space="preserve">
     <value>Achievements</value>
   </data>
+  <data name="Tiene Logro" xml:space="preserve">
+    <value>has this achievement</value>
+  </data>
+  <data name="Volver" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

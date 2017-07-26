@@ -108,6 +108,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Clases\Cuenta.vb" />
+    <Compile Include="Clases\CuentaHtml.vb" />
     <Compile Include="Clases\Juego.vb" />
     <Compile Include="Clases\Logro.vb" />
     <Compile Include="MainPage.xaml.vb">

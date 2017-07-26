@@ -48,9 +48,7 @@ Public NotInheritable Class MainPage
         tbAvisoLogros.Text = recursos.GetString("Info Aviso Logros")
         tbAvisoNoLogros.Text = recursos.GetString("Info Aviso No Logros")
 
-        tbCuentasLogro.Text = recursos.GetString("Info Cuentas Logro")
-        botonBuscarGoogleLogroTexto.Text = recursos.GetString("Boton Logro Buscar Google")
-        botonBuscarYoutubeLogroTexto.Text = recursos.GetString("Boton Logro Buscar Youtube")
+        botonVolverListadoLogrosTexto.Text = recursos.GetString("Volver")
 
         '----------------------------------------------
 
@@ -191,6 +189,13 @@ Public NotInheritable Class MainPage
 
         botonJuegoSeleccionado.Visibility = Visibility.Collapsed
 
+        gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
+        gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
+        panelVolverListadoLogros.Visibility = Visibility.Collapsed
+
+        lvLogros.Visibility = Visibility.Visible
+        wvLogros.Visibility = Visibility.Collapsed
+
         GridVisibilidad(gridJuegos, botonCuentaSeleccionada, cuenta.Nombre)
 
         Juegos.Cargar(cuenta)
@@ -229,10 +234,7 @@ Public NotInheritable Class MainPage
 
     End Sub
 
-    Private Sub GvJuegos_ItemClick(sender As Object, e As ItemClickEventArgs) Handles gvJuegos.ItemClick
-
-        gridLogrosMasDatos.Visibility = Visibility.Collapsed
-        gridBotonesLogro.Visibility = Visibility.Collapsed
+    Private Async Sub GvJuegos_ItemClick(sender As Object, e As ItemClickEventArgs) Handles gvJuegos.ItemClick
 
         Dim grid As Grid = e.ClickedItem
         Dim juego As Juego = grid.Tag
@@ -240,7 +242,7 @@ Public NotInheritable Class MainPage
         Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
 
         iconoJuegoSeleccionado.Source = New Uri(juego.Icono)
-        iconoJuegoSeleccionado.Tag = cuenta
+        iconoJuegoSeleccionado.Tag = juego
 
         imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
         tbJuegoSeleccionado.Text = juego.Titulo
@@ -250,58 +252,49 @@ Public NotInheritable Class MainPage
 
         GridVisibilidad(gridLogros, botonJuegoSeleccionado, juego.Titulo)
 
-        Logros.Cargar(cuenta, juego)
-
-    End Sub
-
-    Private Async Sub LvLogros_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvLogros.ItemClick
-
-        Dim grid As Grid = e.ClickedItem
-        Dim logro As Logro = grid.Tag
-
-        If logro.Estado = False Then
-            gridBotonesLogro.Visibility = Visibility.Visible
-        Else
-            gridBotonesLogro.Visibility = Visibility.Collapsed
-        End If
-
-        botonBuscarGoogleLogro.Tag = logro
-        botonBuscarYoutubeLogro.Tag = logro
-
         Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
         Dim listaCuentas As List(Of Cuenta) = Nothing
 
         If Await helper.FileExistsAsync("listaCuentas") = True Then
             listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas")
-
-            gridLogrosMasDatos.Visibility = Visibility.Visible
-
-            Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
-
-            Logros.CargarDatos(cuenta, logro, listaCuentas)
         End If
 
-    End Sub
-
-    Private Async Sub BotonBuscarGoogleLogro_Click(sender As Object, e As RoutedEventArgs) Handles botonBuscarGoogleLogro.Click
-
-        Dim boton As Button = e.OriginalSource
-        Dim logro As Logro = boton.Tag
-
-        Dim cadenaBusqueda As String = logro.Juego.Titulo.Replace(" ", "+") + "+" + logro.Nombre.Replace(" ", "+")
-
-        Await Launcher.LaunchUriAsync(New Uri("https://www.google.com/?gws_rd=ssl#q=" + cadenaBusqueda))
+        Logros.Cargar(cuenta, juego, listaCuentas)
 
     End Sub
 
-    Private Async Sub BotonBuscarYoutubeLogro_Click(sender As Object, e As RoutedEventArgs) Handles botonBuscarYoutubeLogro.Click
+    Private Sub LvLogros_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvLogros.ItemClick
 
-        Dim boton As Button = e.OriginalSource
-        Dim logro As Logro = boton.Tag
+        Dim grid As Grid = e.ClickedItem
+        Dim logro As Logro = grid.Tag
+
+        gridJuegoSeleccionadoProgreso.Visibility = Visibility.Collapsed
+        gridJuegoSeleccionadoLogro.Visibility = Visibility.Visible
+        panelVolverListadoLogros.Visibility = Visibility.Visible
+
+        Try
+            imagenJuegoSeleccionadoLogro.Source = logro.Imagen
+            tbJuegoSeleccionadoLogro.Text = logro.Nombre
+        Catch ex As Exception
+
+        End Try
+
+        lvLogros.Visibility = Visibility.Collapsed
+        wvLogros.Visibility = Visibility.Visible
 
         Dim cadenaBusqueda As String = logro.Juego.Titulo.Replace(" ", "+") + "+" + logro.Nombre.Replace(" ", "+")
+        wvLogros.Navigate(New Uri("https://www.youtube.com/results?search_query=" + cadenaBusqueda))
 
-        Await Launcher.LaunchUriAsync(New Uri("https://www.youtube.com/results?search_query=" + cadenaBusqueda))
+    End Sub
+
+    Private Sub BotonVolverListadoLogros_Click(sender As Object, e As RoutedEventArgs) Handles botonVolverListadoLogros.Click
+
+        gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
+        gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
+        panelVolverListadoLogros.Visibility = Visibility.Collapsed
+
+        lvLogros.Visibility = Visibility.Visible
+        wvLogros.Visibility = Visibility.Collapsed
 
     End Sub
 

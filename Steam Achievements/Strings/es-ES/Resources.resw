@@ -129,12 +129,6 @@
   <data name="Boton Cosas" xml:space="preserve">
     <value>Más Cosas</value>
   </data>
-  <data name="Boton Logro Buscar Google" xml:space="preserve">
-    <value>Buscar en Google</value>
-  </data>
-  <data name="Boton Logro Buscar Youtube" xml:space="preserve">
-    <value>Buscar en Youtube</value>
-  </data>
   <data name="Boton Reportar" xml:space="preserve">
     <value>Informa de un Fallo</value>
   </data>
@@ -164,5 +158,11 @@
   </data>
   <data name="Logros" xml:space="preserve">
     <value>Logros</value>
+  </data>
+  <data name="Tiene Logro" xml:space="preserve">
+    <value>tiene este logro</value>
+  </data>
+  <data name="Volver" xml:space="preserve">
+    <value>Volver</value>
   </data>
 </root>
