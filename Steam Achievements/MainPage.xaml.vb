@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.Services.Store.Engagement
-Imports Microsoft.Toolkit.Uwp
 Imports Microsoft.Toolkit.Uwp.Helpers
 Imports Windows.ApplicationModel.Core
 Imports Windows.System
@@ -8,156 +7,98 @@ Imports Windows.UI
 Public NotInheritable Class MainPage
     Inherits Page
 
+    Private Sub Nv_Loaded(sender As Object, e As RoutedEventArgs)
+
+        Dim recursos As New Resources.ResourceLoader()
+
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Accounts"), New SymbolIcon(Symbol.Home), 0))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Games"), New SymbolIcon(Symbol.Home), 1))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Achievements"), New SymbolIcon(Symbol.Home), 2))
+        nvPrincipal.MenuItems.Add(New NavigationViewItemSeparator)
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("MoreThings"), New SymbolIcon(Symbol.More), 3))
+
+    End Sub
+
+    Private Sub Nv_ItemInvoked(sender As NavigationView, args As NavigationViewItemInvokedEventArgs)
+
+        Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
+
+        Dim item As TextBlock = args.InvokedItem
+
+        If item.Text = recursos.GetString("Accounts") Then
+            GridVisibilidad(gridCuentas, item.Text)
+        ElseIf item.Text = recursos.GetString("Games") Then
+            GridVisibilidad(gridJuegos, item.Text)
+        ElseIf item.Text = recursos.GetString("Achievements") Then
+            GridVisibilidad(gridLogros, item.Text)
+        ElseIf item.Text = recursos.GetString("MoreThings") Then
+            GridVisibilidad(gridMasCosas, item.Text)
+        End If
+
+    End Sub
+
     Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
 
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "es-ES"
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
 
-        Acrilico.Generar(gridTopAcrilico)
-        Acrilico.Generar(gridMenuAcrilico)
+        Dim coreBarra As CoreApplicationViewTitleBar = CoreApplication.GetCurrentView.TitleBar
+        coreBarra.ExtendViewIntoTitleBar = True
 
         Dim barra As ApplicationViewTitleBar = ApplicationView.GetForCurrentView().TitleBar
         barra.ButtonBackgroundColor = Colors.Transparent
         barra.ButtonForegroundColor = Colors.White
-        barra.ButtonPressedBackgroundColor = Colors.SaddleBrown
         barra.ButtonInactiveBackgroundColor = Colors.Transparent
-        Dim coreBarra As CoreApplicationViewTitleBar = CoreApplication.GetCurrentView.TitleBar
-        coreBarra.ExtendViewIntoTitleBar = True
-
-        Application.Current.Resources("SystemControlHighlightListAccentLowBrush") = New SolidColorBrush(Colors.Sienna)
-        Application.Current.Resources("SystemControlHighlightListAccentMediumBrush") = New SolidColorBrush(Colors.Sienna)
-        Application.Current.Resources("SystemControlHighlightAltBaseHighBrush") = New SolidColorBrush(Colors.White)
 
         '--------------------------------------------------------
 
         Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
 
-        botonCuentasTexto.Text = recursos.GetString("Cuentas")
-        botonVotarTexto.Text = recursos.GetString("Boton Votar")
-        botonMasCosasTexto.Text = recursos.GetString("Boton Cosas")
+        'botonCuentasTexto.Text = recursos.GetString("Cuentas")
+        'botonVotarTexto.Text = recursos.GetString("Boton Votar")
+        'botonMasCosasTexto.Text = recursos.GetString("Boton Cosas")
 
-        botonMasAppsTexto.Text = recursos.GetString("Boton Web")
-        botonContactoTexto.Text = recursos.GetString("Boton Contacto")
-        botonReportarTexto.Text = recursos.GetString("Boton Reportar")
-        botonCodigoFuenteTexto.Text = recursos.GetString("Boton Codigo Fuente")
+        'botonMasAppsTexto.Text = recursos.GetString("Boton Web")
+        'botonContactoTexto.Text = recursos.GetString("Boton Contacto")
+        'botonReportarTexto.Text = recursos.GetString("Boton Reportar")
+        'botonCodigoFuenteTexto.Text = recursos.GetString("Boton Codigo Fuente")
 
-        tbInfoUsuarioCuenta.Text = recursos.GetString("Info Agregar Usuario")
-        botonAgregarUsuarioTexto.Text = recursos.GetString("Boton Agregar Usuario")
-        tbInfoUsuarioSeleccionar.Text = recursos.GetString("Info Seleccionar Usuario")
+        'tbInfoUsuarioCuenta.Text = recursos.GetString("Info Agregar Usuario")
+        'botonAgregarUsuarioTexto.Text = recursos.GetString("Boton Agregar Usuario")
+        'tbInfoUsuarioSeleccionar.Text = recursos.GetString("Info Seleccionar Usuario")
 
-        tbAvisoLogros.Text = recursos.GetString("Info Aviso Logros")
-        tbAvisoNoLogros.Text = recursos.GetString("Info Aviso No Logros")
+        'tbAvisoLogros.Text = recursos.GetString("Info Aviso Logros")
+        'tbAvisoNoLogros.Text = recursos.GetString("Info Aviso No Logros")
 
-        botonVolverListadoLogrosTexto.Text = recursos.GetString("Volver")
+        'botonVolverListadoLogrosTexto.Text = recursos.GetString("Volver")
 
         '----------------------------------------------
 
-        GridVisibilidad(gridCuentas, botonCuentas, recursos.GetString("Cuentas"))
+        GridVisibilidad(gridCuentas, recursos.GetString("Accounts"))
+        nvPrincipal.IsPaneOpen = False
+
         Cuentas.CargarXaml()
 
     End Sub
 
-    Private Sub GridVisibilidad(grid As Grid, boton As Button, mensaje As String)
+    Private Sub GridVisibilidad(grid As Grid, tag As String)
 
-        tbTitulo.Text = "Steam Games Achievements (" + SystemInformation.ApplicationVersion.Major.ToString + "." + SystemInformation.ApplicationVersion.Minor.ToString + "." + SystemInformation.ApplicationVersion.Build.ToString + "." + SystemInformation.ApplicationVersion.Revision.ToString + ") - " + mensaje
+        tbTitulo.Text = "Steam Games Achievements (" + SystemInformation.ApplicationVersion.Major.ToString + "." + SystemInformation.ApplicationVersion.Minor.ToString + "." + SystemInformation.ApplicationVersion.Build.ToString + "." + SystemInformation.ApplicationVersion.Revision.ToString + ") - " + tag
 
         gridCuentas.Visibility = Visibility.Collapsed
         gridJuegos.Visibility = Visibility.Collapsed
         gridLogros.Visibility = Visibility.Collapsed
+        gridMasCosas.Visibility = Visibility.Collapsed
 
         grid.Visibility = Visibility.Visible
 
-        botonCuentas.Background = New SolidColorBrush(Colors.Transparent)
-        botonCuentaSeleccionada.Background = New SolidColorBrush(Colors.Transparent)
-        botonJuegoSeleccionado.Background = New SolidColorBrush(Colors.Transparent)
-
-        If Not boton Is Nothing Then
-            boton.Background = New SolidColorBrush(Colors.Sienna)
-        End If
-
     End Sub
 
-    Private Sub BotonCuentas_Click(sender As Object, e As RoutedEventArgs) Handles botonCuentas.Click
-
-        Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
-        GridVisibilidad(gridCuentas, botonCuentas, recursos.GetString("Cuentas"))
-
-    End Sub
-
-    Private Sub BotonCuentaSeleccionada_Click(sender As Object, e As RoutedEventArgs) Handles botonCuentaSeleccionada.Click
-
-        Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
-
-        GridVisibilidad(gridJuegos, botonCuentaSeleccionada, cuenta.Nombre)
-
-    End Sub
-
-    Private Sub BotonJuegoSeleccionado_Click(sender As Object, e As RoutedEventArgs) Handles botonJuegoSeleccionado.Click
-
-        Dim juego As Juego = iconoJuegoSeleccionado.Tag
-
-        GridVisibilidad(gridLogros, botonJuegoSeleccionado, juego.Titulo)
-
-    End Sub
-
-    Private Async Sub BotonVotar_Click(sender As Object, e As RoutedEventArgs) Handles botonVotar.Click
-
-        Await Launcher.LaunchUriAsync(New Uri("ms-windows-store:REVIEW?PFN=" + Package.Current.Id.FamilyName))
-
-    End Sub
-
-    Private Sub BotonMasCosas_Click(sender As Object, e As RoutedEventArgs) Handles botonMasCosas.Click
-
-        If popupMasCosas.IsOpen = True Then
-            botonMasCosas.Background = New SolidColorBrush(Colors.Transparent)
-            popupMasCosas.IsOpen = False
-        Else
-            botonMasCosas.Background = New SolidColorBrush(Colors.Sienna)
-            popupMasCosas.IsOpen = True
-        End If
-
-    End Sub
-
-    Private Sub PopupMasCosas_LayoutUpdated(sender As Object, e As Object) Handles popupMasCosas.LayoutUpdated
-
-        popupMasCosas.Height = spMasCosas.ActualHeight
-
-    End Sub
-
-    Private Async Sub BotonMasApps_Click(sender As Object, e As RoutedEventArgs) Handles botonMasApps.Click
-
-        Await Launcher.LaunchUriAsync(New Uri("https://pepeizqapps.com/"))
-
-    End Sub
-
-    Private Async Sub BotonContacto_Click(sender As Object, e As RoutedEventArgs) Handles botonContacto.Click
-
-        Await Launcher.LaunchUriAsync(New Uri("https://pepeizqapps.com/contact/"))
-
-    End Sub
-
-    Private Async Sub BotonReportar_Click(sender As Object, e As RoutedEventArgs) Handles botonReportar.Click
-
-        If StoreServicesFeedbackLauncher.IsSupported = True Then
-            Dim ejecutador As StoreServicesFeedbackLauncher = StoreServicesFeedbackLauncher.GetDefault()
-            Await ejecutador.LaunchAsync()
-        Else
-            Await Launcher.LaunchUriAsync(New Uri("https://pepeizqapps.com/contact/"))
-        End If
-
-    End Sub
-
-    Private Async Sub BotonCodigoFuente_Click(sender As Object, e As RoutedEventArgs) Handles botonCodigoFuente.Click
-
-        Await Launcher.LaunchUriAsync(New Uri("https://github.com/pepeizq/Steam-Achievements"))
-
-    End Sub
-
-    'LOGROS-----------------------------------------------
+    'CUENTAS-----------------------------------------------
 
     Private Sub TbUsuarioCuenta_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbUsuarioCuenta.TextChanged
 
-        If tbInfoUsuarioCuenta.Text.Length > 4 Then
+        If tbUsuarioCuenta.Text.Length > 4 Then
             botonAgregarUsuario.IsEnabled = True
         Else
             botonAgregarUsuario.IsEnabled = False
@@ -181,13 +122,13 @@ Public NotInheritable Class MainPage
         Dim grid As Grid = e.ClickedItem
         Dim cuenta As Cuenta = grid.Tag
 
-        imagenCuentaSeleccionada.Source = New Uri(cuenta.Avatar)
-        imagenCuentaSeleccionada.Tag = cuenta
+        'imagenCuentaSeleccionada.Source = New Uri(cuenta.Avatar)
+        'imagenCuentaSeleccionada.Tag = cuenta
 
-        botonCuentaSeleccionada.Visibility = Visibility.Visible
-        botonCuentaSeleccionadaTexto.Text = cuenta.Nombre
+        'botonCuentaSeleccionada.Visibility = Visibility.Visible
+        'botonCuentaSeleccionadaTexto.Text = cuenta.Nombre
 
-        botonJuegoSeleccionado.Visibility = Visibility.Collapsed
+        'botonJuegoSeleccionado.Visibility = Visibility.Collapsed
 
         gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
         gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
@@ -196,7 +137,7 @@ Public NotInheritable Class MainPage
         lvLogros.Visibility = Visibility.Visible
         wvLogros.Visibility = Visibility.Collapsed
 
-        GridVisibilidad(gridJuegos, botonCuentaSeleccionada, cuenta.Nombre)
+        'GridVisibilidad(gridJuegos, botonCuentaSeleccionada, cuenta.Nombre)
 
         Juegos.Cargar(cuenta)
 
@@ -239,18 +180,18 @@ Public NotInheritable Class MainPage
         Dim grid As Grid = e.ClickedItem
         Dim juego As Juego = grid.Tag
 
-        Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
+        'Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
 
-        iconoJuegoSeleccionado.Source = New Uri(juego.Icono)
-        iconoJuegoSeleccionado.Tag = juego
+        'iconoJuegoSeleccionado.Source = New Uri(juego.Icono)
+        'iconoJuegoSeleccionado.Tag = juego
 
-        imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
-        tbJuegoSeleccionado.Text = juego.Titulo
+        'imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
+        'tbJuegoSeleccionado.Text = juego.Titulo
 
-        botonJuegoSeleccionado.Visibility = Visibility.Visible
-        botonJuegoSeleccionadoTexto.Text = juego.Titulo
+        'botonJuegoSeleccionado.Visibility = Visibility.Visible
+        'botonJuegoSeleccionadoTexto.Text = juego.Titulo
 
-        GridVisibilidad(gridLogros, botonJuegoSeleccionado, juego.Titulo)
+        'GridVisibilidad(gridLogros, botonJuegoSeleccionado, juego.Titulo)
 
         Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
         Dim listaCuentas As List(Of Cuenta) = Nothing
@@ -259,7 +200,7 @@ Public NotInheritable Class MainPage
             listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas")
         End If
 
-        Logros.Cargar(cuenta, juego, listaCuentas)
+        'Logros.Cargar(cuenta, juego, listaCuentas)
 
     End Sub
 
@@ -295,6 +236,49 @@ Public NotInheritable Class MainPage
 
         lvLogros.Visibility = Visibility.Visible
         wvLogros.Visibility = Visibility.Collapsed
+
+    End Sub
+
+    'MASCOSAS-----------------------------------------
+
+    Private Async Sub LvMasCosasItemClick(sender As Object, args As ItemClickEventArgs)
+
+        Dim sp As StackPanel = args.ClickedItem
+
+        If sp.Tag.ToString = 0 Then
+
+            Await Launcher.LaunchUriAsync(New Uri("ms-windows-store:REVIEW?PFN=" + Package.Current.Id.FamilyName))
+
+        ElseIf sp.Tag.ToString = 1 Then
+
+            wvMasCosas.Navigate(New Uri("https://pepeizqapps.com/"))
+
+        ElseIf sp.Tag.ToString = 2 Then
+
+            wvMasCosas.Navigate(New Uri("https://pepeizqapps.com/contact/"))
+
+        ElseIf sp.Tag.ToString = 3 Then
+
+            If StoreServicesFeedbackLauncher.IsSupported = True Then
+                Dim ejecutador As StoreServicesFeedbackLauncher = StoreServicesFeedbackLauncher.GetDefault()
+                Await ejecutador.LaunchAsync()
+            Else
+                wvMasCosas.Navigate(New Uri("https://pepeizqapps.com/contact/"))
+            End If
+
+        ElseIf sp.Tag.ToString = 4 Then
+
+            wvMasCosas.Navigate(New Uri("https://poeditor.com/join/project/YaZAR0uIW4"))
+
+        ElseIf sp.Tag.ToString = 5 Then
+
+            wvMasCosas.Navigate(New Uri("https://github.com/pepeizq/Steam-Achievements"))
+
+        ElseIf sp.Tag.ToString = 6 Then
+
+            wvMasCosas.Navigate(New Uri("https://pepeizqapps.com/thanks/"))
+
+        End If
 
     End Sub
 
