@@ -54,26 +54,6 @@ Public NotInheritable Class MainPage
 
         Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
 
-        'botonCuentasTexto.Text = recursos.GetString("Cuentas")
-        'botonVotarTexto.Text = recursos.GetString("Boton Votar")
-        'botonMasCosasTexto.Text = recursos.GetString("Boton Cosas")
-
-        'botonMasAppsTexto.Text = recursos.GetString("Boton Web")
-        'botonContactoTexto.Text = recursos.GetString("Boton Contacto")
-        'botonReportarTexto.Text = recursos.GetString("Boton Reportar")
-        'botonCodigoFuenteTexto.Text = recursos.GetString("Boton Codigo Fuente")
-
-        'tbInfoUsuarioCuenta.Text = recursos.GetString("Info Agregar Usuario")
-        'botonAgregarUsuarioTexto.Text = recursos.GetString("Boton Agregar Usuario")
-        'tbInfoUsuarioSeleccionar.Text = recursos.GetString("Info Seleccionar Usuario")
-
-        'tbAvisoLogros.Text = recursos.GetString("Info Aviso Logros")
-        'tbAvisoNoLogros.Text = recursos.GetString("Info Aviso No Logros")
-
-        'botonVolverListadoLogrosTexto.Text = recursos.GetString("Volver")
-
-        '----------------------------------------------
-
         GridVisibilidad(gridCuentas, recursos.GetString("Accounts"))
         nvPrincipal.IsPaneOpen = False
 
