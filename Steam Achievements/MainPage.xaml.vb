@@ -11,11 +11,11 @@ Public NotInheritable Class MainPage
 
         Dim recursos As New Resources.ResourceLoader()
 
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Accounts"), New SymbolIcon(Symbol.Home), 0))
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Games"), New SymbolIcon(Symbol.Home), 1))
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Achievements"), New SymbolIcon(Symbol.Home), 2))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Accounts"), New SymbolIcon(Symbol.People), 0, Visibility.Visible))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Games"), New SymbolIcon(Symbol.Contact), 1, Visibility.Collapsed))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Achievements"), New SymbolIcon(Symbol.OtherUser), 2, Visibility.Collapsed))
         nvPrincipal.MenuItems.Add(New NavigationViewItemSeparator)
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("MoreThings"), New SymbolIcon(Symbol.More), 3))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("MoreThings"), New SymbolIcon(Symbol.More), 3, Visibility.Visible))
 
     End Sub
 
@@ -25,13 +25,13 @@ Public NotInheritable Class MainPage
 
         Dim item As TextBlock = args.InvokedItem
 
-        If item.Text = recursos.GetString("Accounts") Then
+        If item.Tag = recursos.GetString("Accounts") Then
             GridVisibilidad(gridCuentas, item.Text)
-        ElseIf item.Text = recursos.GetString("Games") Then
+        ElseIf item.Tag = recursos.GetString("Games") Then
             GridVisibilidad(gridJuegos, item.Text)
-        ElseIf item.Text = recursos.GetString("Achievements") Then
+        ElseIf item.Tag = recursos.GetString("Achievements") Then
             GridVisibilidad(gridLogros, item.Text)
-        ElseIf item.Text = recursos.GetString("MoreThings") Then
+        ElseIf item.Tag = recursos.GetString("MoreThings") Then
             GridVisibilidad(gridMasCosas, item.Text)
         End If
 
@@ -119,25 +119,42 @@ Public NotInheritable Class MainPage
         panelMensajeLogros.Visibility = Visibility.Visible
         lvLogros.Items.Clear()
 
+        Dim recursos As New Resources.ResourceLoader()
+
         Dim grid As Grid = e.ClickedItem
         Dim cuenta As Cuenta = grid.Tag
 
-        'imagenCuentaSeleccionada.Source = New Uri(cuenta.Avatar)
-        'imagenCuentaSeleccionada.Tag = cuenta
+        Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+        nvJuegos.Visibility = Visibility.Visible
 
-        'botonCuentaSeleccionada.Visibility = Visibility.Visible
-        'botonCuentaSeleccionadaTexto.Text = cuenta.Nombre
+        Dim tbToolTip As TextBlock = New TextBlock With {
+            .Text = cuenta.Nombre
+        }
 
-        'botonJuegoSeleccionado.Visibility = Visibility.Collapsed
+        ToolTipService.SetToolTip(nvJuegos, tbToolTip)
+
+        Dim tb As New TextBlock With {
+            .Text = cuenta.Nombre,
+            .Foreground = New SolidColorBrush(Colors.White),
+            .Tag = recursos.GetString("Games")
+        }
+
+        nvJuegos.Content = tb
+        nvJuegos.Tag = cuenta
+
+        nvPrincipal.SelectedItem = nvJuegos
+
+        Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+        nvLogros.Visibility = Visibility.Collapsed
 
         gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
         gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
-        panelVolverListadoLogros.Visibility = Visibility.Collapsed
+        botonVolverListadoLogros.Visibility = Visibility.Collapsed
 
         lvLogros.Visibility = Visibility.Visible
         wvLogros.Visibility = Visibility.Collapsed
 
-        'GridVisibilidad(gridJuegos, botonCuentaSeleccionada, cuenta.Nombre)
+        GridVisibilidad(gridJuegos, cuenta.Nombre)
 
         Juegos.Cargar(cuenta)
 
@@ -177,21 +194,37 @@ Public NotInheritable Class MainPage
 
     Private Async Sub GvJuegos_ItemClick(sender As Object, e As ItemClickEventArgs) Handles gvJuegos.ItemClick
 
+        Dim recursos As New Resources.ResourceLoader()
+
         Dim grid As Grid = e.ClickedItem
         Dim juego As Juego = grid.Tag
 
-        'Dim cuenta As Cuenta = imagenCuentaSeleccionada.Tag
+        Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+        Dim cuenta As Cuenta = nvJuegos.Tag
 
-        'iconoJuegoSeleccionado.Source = New Uri(juego.Icono)
-        'iconoJuegoSeleccionado.Tag = juego
+        Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+        nvLogros.Visibility = Visibility.Visible
 
-        'imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
-        'tbJuegoSeleccionado.Text = juego.Titulo
+        Dim tbToolTip As TextBlock = New TextBlock With {
+            .Text = juego.Titulo
+        }
 
-        'botonJuegoSeleccionado.Visibility = Visibility.Visible
-        'botonJuegoSeleccionadoTexto.Text = juego.Titulo
+        ToolTipService.SetToolTip(nvLogros, tbToolTip)
 
-        'GridVisibilidad(gridLogros, botonJuegoSeleccionado, juego.Titulo)
+        Dim tb As New TextBlock With {
+            .Text = juego.Titulo,
+            .Foreground = New SolidColorBrush(Colors.White),
+            .Tag = recursos.GetString("Games")
+        }
+
+        nvLogros.Content = tb
+
+        nvPrincipal.SelectedItem = nvLogros
+
+        imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
+        tbJuegoSeleccionado.Text = juego.Titulo
+
+        GridVisibilidad(gridLogros, juego.Titulo)
 
         Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
         Dim listaCuentas As List(Of Cuenta) = Nothing
@@ -200,7 +233,7 @@ Public NotInheritable Class MainPage
             listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas")
         End If
 
-        'Logros.Cargar(cuenta, juego, listaCuentas)
+        Logros.Cargar(cuenta, juego, listaCuentas)
 
     End Sub
 
@@ -211,7 +244,7 @@ Public NotInheritable Class MainPage
 
         gridJuegoSeleccionadoProgreso.Visibility = Visibility.Collapsed
         gridJuegoSeleccionadoLogro.Visibility = Visibility.Visible
-        panelVolverListadoLogros.Visibility = Visibility.Visible
+        botonVolverListadoLogros.Visibility = Visibility.Visible
 
         Try
             imagenJuegoSeleccionadoLogro.Source = logro.Imagen
@@ -232,7 +265,7 @@ Public NotInheritable Class MainPage
 
         gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
         gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
-        panelVolverListadoLogros.Visibility = Visibility.Collapsed
+        botonVolverListadoLogros.Visibility = Visibility.Collapsed
 
         lvLogros.Visibility = Visibility.Visible
         wvLogros.Visibility = Visibility.Collapsed

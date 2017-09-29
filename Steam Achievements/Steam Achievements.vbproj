@@ -130,8 +130,6 @@
     <None Include="Steam Achievements_TemporaryKey.pfx" />
     <PRIResource Include="Strings\es-ES\Resources.resw" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
-    <PRIResource Include="Strings\es-ES\Resources_viejo.resw" />
-    <PRIResource Include="Strings\en-US\Resources_viejo.resw" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logos\BadgeLogo.scale-100.png" />

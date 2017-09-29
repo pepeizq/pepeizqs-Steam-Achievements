@@ -63,21 +63,11 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock x:Name="tbInfoUsuarioSeleccionar" Grid.Row="0" Width="450" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"/>
+                        <TextBlock x:Uid="SelectAccount" Grid.Row="0" Width="450" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"/>
 
-                        <controls:DropShadowPanel Grid.Row="1" Margin="15" Color="Black" HorizontalAlignment="Center"
-                                              BlurRadius="4" ShadowOpacity="0.5" OffsetZ="5">
-                            <controls:DropShadowPanel.Transitions>
-                                <TransitionCollection>
-                                    <EdgeUIThemeTransition Edge="Bottom"/>
-                                </TransitionCollection>
-                            </controls:DropShadowPanel.Transitions>
-
-                            <ListView x:Name="lvUsuarios" Background="Sienna" IsItemClickEnabled="True" HorizontalAlignment="Center" MaxHeight="500"/>
-                        </controls:DropShadowPanel>
+                        <ListView x:Name="lvUsuarios" Grid.Row="1" Margin="15" Background="{StaticResource BrushSecundario}" IsItemClickEnabled="True" HorizontalAlignment="Center" MaxHeight="500"/>
                     </Grid>
                 </Grid>
 
@@ -87,7 +77,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid x:Name="gridBusquedaJuegos" Grid.Row="0" Visibility="Collapsed" Margin="5">
+                    <Grid x:Name="gridBusquedaJuegos" Grid.Row="0" Visibility="Collapsed">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -101,7 +91,7 @@
                                               HorizontalAlignment="Center" VerticalAlignment="Center"
                                               BlurRadius="4" ShadowOpacity="0.5" OffsetZ="5">
                             <Grid Padding="10" Background="IndianRed">
-                                <TextBlock x:Name="tbAvisoLogros" TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock x:Uid="Search" TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Grid>
                         </controls:DropShadowPanel>
                     </Grid>
@@ -110,7 +100,7 @@
 
                     <controls:AdaptiveGridView x:Name="gvJuegos" Grid.Row="1"
                                        IsItemClickEnabled="True" DesiredWidth="184" ItemHeight="69" 
-                                       animations:ReorderGridAnimation.Duration="250" Margin="10,10,0,0">
+                                       animations:ReorderGridAnimation.Duration="250">
                         <controls:AdaptiveGridView.ItemContainerStyle>
                             <Style TargetType="GridViewItem">
                                 <Setter Property="Margin" Value="1"/>
@@ -125,7 +115,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Padding="15">
+                    <Grid Grid.Row="0" Margin="0,0,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -163,28 +153,25 @@
                             </Grid>
                         </Grid>
 
-                        <controls:DropShadowPanel x:Name="panelVolverListadoLogros" Grid.Column="2" Margin="10" Color="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                              BlurRadius="4" ShadowOpacity="0.5" OffsetZ="5" Visibility="Collapsed">
-                            <Button x:Name="botonVolverListadoLogros" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Sienna">
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon Glyph="&#xE830;" FontFamily="Segoe MDL2 Assets" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
-                                    <TextBlock x:Name="botonVolverListadoLogrosTexto" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                        </controls:DropShadowPanel>
+                        <Button x:Name="botonVolverListadoLogros" Grid.Column="2" Margin="10" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource BrushSecundario}" Visibility="Collapsed">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon Glyph="&#xE830;" FontFamily="Segoe MDL2 Assets" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBlock x:Uid="Back" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
 
                     <controls:DropShadowPanel x:Name="panelMensajeNoLogros" Grid.Row="1" Margin="10" Color="Black" 
                                               HorizontalAlignment="Center" VerticalAlignment="Center"
                                               BlurRadius="4" ShadowOpacity="0.5" OffsetZ="5" Visibility="Collapsed">
                         <Grid Padding="10" Background="IndianRed">
-                            <TextBlock x:Name="tbAvisoNoLogros" TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock x:Uid="NoAchievements" TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                     </controls:DropShadowPanel>
 
                     <ProgressRing x:Name="prLogros" Grid.Row="1" Visibility="Collapsed" IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="SaddleBrown" Height="50" Width="50"/>
 
-                    <ListView x:Name="lvLogros" Grid.Row="1" IsItemClickEnabled="True" Visibility="Collapsed" Padding="10">
+                    <ListView x:Name="lvLogros" Grid.Row="1" IsItemClickEnabled="True" Visibility="Collapsed">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />

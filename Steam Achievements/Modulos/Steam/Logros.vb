@@ -322,7 +322,7 @@ Module Logros
 
                                         Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
                                         Dim tbToolTip As TextBlock = New TextBlock With {
-                                            .Text = cuenta.Cuenta.Nombre + " " + recursos.GetString("Tiene Logro"),
+                                            .Text = cuenta.Cuenta.Nombre + " " + recursos.GetString("OtherUserHasAchievement"),
                                             .FontSize = 16
                                         }
 

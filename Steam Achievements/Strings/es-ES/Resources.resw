@@ -129,6 +129,9 @@
   <data name="AddAccountInfo.Text" xml:space="preserve">
     <value>Añade tu usuario del perfil de Steam, por ejemplo, si tu enlace del perfil http://steamcommunity.com/id/pepeizq/ añade solo pepeizq</value>
   </data>
+  <data name="Back.Text" xml:space="preserve">
+    <value>Volver</value>
+  </data>
   <data name="Contact.Text" xml:space="preserve">
     <value>Contactar</value>
   </data>
@@ -141,11 +144,23 @@
   <data name="MoreThings" xml:space="preserve">
     <value>Más Cosas</value>
   </data>
+  <data name="NoAchievements.Text" xml:space="preserve">
+    <value>Este juego no tiene logros</value>
+  </data>
   <data name="OtherApps.Text" xml:space="preserve">
     <value>Otras Apps</value>
   </data>
+  <data name="OtherUserHasAchievement" xml:space="preserve">
+    <value>tiene este logro</value>
+  </data>
   <data name="ReportBug.Text" xml:space="preserve">
     <value>Informa de un Fallo</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Busca y selecciona un juego</value>
+  </data>
+  <data name="SelectAccount.Text" xml:space="preserve">
+    <value>Selecciona un usuario</value>
   </data>
   <data name="SourceCode.Text" xml:space="preserve">
     <value>Código Fuente</value>
