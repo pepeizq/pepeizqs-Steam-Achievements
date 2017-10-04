@@ -63,7 +63,7 @@ Public NotInheritable Class MainPage
 
     Private Sub GridVisibilidad(grid As Grid, tag As String)
 
-        tbTitulo.Text = "Steam Games Achievements (" + SystemInformation.ApplicationVersion.Major.ToString + "." + SystemInformation.ApplicationVersion.Minor.ToString + "." + SystemInformation.ApplicationVersion.Build.ToString + "." + SystemInformation.ApplicationVersion.Revision.ToString + ") - " + tag
+        tbTitulo.Text = Package.Current.DisplayName + " (" + Package.Current.Id.Version.Major.ToString + "." + Package.Current.Id.Version.Minor.ToString + "." + Package.Current.Id.Version.Build.ToString + "." + Package.Current.Id.Version.Revision.ToString + ") - " + tag
 
         gridCuentas.Visibility = Visibility.Collapsed
         gridJuegos.Visibility = Visibility.Collapsed
