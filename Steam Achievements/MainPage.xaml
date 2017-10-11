@@ -48,7 +48,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock x:Uid="AddAccountInfo" Grid.Row="0" Width="450" TextWrapping="Wrap"/>
+                        <TextBlock x:Uid="AddAccountInfo" Grid.Row="0" Width="450" TextWrapping="Wrap" TextAlignment="Center"/>
                         <TextBox x:Name="tbUsuarioCuenta" Grid.Row="1" MinWidth="300" Margin="20" TextWrapping="Wrap" TextAlignment="Center"/>
 
                         <Button x:Name="botonAgregarUsuario" Grid.Row="2" Margin="10" Padding="10,15" HorizontalAlignment="Center" IsEnabled="False" Background="{StaticResource BrushSecundario}">
