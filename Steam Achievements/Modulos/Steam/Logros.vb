@@ -213,12 +213,18 @@ Module Logros
                 grid.ColumnDefinitions.Add(col2)
                 grid.ColumnDefinitions.Add(col3)
 
+                Dim borde As New Border With {
+                    .BorderBrush = New SolidColorBrush(App.Current.Resources("ColorSecundario")),
+                    .BorderThickness = New Thickness(1, 1, 1, 1),
+                    .Margin = New Thickness(5, 0, 0, 0),
+                    .VerticalAlignment = VerticalAlignment.Center
+                }
+
                 Dim imagen As New ImageEx With {
                     .Stretch = Stretch.UniformToFill,
                     .IsCacheEnabled = True,
                     .Width = 64,
-                    .Height = 64,
-                    .Margin = New Thickness(5, 0, 0, 0)
+                    .Height = 64
                 }
 
                 Try
@@ -227,8 +233,9 @@ Module Logros
 
                 End Try
 
-                imagen.SetValue(Grid.ColumnProperty, 0)
-                grid.Children.Add(imagen)
+                borde.Child = imagen
+                borde.SetValue(Grid.ColumnProperty, 0)
+                grid.Children.Add(borde)
 
                 '-------------------------------
 

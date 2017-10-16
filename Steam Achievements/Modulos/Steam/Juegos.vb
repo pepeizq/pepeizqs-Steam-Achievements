@@ -153,6 +153,11 @@ Module Juegos
             ToolTipService.SetToolTip(grid, tbToolTip)
             ToolTipService.SetPlacement(grid, PlacementMode.Mouse)
 
+            Dim borde As New Border With {
+                .BorderBrush = New SolidColorBrush(App.Current.Resources("ColorSecundario")),
+                .BorderThickness = New Thickness(1, 1, 1, 1)
+            }
+
             Dim imagen As New ImageEx With {
                 .Stretch = Stretch.UniformToFill,
                 .IsCacheEnabled = True,
@@ -169,7 +174,8 @@ Module Juegos
             End Try
 
             If boolImagen = False Then
-                grid.Children.Add(imagen)
+                borde.Child = imagen
+                grid.Children.Add(borde)
                 gvJuegos.Items.Add(grid)
             End If
         Next

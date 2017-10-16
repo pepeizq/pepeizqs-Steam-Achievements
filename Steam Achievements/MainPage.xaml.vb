@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.Services.Store.Engagement
 Imports Microsoft.Toolkit.Uwp.Helpers
+Imports MyToolkit.Multimedia
 Imports Windows.ApplicationModel.Core
 Imports Windows.System
 Imports Windows.UI
@@ -27,8 +28,19 @@ Public NotInheritable Class MainPage
 
         If item.Tag = recursos.GetString("Accounts") Then
             GridVisibilidad(gridCuentas, item.Text)
+
+            Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+            nvJuegos.Visibility = Visibility.Collapsed
+
+            Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+            nvLogros.Visibility = Visibility.Collapsed
+
         ElseIf item.Tag = recursos.GetString("Games") Then
             GridVisibilidad(gridJuegos, item.Text)
+
+            Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+            nvLogros.Visibility = Visibility.Collapsed
+
         ElseIf item.Tag = recursos.GetString("Achievements") Then
             GridVisibilidad(gridLogros, item.Text)
         ElseIf item.Tag = recursos.GetString("MoreThings") Then
@@ -133,7 +145,7 @@ Public NotInheritable Class MainPage
         botonVolverListadoLogros.Visibility = Visibility.Collapsed
 
         lvLogros.Visibility = Visibility.Visible
-        wvLogros.Visibility = Visibility.Collapsed
+        meLogros.Visibility = Visibility.Collapsed
 
         GridVisibilidad(gridJuegos, cuenta.Nombre)
 
@@ -218,7 +230,7 @@ Public NotInheritable Class MainPage
 
     End Sub
 
-    Private Sub LvLogros_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvLogros.ItemClick
+    Private Async Sub LvLogros_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvLogros.ItemClick
 
         Dim grid As Grid = e.ClickedItem
         Dim logro As Logro = grid.Tag
@@ -235,10 +247,31 @@ Public NotInheritable Class MainPage
         End Try
 
         lvLogros.Visibility = Visibility.Collapsed
-        wvLogros.Visibility = Visibility.Visible
 
         Dim cadenaBusqueda As String = logro.Juego.Titulo.Replace(" ", "+") + "+" + logro.Nombre.Replace(" ", "+")
-        wvLogros.Navigate(New Uri("https://www.youtube.com/results?search_query=" + cadenaBusqueda))
+        Dim html As String = Await HttpClient(New Uri("https://www.youtube.com/results?search_query=" + cadenaBusqueda))
+
+        If html.Contains(ChrW(34) + "https://i.ytimg.com/") Then
+            Dim temp, temp2 As String
+            Dim int, int2 As Integer
+
+            int = html.IndexOf(ChrW(34) + "https://i.ytimg.com/")
+            temp = html.Remove(0, int + 1)
+
+            int2 = temp.IndexOf("?")
+            temp2 = temp.Remove(int2, temp.Length - int2)
+
+            temp2 = temp2.Replace("https://i.ytimg.com/vi/", Nothing)
+            temp2 = temp2.Replace("/hqdefault.jpg", Nothing)
+            temp2 = temp2.Trim
+
+            Dim id As String = temp2
+            Dim video As YouTubeUri = Await YouTube.GetVideoUriAsync(id, YouTubeQuality.Quality1080P)
+
+            melogros.visibility = Visibility.Visible
+            Melogros.source = video.Uri
+            melogros.play
+        End If
 
     End Sub
 
@@ -249,7 +282,8 @@ Public NotInheritable Class MainPage
         botonVolverListadoLogros.Visibility = Visibility.Collapsed
 
         lvLogros.Visibility = Visibility.Visible
-        wvLogros.Visibility = Visibility.Collapsed
+        meLogros.Visibility = Visibility.Collapsed
+        meLogros.Stop()
 
     End Sub
 
