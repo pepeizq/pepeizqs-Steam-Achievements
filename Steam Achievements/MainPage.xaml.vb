@@ -72,6 +72,15 @@ Public NotInheritable Class MainPage
 
         Cuentas.CargarXaml()
 
+        '--------------------------------------------------------
+
+        Dim transpariencia As New UISettings
+        Dim boolTranspariencia As Boolean = transpariencia.AdvancedEffectsEnabled
+
+        If boolTranspariencia = False Then
+            gridMasCosas.Background = New SolidColorBrush(Colors.LightGray)
+        End If
+
     End Sub
 
     Private Sub GridVisibilidad(grid As Grid, tag As String)
