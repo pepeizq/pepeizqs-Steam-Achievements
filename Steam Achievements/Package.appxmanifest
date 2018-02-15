@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="a674a1af-7c40-46aa-aeac-12f3b42bf9f1" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Steam Games Achievements</DisplayName>
-    <PublisherDisplayName>pepeizq</PublisherDisplayName>
+    <PublisherDisplayName>pepeizq's apps</PublisherDisplayName>
     <Logo>Assets\Logos\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
