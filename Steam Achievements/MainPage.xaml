@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:local="using:MyAdFundedWindows10AppXAML"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d" Loaded="Page_Loaded">
 
     <Grid Background="{StaticResource ColorGridPrincipal}">
@@ -36,38 +38,50 @@
                 </Grid.Background>
 
                 <Grid x:Name="gridCuentas" Visibility="Collapsed" Padding="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition x:Name="gridColumnaUsuarios" Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition x:Name="gridColumnaUsuarios" Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                        <TextBlock x:Uid="AddAccountInfo" Grid.Row="0" Width="450" TextWrapping="Wrap" TextAlignment="Center"/>
-                        <TextBox x:Name="tbUsuarioCuenta" Grid.Row="1" MinWidth="300" Margin="20" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <Button x:Name="botonAgregarUsuario" Grid.Row="2" Margin="10" Padding="10,15" HorizontalAlignment="Center" IsEnabled="False" Background="{StaticResource BrushSecundario}">
-                            <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE72A;" FontFamily="Segoe MDL2 Assets" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
-                                <TextBlock x:Uid="AddAccount" Foreground="White"/>
-                            </StackPanel>
-                        </Button>
+                            <TextBlock x:Uid="AddAccountInfo" Grid.Row="0" Width="450" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <TextBox x:Name="tbUsuarioCuenta" Grid.Row="1" MinWidth="300" Margin="20" TextWrapping="Wrap" TextAlignment="Center"/>
+
+                            <Button x:Name="botonAgregarUsuario" Grid.Row="2" Margin="10" Padding="10,15" HorizontalAlignment="Center" IsEnabled="False" Background="{StaticResource BrushSecundario}">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Glyph="&#xE72A;" FontFamily="Segoe MDL2 Assets" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
+                                    <TextBlock x:Uid="AddAccount" Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Grid x:Name="gridListaUsuarios" Grid.Column="1" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock x:Uid="SelectAccount" Grid.Row="0" Width="450" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"/>
+
+                            <ListView x:Name="lvUsuarios" Grid.Row="1" Margin="15" Background="{StaticResource BrushSecundario}" IsItemClickEnabled="True" HorizontalAlignment="Center" MaxHeight="500"/>
+                        </Grid>
                     </Grid>
 
-                    <Grid x:Name="gridListaUsuarios" Grid.Column="1" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock x:Uid="SelectAccount" Grid.Row="0" Width="450" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"/>
-
-                        <ListView x:Name="lvUsuarios" Grid.Row="1" Margin="15" Background="{StaticResource BrushSecundario}" IsItemClickEnabled="True" HorizontalAlignment="Center" MaxHeight="500"/>
+                    <Grid Grid.Row="1">
+                        <UI:AdControl ApplicationId="9nsd0jrnlmb7" AdUnitId="351928"
+                                      HorizontalAlignment="Center" Height="90" VerticalAlignment="Center" Width="728"/>
                     </Grid>
                 </Grid>
 
