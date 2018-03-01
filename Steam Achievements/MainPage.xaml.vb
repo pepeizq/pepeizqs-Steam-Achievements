@@ -1,9 +1,8 @@
-﻿Imports Microsoft.Services.Store.Engagement
-Imports Microsoft.Toolkit.Uwp.Helpers
+﻿Imports Microsoft.Toolkit.Uwp.Helpers
 Imports MyToolkit.Multimedia
 Imports Windows.ApplicationModel.Core
-Imports Windows.System
 Imports Windows.UI
+Imports Windows.UI.Core
 
 Public NotInheritable Class MainPage
     Inherits Page
@@ -22,11 +21,11 @@ Public NotInheritable Class MainPage
 
     Private Sub Nv_ItemInvoked(sender As NavigationView, args As NavigationViewItemInvokedEventArgs)
 
-        Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
+        Dim recursos As New Resources.ResourceLoader()
 
         Dim item As TextBlock = args.InvokedItem
 
-        If item.Tag = recursos.GetString("Accounts") Then
+        If item.Text = recursos.GetString("Accounts") Then
             GridVisibilidad(gridCuentas, item.Text)
 
             Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
@@ -35,17 +34,23 @@ Public NotInheritable Class MainPage
             Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
             nvLogros.Visibility = Visibility.Collapsed
 
-        ElseIf item.Tag = recursos.GetString("Games") Then
+        ElseIf item.Text = recursos.GetString("Games") Then
             GridVisibilidad(gridJuegos, item.Text)
 
             Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
             nvLogros.Visibility = Visibility.Collapsed
 
-        ElseIf item.Tag = recursos.GetString("Achievements") Then
+        ElseIf item.Text = recursos.GetString("Achievements") Then
             GridVisibilidad(gridLogros, item.Text)
-        ElseIf item.Tag = recursos.GetString("MoreThings") Then
+        ElseIf item.Text = recursos.GetString("MoreThings") Then
             GridVisibilidad(gridMasCosas, item.Text)
-            NavegarMasCosas(lvMasCosasMasApps, "https://pepeizqapps.com/")
+
+            Dim sv As ScrollViewer = gridMasCosas.Children(0)
+            Dim gridRelleno As Grid = sv.Content
+            Dim sp As StackPanel = gridRelleno.Children(0)
+            Dim lv As ListView = sp.Children(0)
+
+            MasCosas.Navegar(lv, "2", "https://pepeizqapps.com/")
         End If
 
     End Sub
@@ -71,25 +76,33 @@ Public NotInheritable Class MainPage
         nvPrincipal.IsPaneOpen = False
 
         Cuentas.CargarXaml()
+        MasCosas.Generar()
 
         '--------------------------------------------------------
 
         Dim transpariencia As New UISettings
+        TransparienciaEfectosFinal(transpariencia.AdvancedEffectsEnabled)
         AddHandler transpariencia.AdvancedEffectsEnabledChanged, AddressOf TransparienciaEfectosCambia
 
     End Sub
 
     Private Sub TransparienciaEfectosCambia(sender As UISettings, e As Object)
 
-        If sender.AdvancedEffectsEnabled = True Then
-            gridMasCosas.Background = New SolidColorBrush(App.Current.Resources("GridAcrilico"))
-        Else
-            gridMasCosas.Background = New SolidColorBrush(Colors.LightGray)
-        End If
+        TransparienciaEfectosFinal(sender.AdvancedEffectsEnabled)
 
     End Sub
 
+    Private Async Sub TransparienciaEfectosFinal(estado As Boolean)
 
+        Await Dispatcher.RunAsync(CoreDispatcherPriority.High, Sub()
+                                                                   If estado = True Then
+                                                                       gridMasCosas.Background = App.Current.Resources("GridAcrilico")
+                                                                   Else
+                                                                       gridMasCosas.Background = New SolidColorBrush(Colors.LightGray)
+                                                                   End If
+                                                               End Sub)
+
+    End Sub
 
     Private Sub GridVisibilidad(grid As Grid, tag As String)
 
@@ -285,9 +298,9 @@ Public NotInheritable Class MainPage
             Dim id As String = temp2
             Dim video As YouTubeUri = Await YouTube.GetVideoUriAsync(id, YouTubeQuality.Quality1080P)
 
-            melogros.visibility = Visibility.Visible
-            Melogros.source = video.Uri
-            melogros.play
+            meLogros.Visibility = Visibility.Visible
+            meLogros.Source = video.Uri
+            meLogros.Play()
         End If
 
     End Sub
@@ -301,62 +314,6 @@ Public NotInheritable Class MainPage
         lvLogros.Visibility = Visibility.Visible
         meLogros.Visibility = Visibility.Collapsed
         meLogros.Stop()
-
-    End Sub
-
-    'MASCOSAS-----------------------------------------
-
-    Private Async Sub LvMasCosasItemClick(sender As Object, args As ItemClickEventArgs)
-
-        Dim sp As StackPanel = args.ClickedItem
-
-        If sp.Tag.ToString = 0 Then
-
-            Await Launcher.LaunchUriAsync(New Uri("ms-windows-store:REVIEW?PFN=" + Package.Current.Id.FamilyName))
-
-        ElseIf sp.Tag.ToString = 1 Then
-
-            NavegarMasCosas(lvMasCosasMasApps, "https://pepeizqapps.com/")
-
-        ElseIf sp.Tag.ToString = 3 Then
-
-            NavegarMasCosas(lvMasCosasContacto, "https://pepeizqapps.com/contact/")
-
-        ElseIf sp.Tag.ToString = 4 Then
-
-            If StoreServicesFeedbackLauncher.IsSupported = True Then
-                Dim ejecutador As StoreServicesFeedbackLauncher = StoreServicesFeedbackLauncher.GetDefault()
-                Await ejecutador.LaunchAsync()
-            Else
-                NavegarMasCosas(lvMasCosasReportarFallo, "https://pepeizqapps.com/contact/")
-            End If
-
-        ElseIf sp.Tag.ToString = 6 Then
-
-            NavegarMasCosas(lvMasCosasCodigoFuente, "https://github.com/pepeizq/Steam-Achievements")
-
-        End If
-
-    End Sub
-
-    Private Sub NavegarMasCosas(lvItem As ListViewItem, url As String)
-
-        lvMasCosasMasApps.Background = New SolidColorBrush(App.Current.Resources("ColorSecundario"))
-        lvMasCosasContacto.Background = New SolidColorBrush(App.Current.Resources("ColorSecundario"))
-        lvMasCosasReportarFallo.Background = New SolidColorBrush(App.Current.Resources("ColorSecundario"))
-        lvMasCosasCodigoFuente.Background = New SolidColorBrush(App.Current.Resources("ColorSecundario"))
-
-        lvItem.Background = New SolidColorBrush(App.Current.Resources("ColorPrimario"))
-
-        pbMasCosas.Visibility = Visibility.Visible
-
-        wvMasCosas.Navigate(New Uri(url))
-
-    End Sub
-
-    Private Sub WvMasCosas_NavigationCompleted(sender As WebView, args As WebViewNavigationCompletedEventArgs) Handles wvMasCosas.NavigationCompleted
-
-        pbMasCosas.Visibility = Visibility.Collapsed
 
     End Sub
 
