@@ -16,7 +16,22 @@
         </Grid.RowDefinitions>
 
         <Grid x:Name="gridTitulo" Grid.Row="0" Background="{StaticResource GridTituloBackground}">
-            <TextBlock x:Name="tbTitulo" Margin="50,0,0,0" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="tbTitulo" Grid.Column="0" Margin="50,0,0,0" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
+
+            <Button x:Name="botonMasCosas" Grid.Column="1" BorderThickness="0" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
+                <Button.Content>
+                    <FontIcon Glyph="&#57361;" FontFamily="Segoe MDL2 Assets" Foreground="White" Margin="10,5" FontSize="15"/>
+                </Button.Content>
+
+                <Button.Flyout>
+                    <MenuFlyout x:Name="botonMasCosasMenu"/>
+                </Button.Flyout>
+            </Button>
         </Grid>
 
         <NavigationView x:Name="nvPrincipal" Grid.Row="1" Loaded="Nv_Loaded" ItemInvoked="Nv_ItemInvoked"
@@ -58,7 +73,7 @@
                             <TextBlock x:Uid="AddAccountInfo" Grid.Row="0" Width="450" TextWrapping="Wrap" TextAlignment="Center"/>
                             <TextBox x:Name="tbUsuarioCuenta" Grid.Row="1" MinWidth="300" Margin="20" TextWrapping="Wrap" TextAlignment="Center"/>
 
-                            <Button x:Name="botonAgregarUsuario" Grid.Row="2" Margin="10" Padding="10,15" HorizontalAlignment="Center" IsEnabled="False" Background="{StaticResource BrushSecundario}">
+                            <Button x:Name="botonAgregarUsuario" Grid.Row="2" Margin="10" Padding="10,15" HorizontalAlignment="Center" IsEnabled="False" Background="{StaticResource BrushSecundario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon Glyph="&#xE72A;" FontFamily="Segoe MDL2 Assets" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
                                     <TextBlock x:Uid="AddAccount" Foreground="White"/>

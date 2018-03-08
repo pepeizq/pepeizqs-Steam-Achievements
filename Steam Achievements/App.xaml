@@ -16,6 +16,7 @@
         <Color x:Key="ColorPrimario">SaddleBrown</Color>
         <Color x:Key="ColorSecundario">Sienna</Color>
         <Color x:Key="ColorTerciario">#e06f1f</Color>
+        <Color x:Key="ColorCuarto">#f3c8aa</Color>
 
         <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="Transparent"/>
         <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{StaticResource ColorPrimario}"/>
