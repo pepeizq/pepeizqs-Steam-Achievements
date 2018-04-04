@@ -162,13 +162,22 @@
   <data name="NoAchievements.Text" xml:space="preserve">
     <value>This game has no achievements</value>
   </data>
-  <data name="OtherUserHasAchievement" xml:space="preserve">
-    <value>has this achievement</value>
+  <data name="OtherUsersHasAchievement" xml:space="preserve">
+    <value>Other users have this achievement</value>
   </data>
   <data name="Search.Text" xml:space="preserve">
     <value>Search and select a game</value>
   </data>
   <data name="SelectAccount.Text" xml:space="preserve">
     <value>Select a user</value>
+  </data>
+  <data name="StoreDescription" xml:space="preserve">
+    <value>Find information to get and compare achievements in Steam with this application.</value>
+  </data>
+  <data name="StoreTags" xml:space="preserve">
+    <value>Steam;Achievements;Games</value>
+  </data>
+  <data name="TooltipYoutube.Text" xml:space="preserve">
+    <value>If you click on the achievement a Youtube video will be loaded on how to obtain the achievement</value>
   </data>
 </root>

@@ -1,4 +1,6 @@
-﻿Imports Microsoft.Toolkit.Uwp.UI.Controls
+﻿Imports Microsoft.Toolkit.Uwp.UI.Animations
+Imports Microsoft.Toolkit.Uwp.UI.Controls
+Imports Windows.UI.Core
 
 Module Logros
 
@@ -14,8 +16,11 @@ Module Logros
         lvLogros.Items.Clear()
         lvLogros.Visibility = Visibility.Visible
 
-        Dim panel As DropShadowPanel = pagina.FindName("panelMensajeNoLogros")
+        Dim panel As Grid = pagina.FindName("panelMensajeNoLogros")
         panel.Visibility = Visibility.Collapsed
+
+        Dim iconoYoutube As FontAwesome.UWP.FontAwesome = pagina.FindName("iconoYoutube")
+        iconoYoutube.Visibility = Visibility.Visible
 
         Dim pb As ProgressBar = pagina.FindName("pbJuegoSeleccionado")
         pb.Visibility = Visibility.Collapsed
@@ -29,13 +34,13 @@ Module Logros
 
         If Not listaCuentas Is Nothing Then
             For Each cuenta In listaCuentas
-                Dim htmlCuenta As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=488AE837ADDDA0201B51693B28F1B389&steamid=" + cuenta.ID64 + "&appid=" + juego.ID))
+                Dim htmlCuenta As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.ID64 + "&appid=" + juego.ID))
                 listaCuentasHtml.Add(New CuentaHtml(cuenta, htmlCuenta))
             Next
         End If
 
-        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=488AE837ADDDA0201B51693B28F1B389&steamid=" + cuentaMaestra.ID64 + "&appid=" + juego.ID))
-        Dim htmlInfo As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=488AE837ADDDA0201B51693B28F1B389&appid=" + juego.ID))
+        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuentaMaestra.ID64 + "&appid=" + juego.ID))
+        Dim htmlInfo As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&appid=" + juego.ID))
 
         Dim listaLogros As New List(Of Logro)
 
@@ -207,11 +212,9 @@ Module Logros
 
                 col1.Width = New GridLength(1, GridUnitType.Auto)
                 col2.Width = New GridLength(1, GridUnitType.Star)
-                col3.Width = New GridLength(1, GridUnitType.Auto)
 
                 grid.ColumnDefinitions.Add(col1)
                 grid.ColumnDefinitions.Add(col2)
-                grid.ColumnDefinitions.Add(col3)
 
                 Dim borde As New Border With {
                     .BorderBrush = New SolidColorBrush(App.Current.Resources("ColorSecundario")),
@@ -281,7 +284,12 @@ Module Logros
 
                 If listaCuentasHtml.Count > 0 Then
                     Dim sp As New StackPanel With {
-                        .Orientation = Orientation.Horizontal
+                        .Orientation = Orientation.Vertical
+                    }
+
+                    Dim spCuentas As New StackPanel With {
+                        .Orientation = Orientation.Horizontal,
+                        .Margin = New Thickness(0, 10, 0, 0)
                     }
 
                     For Each cuenta In listaCuentasHtml
@@ -314,12 +322,12 @@ Module Logros
                                 If estado = True Then
                                     If Not cuenta.Cuenta.ID64 = cuentaMaestra.ID64 Then
                                         Dim imagenCuenta As New ImageEx With {
-                                           .Stretch = Stretch.UniformToFill,
-                                           .IsCacheEnabled = True,
-                                           .Width = 50,
-                                           .Height = 50,
-                                           .Margin = New Thickness(5, 0, 5, 0)
-                                       }
+                                            .Stretch = Stretch.UniformToFill,
+                                            .IsCacheEnabled = True,
+                                            .Width = 50,
+                                            .Height = 50,
+                                            .Margin = New Thickness(5, 0, 5, 0)
+                                        }
 
                                         Try
                                             imagenCuenta.Source = New BitmapImage(New Uri(cuenta.Cuenta.Avatar))
@@ -327,25 +335,31 @@ Module Logros
 
                                         End Try
 
-                                        Dim recursos As Resources.ResourceLoader = New Resources.ResourceLoader()
-                                        Dim tbToolTip As TextBlock = New TextBlock With {
-                                            .Text = cuenta.Cuenta.Nombre + " " + recursos.GetString("OtherUserHasAchievement"),
-                                            .FontSize = 16
-                                        }
-
-                                        ToolTipService.SetToolTip(imagenCuenta, tbToolTip)
-                                        ToolTipService.SetPlacement(imagenCuenta, PlacementMode.Mouse)
-
-                                        sp.Children.Add(imagenCuenta)
+                                        spCuentas.Children.Add(imagenCuenta)
                                     End If
                                 End If
                             End If
                         End If
                     Next
 
-                    sp.SetValue(Grid.ColumnProperty, 2)
-                    grid.Children.Add(sp)
+                    If spCuentas.Children.Count > 0 Then
+                        Dim recursos As New Resources.ResourceLoader()
+                        Dim tbUsuarios As TextBlock = New TextBlock With {
+                            .Text = recursos.GetString("OtherUsersHasAchievement"),
+                            .FontSize = 16
+                        }
+
+                        sp.Children.Add(tbUsuarios)
+                        sp.Children.Add(spCuentas)
+
+                        ToolTipService.SetToolTip(grid, sp)
+                        ToolTipService.SetPlacement(grid, PlacementMode.Mouse)
+                    End If
+
                 End If
+
+                AddHandler grid.PointerEntered, AddressOf UsuarioEntraBoton
+                AddHandler grid.PointerExited, AddressOf UsuarioSaleBoton
 
                 lvLogros.Items.Add(grid)
             Next
@@ -353,6 +367,7 @@ Module Logros
 
         If totalLogros > 0 Then
             panel.Visibility = Visibility.Collapsed
+            iconoYoutube.Visibility = Visibility.Visible
 
             pb.Visibility = Visibility.Visible
             pb.Maximum = totalLogros
@@ -362,9 +377,34 @@ Module Logros
             tb.Text = "(" + conseguidosLogros.ToString + "/" + totalLogros.ToString + ")"
         Else
             panel.Visibility = Visibility.Visible
+            iconoYoutube.Visibility = Visibility.Visible
         End If
 
         pr.Visibility = Visibility.Collapsed
+
+    End Sub
+
+    Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim grid As Grid = sender
+        Dim borde As Border = grid.Children(0)
+        Dim imagen As ImageEx = borde.Child
+
+        imagen.Saturation(0).Start()
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
+
+    End Sub
+
+    Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim grid As Grid = sender
+        Dim borde As Border = grid.Children(0)
+        Dim imagen As ImageEx = borde.Child
+
+        imagen.Saturation(1).Start()
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 
     End Sub
 

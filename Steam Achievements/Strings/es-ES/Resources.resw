@@ -162,8 +162,8 @@
   <data name="NoAchievements.Text" xml:space="preserve">
     <value>Este juego no tiene logros</value>
   </data>
-  <data name="OtherUserHasAchievement" xml:space="preserve">
-    <value>tiene este logro</value>
+  <data name="OtherUsersHasAchievement" xml:space="preserve">
+    <value>Otros usuarios tienen este logro</value>
   </data>
   <data name="Search.Text" xml:space="preserve">
     <value>Busca y selecciona un juego</value>
@@ -171,10 +171,13 @@
   <data name="SelectAccount.Text" xml:space="preserve">
     <value>Selecciona un usuario</value>
   </data>
-  <data name="ThanksTo.Text" xml:space="preserve">
-    <value>Agradecimientos</value>
+  <data name="StoreDescription" xml:space="preserve">
+    <value>Busca información para obtener y comparar logros en Steam con esta aplicación.</value>
   </data>
-  <data name="Updates.Text" xml:space="preserve">
-    <value>Actualizaciones</value>
+  <data name="StoreTags" xml:space="preserve">
+    <value>Steam;Logros;Juegos</value>
+  </data>
+  <data name="TooltipYoutube.Text" xml:space="preserve">
+    <value>Si haces click en el logro se cargara un video de Youtube sobre como obtener el logro</value>
   </data>
 </root>

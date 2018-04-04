@@ -1,5 +1,7 @@
 ﻿Imports Microsoft.Toolkit.Uwp.Helpers
+Imports Microsoft.Toolkit.Uwp.UI.Animations
 Imports Microsoft.Toolkit.Uwp.UI.Controls
+Imports Windows.UI.Core
 
 Module Juegos
 
@@ -17,10 +19,10 @@ Module Juegos
         Dim pr As ProgressRing = pagina.FindName("prJuegos")
         pr.Visibility = Visibility.Visible
 
-        Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
+        Dim helper As New LocalObjectStorageHelper
         Dim listaJuegos As List(Of Juego) = New List(Of Juego)
 
-        Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=488AE837ADDDA0201B51693B28F1B389&steamid=" + cuenta.ID64 + "&include_appinfo=1&include_played_free_games=1"))
+        Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.ID64 + "&include_appinfo=1&include_played_free_games=1"))
 
         If Not htmlJuegos = Nothing Then
             If htmlJuegos.Contains("game_count") Then
@@ -176,9 +178,37 @@ Module Juegos
             If boolImagen = False Then
                 borde.Child = imagen
                 grid.Children.Add(borde)
+
+                AddHandler grid.PointerEntered, AddressOf UsuarioEntraBoton
+                AddHandler grid.PointerExited, AddressOf UsuarioSaleBoton
+
                 gvJuegos.Items.Add(grid)
             End If
         Next
+
+    End Sub
+
+    Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim grid As Grid = sender
+        Dim borde As Border = grid.Children(0)
+        Dim imagen As ImageEx = borde.Child
+
+        imagen.Saturation(0).Start()
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
+
+    End Sub
+
+    Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim grid As Grid = sender
+        Dim borde As Border = grid.Children(0)
+        Dim imagen As ImageEx = borde.Child
+
+        imagen.Saturation(1).Start()
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 
     End Sub
 

@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Toolkit.Uwp.Helpers
+﻿Imports FontAwesome.UWP
+Imports Microsoft.Toolkit.Uwp.Helpers
 Imports MyToolkit.Multimedia
 Imports Windows.UI
 Imports Windows.UI.Core
@@ -10,9 +11,9 @@ Public NotInheritable Class MainPage
 
         Dim recursos As New Resources.ResourceLoader()
 
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Accounts"), New SymbolIcon(Symbol.People), 0, Visibility.Visible))
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Games"), New SymbolIcon(Symbol.Contact), 1, Visibility.Collapsed))
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Achievements"), New SymbolIcon(Symbol.OtherUser), 2, Visibility.Collapsed))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Accounts"), FontAwesomeIcon.Steam, 0))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Games"), FontAwesomeIcon.Gamepad, 1))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Achievements"), FontAwesomeIcon.Trophy, 2))
 
     End Sub
 
@@ -22,24 +23,35 @@ Public NotInheritable Class MainPage
 
         Dim item As TextBlock = args.InvokedItem
 
-        If item.Text = recursos.GetString("Accounts") Then
-            GridVisibilidad(gridCuentas, item.Text)
+        If Not item Is Nothing Then
+            If item.Text = recursos.GetString("Accounts") Then
+                GridVisibilidad(gridCuentas, item.Text)
 
-            Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
-            nvJuegos.Visibility = Visibility.Collapsed
+                Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+                nvJuegos.Visibility = Visibility.Collapsed
 
-            Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
-            nvLogros.Visibility = Visibility.Collapsed
+                Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+                nvLogros.Visibility = Visibility.Collapsed
 
-        ElseIf item.Text = recursos.GetString("Games") Then
-            GridVisibilidad(gridJuegos, item.Text)
+                imagenCuentaSeleccionada.Source = Nothing
+                tbCuentaSeleccionada.Text = String.Empty
 
-            Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
-            nvLogros.Visibility = Visibility.Collapsed
+            ElseIf item.Text = recursos.GetString("Games") Then
+                GridVisibilidad(gridJuegos, item.Text)
 
-        ElseIf item.Text = recursos.GetString("Achievements") Then
-            GridVisibilidad(gridLogros, item.Text)
+                Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+                nvLogros.Visibility = Visibility.Collapsed
+
+            ElseIf item.Text = recursos.GetString("Achievements") Then
+                GridVisibilidad(gridLogros, item.Text)
+            End If
         End If
+
+    End Sub
+
+    Private Sub Nv_ItemFlyout(sender As NavigationViewItem, args As TappedRoutedEventArgs)
+
+        FlyoutBase.ShowAttachedFlyout(sender)
 
     End Sub
 
@@ -57,29 +69,11 @@ Public NotInheritable Class MainPage
 
         Cuentas.CargarXaml()
 
-        '--------------------------------------------------------
+        Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+        nvJuegos.Visibility = Visibility.Collapsed
 
-        Dim transpariencia As New UISettings
-        TransparienciaEfectosFinal(transpariencia.AdvancedEffectsEnabled)
-        AddHandler transpariencia.AdvancedEffectsEnabledChanged, AddressOf TransparienciaEfectosCambia
-
-    End Sub
-
-    Private Sub TransparienciaEfectosCambia(sender As UISettings, e As Object)
-
-        TransparienciaEfectosFinal(sender.AdvancedEffectsEnabled)
-
-    End Sub
-
-    Private Async Sub TransparienciaEfectosFinal(estado As Boolean)
-
-        Await Dispatcher.RunAsync(CoreDispatcherPriority.High, Sub()
-                                                                   If estado = True Then
-                                                                       gridMasCosas.Background = App.Current.Resources("GridAcrilico")
-                                                                   Else
-                                                                       gridMasCosas.Background = New SolidColorBrush(Colors.LightGray)
-                                                                   End If
-                                                               End Sub)
+        Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+        nvLogros.Visibility = Visibility.Collapsed
 
     End Sub
 
@@ -90,7 +84,6 @@ Public NotInheritable Class MainPage
         gridCuentas.Visibility = Visibility.Collapsed
         gridJuegos.Visibility = Visibility.Collapsed
         gridLogros.Visibility = Visibility.Collapsed
-        gridMasCosas.Visibility = Visibility.Collapsed
 
         grid.Visibility = Visibility.Visible
 
@@ -130,13 +123,15 @@ Public NotInheritable Class MainPage
 
         tbBuscarJuegos.Text = String.Empty
 
-        panelMensajeLogros.Visibility = Visibility.Visible
         lvLogros.Items.Clear()
 
         Dim recursos As New Resources.ResourceLoader()
 
         Dim grid As Grid = e.ClickedItem
         Dim cuenta As Cuenta = grid.Tag
+
+        imagenCuentaSeleccionada.Source = cuenta.Avatar
+        tbCuentaSeleccionada.Text = cuenta.Nombre
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
         nvJuegos.Visibility = Visibility.Visible
@@ -146,14 +141,6 @@ Public NotInheritable Class MainPage
         }
 
         ToolTipService.SetToolTip(nvJuegos, tbToolTip)
-
-        Dim tb As New TextBlock With {
-            .Text = cuenta.Nombre,
-            .Foreground = New SolidColorBrush(Colors.White),
-            .Tag = recursos.GetString("Games")
-        }
-
-        nvJuegos.Content = tb
         nvJuegos.Tag = cuenta
 
         nvPrincipal.SelectedItem = nvJuegos
@@ -178,7 +165,7 @@ Public NotInheritable Class MainPage
 
         gvJuegos.IsEnabled = False
 
-        Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
+        Dim helper As New LocalObjectStorageHelper
         Dim listaJuegosPrevia As List(Of Juego) = Nothing
 
         If Await helper.FileExistsAsync("listaJuegos") = True Then
@@ -187,7 +174,7 @@ Public NotInheritable Class MainPage
             listaJuegosPrevia = New List(Of Juego)
         End If
 
-        Dim listaJuegosNueva As List(Of Juego) = New List(Of Juego)
+        Dim listaJuegosNueva As New List(Of Juego)
 
         If tbBuscarJuegos.Text.Length > 0 Then
             For Each juego In listaJuegosPrevia
@@ -238,9 +225,17 @@ Public NotInheritable Class MainPage
         imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
         tbJuegoSeleccionado.Text = juego.Titulo
 
-        GridVisibilidad(gridLogros, juego.Titulo)
+        gridLogros.Visibility = Visibility.Visible
 
-        Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
+        Dim transpariencia As New UISettings
+
+        If transpariencia.AdvancedEffectsEnabled = True Then
+            gridLogros.Background = App.Current.Resources("GridAcrilico")
+        Else
+            gridLogros.Background = New SolidColorBrush(Colors.LightGray)
+        End If
+
+        Dim helper As New LocalObjectStorageHelper
         Dim listaCuentas As List(Of Cuenta) = Nothing
 
         If Await helper.FileExistsAsync("listaCuentas") = True Then

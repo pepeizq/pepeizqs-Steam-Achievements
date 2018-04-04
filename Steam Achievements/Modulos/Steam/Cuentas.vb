@@ -1,10 +1,14 @@
 ﻿Imports Microsoft.Toolkit.Uwp.Helpers
+Imports Microsoft.Toolkit.Uwp.UI.Animations
 Imports Microsoft.Toolkit.Uwp.UI.Controls
 Imports Windows.UI
+Imports Windows.UI.Core
 
 Module Cuentas
 
     Public Async Sub Añadir(usuario As String)
+
+        usuario = usuario.Trim
 
         Dim frame As Frame = Window.Current.Content
         Dim pagina As Page = frame.Content
@@ -15,7 +19,7 @@ Module Cuentas
         Dim boton As Button = pagina.FindName("botonAgregarUsuario")
         boton.IsEnabled = False
 
-        Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
+        Dim helper As New LocalObjectStorageHelper
         Dim listaCuentas As List(Of Cuenta) = Nothing
 
         If Await helper.FileExistsAsync("listaCuentas") = True Then
@@ -24,7 +28,7 @@ Module Cuentas
             listaCuentas = New List(Of Cuenta)
         End If
 
-        Dim htmlID As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=488AE837ADDDA0201B51693B28F1B389&vanityurl=" + usuario))
+        Dim htmlID As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&vanityurl=" + usuario))
 
         If Not htmlID = Nothing Then
             Dim id64 As String = Nothing
@@ -53,7 +57,7 @@ Module Cuentas
             End If
 
             If Not id64 = Nothing Then
-                Dim htmlDatos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=488AE837ADDDA0201B51693B28F1B389&steamids=" + id64))
+                Dim htmlDatos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamids=" + id64))
 
                 Dim temp3, temp4 As String
                 Dim int3, int4 As Integer
@@ -117,7 +121,7 @@ Module Cuentas
 
     Public Async Sub CargarXaml()
 
-        Dim helper As LocalObjectStorageHelper = New LocalObjectStorageHelper
+        Dim helper As New LocalObjectStorageHelper
         Dim listaCuentas As List(Of Cuenta) = Nothing
 
         If Await helper.FileExistsAsync("listaCuentas") = True Then
@@ -142,7 +146,9 @@ Module Cuentas
             For Each cuenta In listaCuentas
                 Dim grid As New Grid With {
                     .Tag = cuenta,
-                    .Padding = New Thickness(5, 5, 5, 5)
+                    .Padding = New Thickness(10, 10, 10, 10),
+                    .Margin = New Thickness(5, 5, 5, 5),
+                    .Background = New SolidColorBrush(App.Current.Resources("ColorSecundario"))
                 }
 
                 Dim col1 As New ColumnDefinition
@@ -157,8 +163,8 @@ Module Cuentas
                 Dim imagen As New ImageEx With {
                     .Stretch = Stretch.UniformToFill,
                     .IsCacheEnabled = True,
-                    .Width = 64,
-                    .Height = 64
+                    .Width = 40,
+                    .Height = 40
                 }
 
                 Try
@@ -184,9 +190,34 @@ Module Cuentas
                 textoNombre.SetValue(Grid.ColumnProperty, 1)
                 grid.Children.Add(textoNombre)
 
+                AddHandler grid.PointerEntered, AddressOf UsuarioEntraBoton
+                AddHandler grid.PointerExited, AddressOf UsuarioSaleBoton
+
                 lvUsuarios.Items.Add(grid)
             Next
         End If
+
+    End Sub
+
+    Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim grid As Grid = sender
+        Dim imagen As ImageEx = grid.Children(0)
+
+        imagen.Saturation(0).Start()
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
+
+    End Sub
+
+    Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim grid As Grid = sender
+        Dim imagen As ImageEx = grid.Children(0)
+
+        imagen.Saturation(1).Start()
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 
     End Sub
 
