@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountPrivacyMessage.Text" xml:space="preserve">
+    <value>La cuenta debe tener los permisos en Público para poder leer los logros</value>
+  </data>
   <data name="Accounts" xml:space="preserve">
     <value>Cuentas</value>
   </data>
@@ -131,6 +134,9 @@
   </data>
   <data name="Back.Text" xml:space="preserve">
     <value>Volver</value>
+  </data>
+  <data name="ButtonRemoveAds.Text" xml:space="preserve">
+    <value>Quitar Anuncios</value>
   </data>
   <data name="Games" xml:space="preserve">
     <value>Juegos</value>
