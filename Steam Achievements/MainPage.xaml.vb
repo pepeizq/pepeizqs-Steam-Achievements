@@ -123,7 +123,11 @@ Public NotInheritable Class MainPage
     Private Async Sub BotonAnuncios_Click(sender As Object, e As RoutedEventArgs) Handles botonAnuncios.Click
 
         Dim contexto As StoreContext = StoreContext.GetDefault
-        Await contexto.RequestPurchaseAsync("9N2V464ZJBGD")
+        Dim resultado As StorePurchaseResult = Await contexto.RequestPurchaseAsync("9N2V464ZJBGD")
+
+        If resultado.Status = StorePurchaseStatus.Succeeded Then
+            spAnuncios.Visibility = Visibility.Collapsed
+        End If
 
     End Sub
 
