@@ -132,6 +132,7 @@
     </AppxManifest>
     <None Include="Steam Achievements_StoreKey.pfx" />
     <None Include="Steam Achievements_TemporaryKey.pfx" />
+    <PRIResource Include="Strings\pt-BR\Resources.resw" />
     <PRIResource Include="Strings\pl-PL\Resources.resw" />
     <PRIResource Include="Strings\es-ES\Resources.resw" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
