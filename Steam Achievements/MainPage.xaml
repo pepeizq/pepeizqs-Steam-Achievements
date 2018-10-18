@@ -19,18 +19,18 @@
         </Grid.RowDefinitions>
 
         <Grid x:Name="gridTitulo" Grid.Row="0" Background="{StaticResource GridTituloBackground}">
-            <TextBlock x:Name="tbTitulo" Margin="50,0,0,0" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
+            <TextBlock x:Name="tbTitulo" Margin="15,0,0,0" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
         </Grid>
 
         <NavigationView x:Name="nvPrincipal" Grid.Row="1" Loaded="Nv_Loaded" ItemInvoked="Nv_ItemInvoked"
-                        OpenPaneLength="200" AlwaysShowHeader="False" IsSettingsVisible="False">
+                        AlwaysShowHeader="False" IsSettingsVisible="False" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed">
             <NavigationView.PaneFooter>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Horizontal">
-                        <controls:ImageEx x:Name="imagenCuentaSeleccionada" Width="38" Height="38" IsCacheEnabled="True" HorizontalAlignment="Left" Margin="5"/>
-                        <TextBlock x:Name="tbCuentaSeleccionada" VerticalAlignment="Center" Foreground="White"/>
+                        <controls:ImageEx x:Name="imagenCuentaSeleccionada" Width="30" Height="30" IsCacheEnabled="True" HorizontalAlignment="Left" Margin="5"/>
+                        <TextBlock x:Name="tbCuentaSeleccionada" VerticalAlignment="Center" Foreground="{StaticResource BrushPrimario}" Margin="5,0,0,0"/>
                     </StackPanel>
-                  
+                    <NavigationViewItemSeparator/>
                     <NavigationViewItem x:Name="itemMasCosas" Tapped="Nv_ItemFlyout" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
                         <FlyoutBase.AttachedFlyout>
                             <MenuFlyout x:Name="botonMasCosasMenu"/>
@@ -101,15 +101,6 @@
                                     <TextBlock x:Uid="AccountPrivacyMessage" Grid.Column="1" Margin="10,0" TextWrapping="Wrap" Foreground="White"/>
                                 </Grid>
                             </Grid>
-
-                            <StackPanel x:Name="spAnuncios" Orientation="Vertical" Margin="10" Visibility="Collapsed">
-                                <ads:AdControl AdUnitId="351928" Width="300" Height="250"/>
-                                <Button x:Name="botonAnuncios" HorizontalAlignment="Center" Margin="0,15,0,0" Padding="15,10" Background="{StaticResource BrushSecundario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
-                                    <Button.Content>
-                                        <TextBlock x:Uid="ButtonRemoveAds" Foreground="White"/>
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
                         </StackPanel>
                      
                         <Grid x:Name="gridListaUsuarios" Grid.Column="1" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" Margin="10" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1">

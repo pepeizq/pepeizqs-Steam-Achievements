@@ -1,8 +1,6 @@
 ﻿Imports FontAwesome.UWP
 Imports Microsoft.Toolkit.Uwp.Helpers
 Imports MyToolkit.Multimedia
-Imports Windows.ApplicationModel.Store
-Imports Windows.Services.Store
 Imports Windows.UI
 Imports Windows.UI.Core
 
@@ -77,23 +75,6 @@ Public NotInheritable Class MainPage
         Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
         nvLogros.Visibility = Visibility.Collapsed
 
-        Dim licencia As LicenseInformation = Nothing
-
-        Try
-            licencia = CurrentApp.LicenseInformation
-        Catch ex As Exception
-
-        End Try
-
-        If Not licencia Is Nothing Then
-            If Not licencia.ProductLicenses("NoAds").IsActive Then
-                spAnuncios.Visibility = Visibility.Visible
-            End If
-        Else
-            spAnuncios.Visibility = Visibility.Visible
-        End If
-
-
     End Sub
 
     Private Sub GridVisibilidad(grid As Grid, tag As String)
@@ -117,17 +98,6 @@ Public NotInheritable Class MainPage
     Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
-
-    End Sub
-
-    Private Async Sub BotonAnuncios_Click(sender As Object, e As RoutedEventArgs) Handles botonAnuncios.Click
-
-        Dim contexto As StoreContext = StoreContext.GetDefault
-        Dim resultado As StorePurchaseResult = Await contexto.RequestPurchaseAsync("9N2V464ZJBGD")
-
-        If resultado.Status = StorePurchaseStatus.Succeeded Then
-            spAnuncios.Visibility = Visibility.Collapsed
-        End If
 
     End Sub
 
@@ -244,7 +214,7 @@ Public NotInheritable Class MainPage
 
         Dim tb As New TextBlock With {
             .Text = juego.Titulo,
-            .Foreground = New SolidColorBrush(Colors.White),
+            .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimario")),
             .Tag = recursos.GetString("Games")
         }
 
