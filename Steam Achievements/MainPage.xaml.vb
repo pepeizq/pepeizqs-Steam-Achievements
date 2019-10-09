@@ -1,6 +1,7 @@
 ﻿Imports FontAwesome.UWP
 Imports Microsoft.Toolkit.Uwp.Helpers
 Imports MyToolkit.Multimedia
+Imports Newtonsoft.Json
 Imports Windows.UI
 Imports Windows.UI.Core
 
@@ -166,7 +167,7 @@ Public NotInheritable Class MainPage
         botonVolverListadoLogros.Visibility = Visibility.Collapsed
 
         lvLogros.Visibility = Visibility.Visible
-        meLogros.Visibility = Visibility.Collapsed
+        wvLogros.Visibility = Visibility.Collapsed
 
         GridVisibilidad(gridJuegos, cuenta.Respuesta.Jugador(0).Nombre)
 
@@ -295,11 +296,20 @@ Public NotInheritable Class MainPage
             temp2 = temp2.Trim
 
             Dim id As String = temp2
-            Dim video As YouTubeUri = Await YouTube.GetVideoUriAsync(id, YouTubeQuality.Quality1080P)
-            Notificaciones.Toast(video.Uri.AbsoluteUri, Nothing)
-            meLogros.Visibility = Visibility.Visible
-            meLogros.Source = video.Uri
-            meLogros.Play()
+            Dim html2 As String = Await Decompiladores.HttpClient(New Uri("https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=" + id + "&format=json"))
+
+            If Not html2 = Nothing Then
+                Dim video As YouTube = JsonConvert.DeserializeObject(Of YouTube)(html2)
+
+                If Not video Is Nothing Then
+                    Dim html3 As String = video.Html
+                    html3 = html3.Replace("width=" + ChrW(34) + "480", "width=" + ChrW(34) + "780")
+                    html3 = html3.Replace("height=" + ChrW(34) + "270", "height=" + ChrW(34) + "485")
+
+                    wvLogros.Visibility = Visibility.Visible
+                    wvLogros.NavigateToString(html3)
+                End If
+            End If
         End If
 
     End Sub
@@ -311,8 +321,7 @@ Public NotInheritable Class MainPage
         botonVolverListadoLogros.Visibility = Visibility.Collapsed
 
         lvLogros.Visibility = Visibility.Visible
-        meLogros.Visibility = Visibility.Collapsed
-        meLogros.Stop()
+        wvLogros.Visibility = Visibility.Collapsed
 
     End Sub
 

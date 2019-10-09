@@ -66,14 +66,7 @@
 
                         <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
                             <controls:DropShadowPanel Width="500" Color="Black" ShadowOpacity="0.5" BlurRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <StackPanel Orientation="Vertical" Padding="10" CornerRadius="10">
-                                    <StackPanel.Background>
-                                        <LinearGradientBrush StartPoint="0.8,0" EndPoint="0.8,1">
-                                            <GradientStop Color="#505e6a" Offset="0.5" />
-                                            <GradientStop Color="#2a3a49" Offset="1.0" />
-                                        </LinearGradientBrush>
-                                    </StackPanel.Background>
-
+                                <StackPanel Orientation="Vertical" Padding="10" CornerRadius="10" Background="#505e6a">
                                     <TextBlock x:Uid="AddAccountInfo2" Margin="20" TextWrapping="Wrap" TextAlignment="Center" Foreground="White"/>
                                     <TextBox x:Name="tbUsuarioCuenta" Width="400" Margin="20,0" TextWrapping="Wrap" TextAlignment="Center"/>
 
@@ -87,7 +80,7 @@
                             </controls:DropShadowPanel>
 
                             <controls:DropShadowPanel Width="500" Margin="0,40,0,0" Color="Black" ShadowOpacity="0.5" BlurRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Grid Padding="20" Background="IndianRed" CornerRadius="10">
+                                <Grid Padding="10" Background="IndianRed" CornerRadius="10">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -151,7 +144,7 @@
                 </Grid>
 
                 <Grid x:Name="gridLogros" Visibility="Collapsed" Padding="10">
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1" Width="800" Margin="0,50">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1" Width="800" Margin="0,20">
                         <Grid.Background>
                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                 <GradientStop Color="#505e6a" Offset="0.5" />
@@ -233,7 +226,7 @@
                             </ListView.ItemContainerStyle>
                         </ListView>
 
-                        <MediaElement x:Name="meLogros" Grid.Row="1" Visibility="Collapsed" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <WebView x:Name="wvLogros" Grid.Row="1" Visibility="Collapsed" Width="800" Height="650"/>
                     </Grid>                   
                 </Grid>
 
