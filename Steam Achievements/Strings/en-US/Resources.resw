@@ -129,8 +129,8 @@
   <data name="AddAccount.Text" xml:space="preserve">
     <value>Add User</value>
   </data>
-  <data name="AddAccountInfo.Text" xml:space="preserve">
-    <value>Add your Steam profile user, for example, if you url is http://steamcommunity.com/id/pepeizq/ add only pepeizq</value>
+  <data name="AddAccountInfo2.Text" xml:space="preserve">
+    <value>Add your Steam profile user:</value>
   </data>
   <data name="Back.Text" xml:space="preserve">
     <value>Back</value>
@@ -140,6 +140,9 @@
   </data>
   <data name="Games" xml:space="preserve">
     <value>Games</value>
+  </data>
+  <data name="HowUnlock.Text" xml:space="preserve">
+    <value>How Unlock</value>
   </data>
   <data name="MoreThings" xml:space="preserve">
     <value>More Things</value>

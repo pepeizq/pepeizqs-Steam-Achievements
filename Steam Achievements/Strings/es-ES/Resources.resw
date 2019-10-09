@@ -129,8 +129,8 @@
   <data name="AddAccount.Text" xml:space="preserve">
     <value>Añadir Usuario</value>
   </data>
-  <data name="AddAccountInfo.Text" xml:space="preserve">
-    <value>Añade tu usuario del perfil de Steam, por ejemplo, si tu enlace del perfil http://steamcommunity.com/id/pepeizq/ añade solo pepeizq</value>
+  <data name="AddAccountInfo2.Text" xml:space="preserve">
+    <value>Añade tu usuario del perfil de Steam:</value>
   </data>
   <data name="Back.Text" xml:space="preserve">
     <value>Volver</value>
@@ -140,6 +140,9 @@
   </data>
   <data name="Games" xml:space="preserve">
     <value>Juegos</value>
+  </data>
+  <data name="HowUnlock.Text" xml:space="preserve">
+    <value>Como Desbloquear</value>
   </data>
   <data name="MoreThings" xml:space="preserve">
     <value>Más Cosas</value>

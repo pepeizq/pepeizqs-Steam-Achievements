@@ -84,6 +84,7 @@ Public NotInheritable Class MainPage
         gridCuentas.Visibility = Visibility.Collapsed
         gridJuegos.Visibility = Visibility.Collapsed
         gridLogros.Visibility = Visibility.Collapsed
+        gridPermisos.Visibility = Visibility.Collapsed
 
         grid.Visibility = Visibility.Visible
 
@@ -102,6 +103,18 @@ Public NotInheritable Class MainPage
     End Sub
 
     'CUENTAS-----------------------------------------------
+
+    Private Sub BotonAbrirPermisos_Click(sender As Object, e As RoutedEventArgs) Handles botonAbrirPermisos.Click
+
+        gridPermisos.Visibility = Visibility.Visible
+
+    End Sub
+
+    Private Sub BotonVolverPermisos_Click(sender As Object, e As RoutedEventArgs) Handles botonVolverPermisos.Click
+
+        gridPermisos.Visibility = Visibility.Collapsed
+
+    End Sub
 
     Private Sub TbUsuarioCuenta_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbUsuarioCuenta.TextChanged
 
@@ -127,17 +140,17 @@ Public NotInheritable Class MainPage
 
         Dim recursos As New Resources.ResourceLoader()
 
-        Dim grid As Grid = e.ClickedItem
-        Dim cuenta As Cuenta = grid.Tag
+        Dim sp As StackPanel = e.ClickedItem
+        Dim cuenta As Cuenta = sp.Tag
 
-        imagenCuentaSeleccionada.Source = cuenta.Avatar
-        tbCuentaSeleccionada.Text = cuenta.Nombre
+        imagenCuentaSeleccionada.Source = cuenta.Respuesta.Jugador(0).Avatar
+        tbCuentaSeleccionada.Text = cuenta.Respuesta.Jugador(0).Nombre
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
         nvJuegos.Visibility = Visibility.Visible
 
         Dim tbToolTip As TextBlock = New TextBlock With {
-            .Text = cuenta.Nombre
+            .Text = cuenta.Respuesta.Jugador(0).Nombre
         }
 
         ToolTipService.SetToolTip(nvJuegos, tbToolTip)
@@ -155,7 +168,7 @@ Public NotInheritable Class MainPage
         lvLogros.Visibility = Visibility.Visible
         meLogros.Visibility = Visibility.Collapsed
 
-        GridVisibilidad(gridJuegos, cuenta.Nombre)
+        GridVisibilidad(gridJuegos, cuenta.Respuesta.Jugador(0).Nombre)
 
         Juegos.Cargar(cuenta)
 
@@ -238,8 +251,8 @@ Public NotInheritable Class MainPage
         Dim helper As New LocalObjectStorageHelper
         Dim listaCuentas As List(Of Cuenta) = Nothing
 
-        If Await helper.FileExistsAsync("listaCuentas") = True Then
-            listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas")
+        If Await helper.FileExistsAsync("listaCuentas2") = True Then
+            listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas2")
         End If
 
         Logros.Cargar(cuenta, juego, listaCuentas)
@@ -283,7 +296,7 @@ Public NotInheritable Class MainPage
 
             Dim id As String = temp2
             Dim video As YouTubeUri = Await YouTube.GetVideoUriAsync(id, YouTubeQuality.Quality1080P)
-
+            Notificaciones.Toast(video.Uri.AbsoluteUri, Nothing)
             meLogros.Visibility = Visibility.Visible
             meLogros.Source = video.Uri
             meLogros.Play()

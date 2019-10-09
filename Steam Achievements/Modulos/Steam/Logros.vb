@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.Toolkit.Uwp.UI.Animations
 Imports Microsoft.Toolkit.Uwp.UI.Controls
+Imports Windows.UI
 Imports Windows.UI.Core
 
 Module Logros
@@ -34,12 +35,12 @@ Module Logros
 
         If Not listaCuentas Is Nothing Then
             For Each cuenta In listaCuentas
-                Dim htmlCuenta As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.ID64 + "&appid=" + juego.ID))
+                Dim htmlCuenta As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Respuesta.Jugador(0).ID64 + "&appid=" + juego.ID))
                 listaCuentasHtml.Add(New CuentaHtml(cuenta, htmlCuenta))
             Next
         End If
 
-        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuentaMaestra.ID64 + "&appid=" + juego.ID))
+        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuentaMaestra.Respuesta.Jugador(0).ID64 + "&appid=" + juego.ID))
         Dim htmlInfo As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&appid=" + juego.ID))
 
         Dim listaLogros As New List(Of Logro)
@@ -258,7 +259,8 @@ Module Logros
                 Dim textoNombre As New TextBlock With {
                     .Text = logro.Nombre,
                     .Margin = New Thickness(10, 5, 10, 5),
-                    .TextWrapping = TextWrapping.Wrap
+                    .TextWrapping = TextWrapping.Wrap,
+                    .Foreground = New SolidColorBrush(Colors.White)
                 }
 
                 textoNombre.SetValue(Grid.RowProperty, 0)
@@ -268,7 +270,8 @@ Module Logros
                     Dim textoDescripcion As New TextBlock With {
                         .Text = logro.Descripcion,
                         .Margin = New Thickness(10, 5, 10, 5),
-                        .TextWrapping = TextWrapping.Wrap
+                        .TextWrapping = TextWrapping.Wrap,
+                        .Foreground = New SolidColorBrush(Colors.White)
                     }
 
                     textoDescripcion.SetValue(Grid.RowProperty, 1)
@@ -320,7 +323,7 @@ Module Logros
                                 End If
 
                                 If estado = True Then
-                                    If Not cuenta.Cuenta.ID64 = cuentaMaestra.ID64 Then
+                                    If Not cuenta.Cuenta.Respuesta.Jugador(0).ID64 = cuentaMaestra.Respuesta.Jugador(0).ID64 Then
                                         Dim imagenCuenta As New ImageEx With {
                                             .Stretch = Stretch.UniformToFill,
                                             .IsCacheEnabled = True,
@@ -330,7 +333,7 @@ Module Logros
                                         }
 
                                         Try
-                                            imagenCuenta.Source = New BitmapImage(New Uri(cuenta.Cuenta.Avatar))
+                                            imagenCuenta.Source = New BitmapImage(New Uri(cuenta.Cuenta.Respuesta.Jugador(0).Avatar))
                                         Catch ex As Exception
 
                                         End Try

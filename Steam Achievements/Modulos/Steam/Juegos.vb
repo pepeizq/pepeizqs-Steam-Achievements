@@ -22,7 +22,7 @@ Module Juegos
         Dim helper As New LocalObjectStorageHelper
         Dim listaJuegos As List(Of Juego) = New List(Of Juego)
 
-        Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.ID64 + "&include_appinfo=1&include_played_free_games=1"))
+        Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Respuesta.Jugador(0).ID64 + "&include_appinfo=1&include_played_free_games=1"))
 
         If Not htmlJuegos = Nothing Then
             If htmlJuegos.Contains("game_count") Then

@@ -1,15 +1,42 @@
+Imports Newtonsoft.Json
+
 Public Class Cuenta
 
+    <JsonProperty("response")>
+    Public Property Respuesta As CuentaRespuesta
+
+End Class
+
+Public Class CuentaRespuesta
+
+    <JsonProperty("players")>
+    Public Property Jugador As List(Of CuentaJugadores)
+
+End Class
+
+Public Class CuentaJugadores
+
+    <JsonProperty("steamid")>
     Public Property ID64 As String
-    Public Property NombreUrl As String
+
+    <JsonProperty("personaname")>
     Public Property Nombre As String
+
+    <JsonProperty("avatarfull")>
     Public Property Avatar As String
 
-    Public Sub New(ByVal id64 As String, ByVal nombreurl As String, ByVal nombre As String, ByVal avatar As String)
-        Me.ID64 = id64
-        Me.NombreUrl = nombreurl
-        Me.Nombre = nombre
-        Me.Avatar = avatar
-    End Sub
+End Class
+
+Public Class CuentaVanidad
+
+    <JsonProperty("response")>
+    Public Property Respuesta As CuentaVanidadRespuesta
+
+End Class
+
+Public Class CuentaVanidadRespuesta
+
+    <JsonProperty("steamid")>
+    Public Property ID64 As String
 
 End Class
