@@ -1,7 +1,7 @@
 ﻿Imports FontAwesome.UWP
 Imports Microsoft.Toolkit.Uwp.Helpers
-Imports MyToolkit.Multimedia
 Imports Newtonsoft.Json
+Imports Windows.ApplicationModel.Core
 Imports Windows.UI
 Imports Windows.UI.Core
 
@@ -12,9 +12,11 @@ Public NotInheritable Class MainPage
 
         Dim recursos As New Resources.ResourceLoader()
 
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Accounts"), FontAwesomeIcon.Steam, 0))
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Games"), FontAwesomeIcon.Gamepad, 1))
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Achievements"), FontAwesomeIcon.Trophy, 2))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Accounts"), FontAwesome5.EFontAwesomeIcon.Brands_Steam, 0))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Games"), FontAwesome5.EFontAwesomeIcon.Solid_Gamepad, 1))
+        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Achievements"), FontAwesome5.EFontAwesomeIcon.Solid_Trophy, 2))
+        nvPrincipal.MenuItems.Add(New NavigationViewItemSeparator)
+        nvPrincipal.MenuItems.Add(MasCosas.Generar("https://github.com/pepeizq/Steam-Achievements", "https://poeditor.com/join/project/KTLlr1dy7d"))
 
     End Sub
 
@@ -34,8 +36,11 @@ Public NotInheritable Class MainPage
                 Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
                 nvLogros.Visibility = Visibility.Collapsed
 
+                spCuenta.Visibility = Visibility.Collapsed
                 imagenCuentaSeleccionada.Source = Nothing
                 tbCuentaSeleccionada.Text = String.Empty
+
+                spBuscador.Visibility = Visibility.Collapsed
 
             ElseIf item.Text = recursos.GetString("Games") Then
                 GridVisibilidad(gridJuegos, item.Text)
@@ -43,16 +48,17 @@ Public NotInheritable Class MainPage
                 Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
                 nvLogros.Visibility = Visibility.Collapsed
 
+                spBuscador.Visibility = Visibility.Visible
+
             ElseIf item.Text = recursos.GetString("Achievements") Then
                 GridVisibilidad(gridLogros, item.Text)
+
+                spBuscador.Visibility = Visibility.Collapsed
+
+            ElseIf item.Text = recursos.GetString("MoreThings") Then
+                FlyoutBase.ShowAttachedFlyout(nvPrincipal.MenuItems.Item(nvPrincipal.MenuItems.Count - 1))
             End If
         End If
-
-    End Sub
-
-    Private Sub Nv_ItemFlyout(sender As NavigationViewItem, args As TappedRoutedEventArgs)
-
-        FlyoutBase.ShowAttachedFlyout(sender)
 
     End Sub
 
@@ -61,13 +67,24 @@ Public NotInheritable Class MainPage
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "es-ES"
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
 
-        MasCosas.Generar()
+        tbTitulo.Text = Package.Current.DisplayName
+
+        Dim coreBarra As CoreApplicationViewTitleBar = CoreApplication.GetCurrentView.TitleBar
+        coreBarra.ExtendViewIntoTitleBar = True
+
+        Dim barra As ApplicationViewTitleBar = ApplicationView.GetForCurrentView().TitleBar
+        barra.ButtonBackgroundColor = Colors.Transparent
+        barra.ButtonForegroundColor = Colors.White
+        barra.ButtonInactiveBackgroundColor = Colors.Transparent
+        barra.ButtonInactiveForegroundColor = Colors.White
+
+        '---------------------------------------------
 
         Dim recursos As New Resources.ResourceLoader()
 
         GridVisibilidad(gridCuentas, recursos.GetString("Accounts"))
-        nvPrincipal.IsPaneOpen = False
 
+        Buscador.Cargar()
         Cuentas.CargarXaml()
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
@@ -144,6 +161,7 @@ Public NotInheritable Class MainPage
         Dim sp As StackPanel = e.ClickedItem
         Dim cuenta As Cuenta = sp.Tag
 
+        spCuenta.Visibility = Visibility.Visible
         imagenCuentaSeleccionada.Source = cuenta.Respuesta.Jugador(0).Avatar
         tbCuentaSeleccionada.Text = cuenta.Respuesta.Jugador(0).Nombre
 
@@ -175,91 +193,6 @@ Public NotInheritable Class MainPage
 
     End Sub
 
-    Private Async Sub TbBuscarJuegos_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbBuscarJuegos.TextChanged
-
-        gvJuegos.IsEnabled = False
-
-        Dim helper As New LocalObjectStorageHelper
-        Dim listaJuegosPrevia As List(Of Juego) = Nothing
-
-        If Await helper.FileExistsAsync("listaJuegos") = True Then
-            listaJuegosPrevia = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos")
-        Else
-            listaJuegosPrevia = New List(Of Juego)
-        End If
-
-        Dim listaJuegosNueva As New List(Of Juego)
-
-        If tbBuscarJuegos.Text.Length > 0 Then
-            For Each juego In listaJuegosPrevia
-                If juego.Titulo.ToLower.Contains(tbBuscarJuegos.Text.ToLower) = True Then
-                    listaJuegosNueva.Add(juego)
-                End If
-            Next
-        Else
-            For Each juego In listaJuegosPrevia
-                listaJuegosNueva.Add(juego)
-            Next
-        End If
-
-        Juegos.CargarXaml(listaJuegosNueva)
-        gvJuegos.IsEnabled = True
-
-    End Sub
-
-    Private Async Sub GvJuegos_ItemClick(sender As Object, e As ItemClickEventArgs) Handles gvJuegos.ItemClick
-
-        Dim recursos As New Resources.ResourceLoader()
-
-        Dim grid As Grid = e.ClickedItem
-        Dim juego As Juego = grid.Tag
-
-        Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
-        Dim cuenta As Cuenta = nvJuegos.Tag
-
-        Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
-        nvLogros.Visibility = Visibility.Visible
-
-        Dim tbToolTip As TextBlock = New TextBlock With {
-            .Text = juego.Titulo
-        }
-
-        ToolTipService.SetToolTip(nvLogros, tbToolTip)
-
-        Dim tb As New TextBlock With {
-            .Text = juego.Titulo,
-            .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimario")),
-            .Tag = recursos.GetString("Games")
-        }
-
-        nvLogros.Content = tb
-
-        nvPrincipal.SelectedItem = nvLogros
-
-        imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
-        tbJuegoSeleccionado.Text = juego.Titulo
-
-        gridLogros.Visibility = Visibility.Visible
-
-        Dim transpariencia As New UISettings
-
-        If transpariencia.AdvancedEffectsEnabled = True Then
-            gridLogros.Background = App.Current.Resources("GridAcrilico")
-        Else
-            gridLogros.Background = New SolidColorBrush(Colors.LightGray)
-        End If
-
-        Dim helper As New LocalObjectStorageHelper
-        Dim listaCuentas As List(Of Cuenta) = Nothing
-
-        If Await helper.FileExistsAsync("listaCuentas2") = True Then
-            listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas2")
-        End If
-
-        Logros.Cargar(cuenta, juego, listaCuentas)
-
-    End Sub
-
     Private Async Sub LvLogros_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvLogros.ItemClick
 
         Dim grid As Grid = e.ClickedItem
@@ -278,39 +211,39 @@ Public NotInheritable Class MainPage
 
         lvLogros.Visibility = Visibility.Collapsed
 
-        Dim cadenaBusqueda As String = logro.Juego.Titulo.Replace(" ", "+") + "+" + logro.Nombre.Replace(" ", "+")
-        Dim html As String = Await HttpClient(New Uri("https://www.youtube.com/results?search_query=" + cadenaBusqueda))
+        'Dim cadenaBusqueda As String = logro.Juego.Titulo.Replace(" ", "+") + "+" + logro.Nombre.Replace(" ", "+")
+        'Dim html As String = Await HttpClient(New Uri("https://www.youtube.com/results?search_query=" + cadenaBusqueda))
 
-        If html.Contains(ChrW(34) + "https://i.ytimg.com/") Then
-            Dim temp, temp2 As String
-            Dim int, int2 As Integer
+        'If html.Contains(ChrW(34) + "https://i.ytimg.com/") Then
+        '    Dim temp, temp2 As String
+        '    Dim int, int2 As Integer
 
-            int = html.IndexOf(ChrW(34) + "https://i.ytimg.com/")
-            temp = html.Remove(0, int + 1)
+        '    int = html.IndexOf(ChrW(34) + "https://i.ytimg.com/")
+        '    temp = html.Remove(0, int + 1)
 
-            int2 = temp.IndexOf("?")
-            temp2 = temp.Remove(int2, temp.Length - int2)
+        '    int2 = temp.IndexOf("?")
+        '    temp2 = temp.Remove(int2, temp.Length - int2)
 
-            temp2 = temp2.Replace("https://i.ytimg.com/vi/", Nothing)
-            temp2 = temp2.Replace("/hqdefault.jpg", Nothing)
-            temp2 = temp2.Trim
+        '    temp2 = temp2.Replace("https://i.ytimg.com/vi/", Nothing)
+        '    temp2 = temp2.Replace("/hqdefault.jpg", Nothing)
+        '    temp2 = temp2.Trim
 
-            Dim id As String = temp2
-            Dim html2 As String = Await Decompiladores.HttpClient(New Uri("https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=" + id + "&format=json"))
+        '    Dim id As String = temp2
+        '    Dim html2 As String = Await Decompiladores.HttpClient(New Uri("https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=" + id + "&format=json"))
 
-            If Not html2 = Nothing Then
-                Dim video As YouTube = JsonConvert.DeserializeObject(Of YouTube)(html2)
+        '    If Not html2 = Nothing Then
+        '        Dim video As YouTube = JsonConvert.DeserializeObject(Of YouTube)(html2)
 
-                If Not video Is Nothing Then
-                    Dim html3 As String = video.Html
-                    html3 = html3.Replace("width=" + ChrW(34) + "480", "width=" + ChrW(34) + "780")
-                    html3 = html3.Replace("height=" + ChrW(34) + "270", "height=" + ChrW(34) + "485")
+        '        If Not video Is Nothing Then
+        '            Dim html3 As String = video.Html
+        '            html3 = html3.Replace("width=" + ChrW(34) + "480", "width=" + ChrW(34) + "780")
+        '            html3 = html3.Replace("height=" + ChrW(34) + "270", "height=" + ChrW(34) + "485")
 
-                    wvLogros.Visibility = Visibility.Visible
-                    wvLogros.NavigateToString(html3)
-                End If
-            End If
-        End If
+        '            wvLogros.Visibility = Visibility.Visible
+        '            wvLogros.NavigateToString(html3)
+        '        End If
+        '    End If
+        'End If
 
     End Sub
 

@@ -4,14 +4,14 @@ Imports Windows.UI.Core
 
 Module NavigationViewItems
 
-    Public Function Generar(titulo As String, simbolo As FontAwesomeIcon, tag As String)
+    Public Function Generar(titulo As String, simbolo As FontAwesome5.EFontAwesomeIcon, tag As String)
 
         Dim tb As New TextBlock With {
             .Text = titulo,
             .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimario"))
         }
 
-        Dim icono As New FontAwesome.UWP.FontAwesome With {
+        Dim icono As New FontAwesome5.FontAwesome With {
             .Icon = simbolo,
             .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimario"))
         }

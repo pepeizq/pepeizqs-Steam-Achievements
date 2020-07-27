@@ -21,20 +21,19 @@
             <TextBlock x:Name="tbTitulo" Margin="15,0,0,0" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
         </Grid>
 
-        <NavigationView x:Name="nvPrincipal" Grid.Row="1" Loaded="Nv_Loaded" ItemInvoked="Nv_ItemInvoked"
+        <NavigationView x:Name="nvPrincipal" Grid.Row="1" Loaded="Nv_Loaded" ItemInvoked="Nv_ItemInvoked" IsPaneOpen="False"
                         AlwaysShowHeader="False" IsSettingsVisible="False" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed">
             <NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel x:Name="spCuenta" Orientation="Horizontal" Visibility="Collapsed" Margin="0,0,30,0">
                         <controls:ImageEx x:Name="imagenCuentaSeleccionada" Width="30" Height="30" IsCacheEnabled="True" HorizontalAlignment="Left" Margin="5"/>
                         <TextBlock x:Name="tbCuentaSeleccionada" VerticalAlignment="Center" Foreground="{StaticResource BrushPrimario}" Margin="5,0,0,0"/>
                     </StackPanel>
-                    <NavigationViewItemSeparator/>
-                    <NavigationViewItem x:Name="itemMasCosas" Tapped="Nv_ItemFlyout" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
-                        <FlyoutBase.AttachedFlyout>
-                            <MenuFlyout x:Name="botonMasCosasMenu"/>
-                        </FlyoutBase.AttachedFlyout>
-                    </NavigationViewItem>
+
+                    <StackPanel x:Name="spBuscador" Orientation="Horizontal" Visibility="Collapsed">
+                        <fa:FontAwesome Icon="Search" Foreground="{StaticResource BrushPrimario}" Margin="0,0,15,0"/>
+                        <TextBox x:Name="tbBuscarJuegos" MinWidth="180" Margin="0,4,10,4"/>
+                    </StackPanel>
                 </StackPanel>
             </NavigationView.PaneFooter>
             
@@ -80,18 +79,18 @@
                             </controls:DropShadowPanel>
 
                             <controls:DropShadowPanel Width="500" Margin="0,40,0,0" Color="Black" ShadowOpacity="0.5" BlurRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Grid Padding="10" Background="IndianRed" CornerRadius="10">
+                                <Grid Padding="10,15" Background="IndianRed" CornerRadius="10">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <fa:FontAwesome Grid.Column="0" Icon="Exclamation" Margin="5,10,5,0" VerticalAlignment="Top" Foreground="White"/>
+                                    <fa:FontAwesome Grid.Column="0" Icon="Exclamation" Margin="10" VerticalAlignment="Top" Foreground="White" FontSize="25"/>
 
                                     <StackPanel Grid.Column="1" Orientation="Vertical">
                                         <TextBlock x:Uid="AccountPrivacyMessage" Margin="10,0" TextWrapping="Wrap" Foreground="White"/>
 
-                                        <Button x:Name="botonAbrirPermisos" Margin="0,5,0,0" Padding="10,5" HorizontalAlignment="Center" Background="IndianRed" CornerRadius="5" BorderThickness="1" BorderBrush="{StaticResource BrushTerciario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
+                                        <Button x:Name="botonAbrirPermisos" Margin="0,10,0,0" Padding="10" HorizontalAlignment="Center" Background="IndianRed" CornerRadius="5" BorderThickness="1" BorderBrush="{StaticResource BrushTerciario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock x:Uid="HowUnlock" Foreground="White"/>
                                             </StackPanel>
@@ -115,31 +114,11 @@
                 </Grid>
 
                 <Grid x:Name="gridJuegos" Visibility="Collapsed">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                    <ProgressRing x:Name="prJuegos" Visibility="Collapsed" IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Height="50" Width="50"/>
 
-                    <Grid x:Name="gridBusquedaJuegos" Grid.Row="0" Visibility="Collapsed" Margin="0,0,0,10" Padding="10" Background="{StaticResource BrushPrimario}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <fa:FontAwesome Grid.Column="0" Icon="Search" VerticalAlignment="Center" Margin="10,0" Foreground="White"/>
-                        <TextBox x:Name="tbBuscarJuegos" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,0"/>
-
-                        <Grid Grid.Column="2" Margin="10,0" Padding="10" Background="IndianRed">
-                            <TextBlock x:Uid="Search" TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Grid>
-                    </Grid>
-
-                    <ProgressRing x:Name="prJuegos" Grid.Row="1" Visibility="Collapsed" IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Height="50" Width="50"/>
-
-                    <controls:AdaptiveGridView x:Name="gvJuegos" Grid.Row="1"
-                                       IsItemClickEnabled="True" DesiredWidth="184" ItemHeight="69" 
-                                       animations:ReorderGridAnimation.Duration="250" Padding="15,10,10,10">
+                    <controls:AdaptiveGridView x:Name="gvJuegos" Padding="15,10,10,10"
+                                       IsItemClickEnabled="True" DesiredWidth="200" 
+                                       animations:ReorderGridAnimation.Duration="250">
                     </controls:AdaptiveGridView>
                 </Grid>
 

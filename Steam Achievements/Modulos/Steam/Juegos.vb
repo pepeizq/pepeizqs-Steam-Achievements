@@ -1,9 +1,17 @@
 ﻿Imports Microsoft.Toolkit.Uwp.Helpers
 Imports Microsoft.Toolkit.Uwp.UI.Animations
 Imports Microsoft.Toolkit.Uwp.UI.Controls
+Imports Newtonsoft.Json
+Imports Windows.UI
 Imports Windows.UI.Core
 
 Module Juegos
+
+    Public anchoColumna As Integer = 200
+    Dim dominioImagenes As String = "https://cdn.cloudflare.steamstatic.com"
+
+    Dim listaJuegos As New List(Of Juego)
+    Dim listaJuegosOcultos As New List(Of JuegoOculto)
 
     Public Async Sub Cargar(cuenta As Cuenta)
 
@@ -13,119 +21,78 @@ Module Juegos
         Dim gvJuegos As GridView = pagina.FindName("gvJuegos")
         gvJuegos.Items.Clear()
 
-        Dim gridBusqueda As Grid = pagina.FindName("gridBusquedaJuegos")
-        gridBusqueda.Visibility = Visibility.Collapsed
-
         Dim pr As ProgressRing = pagina.FindName("prJuegos")
         pr.Visibility = Visibility.Visible
 
+        Dim spBuscador As StackPanel = pagina.FindName("spBuscador")
+        spBuscador.Visibility = Visibility.Collapsed
+
         Dim helper As New LocalObjectStorageHelper
-        Dim listaJuegos As List(Of Juego) = New List(Of Juego)
+
+        If Await helper.FileExistsAsync("listaJuegos" + cuenta.Respuesta.Jugador(0).ID64) = True Then
+            listaJuegos = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.Respuesta.Jugador(0).ID64)
+        End If
 
         Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Respuesta.Jugador(0).ID64 + "&include_appinfo=1&include_played_free_games=1"))
 
         If Not htmlJuegos = Nothing Then
-            If htmlJuegos.Contains("game_count") Then
-                Dim temp, temp2 As String
-                Dim int, int2 As Integer
+            Dim juegos As SteamJuegos = JsonConvert.DeserializeObject(Of SteamJuegos)(htmlJuegos)
 
-                int = htmlJuegos.IndexOf("game_count")
-                temp = htmlJuegos.Remove(0, int)
+            If Not juegos Is Nothing Then
+                For Each juego In juegos.Respuesta.Juegos
+                    Dim imagen As String = dominioImagenes + "/steam/apps/" + juego.ID + "/library_600x900.jpg"
 
-                int2 = temp.IndexOf(",")
-                temp2 = temp.Remove(int2, temp.Length - int2)
+                    Dim icono As String = "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/" + juego.ID + "/" + juego.Icono + ".jpg"
 
-                temp2 = temp2.Replace("game_count", Nothing)
-                temp2 = temp2.Replace(ChrW(34), Nothing)
-                temp2 = temp2.Replace(":", Nothing)
-                temp2 = temp2.Replace(vbNullChar, Nothing)
-                temp2 = temp2.Trim
+                    Dim juego2 As New Juego(juego.ID, juego.Titulo, imagen, icono, New List(Of Logro))
 
-                If Not temp2 = Nothing Then
-
-                    Dim i As Integer = 0
-                    While i < temp2
-                        If htmlJuegos.Contains(ChrW(34) + "appid" + ChrW(34)) Then
-                            Dim temp3, temp4 As String
-                            Dim int3, int4 As Integer
-
-                            int3 = htmlJuegos.IndexOf(ChrW(34) + "appid" + ChrW(34))
-                            temp3 = htmlJuegos.Remove(0, int3 + 7)
-
-                            htmlJuegos = temp3
-
-                            int4 = temp3.IndexOf(",")
-                            temp4 = temp3.Remove(int4, temp3.Length - int4)
-
-                            temp4 = temp4.Replace(":", Nothing)
-                            temp4 = temp4.Trim
-
-                            Dim id As String = temp4
-
-                            Dim temp5, temp6 As String
-                            Dim int5, int6 As Integer
-
-                            int5 = htmlJuegos.IndexOf(ChrW(34) + "name" + ChrW(34))
-                            temp5 = htmlJuegos.Remove(0, int5)
-
-                            int5 = temp5.IndexOf(":")
-                            temp5 = temp5.Remove(0, int5 + 1)
-
-                            int5 = temp5.IndexOf(ChrW(34))
-                            temp5 = temp5.Remove(0, int5 + 1)
-
-                            int6 = temp5.IndexOf(ChrW(34))
-                            temp6 = temp5.Remove(int6, temp5.Length - int6)
-
-                            Dim titulo As String = temp6.Trim
-
-                            Dim imagen As String = "http://cdn.edgecast.steamstatic.com/steam/apps/" + id + "/capsule_184x69.jpg"
-
-                            Dim temp7, temp8 As String
-                            Dim int7, int8 As Integer
-
-                            int7 = htmlJuegos.IndexOf(ChrW(34) + "img_icon_url" + ChrW(34))
-                            temp7 = htmlJuegos.Remove(0, int7)
-
-                            int7 = temp7.IndexOf(":")
-                            temp7 = temp7.Remove(0, int7 + 1)
-
-                            int7 = temp7.IndexOf(ChrW(34))
-                            temp7 = temp7.Remove(0, int7 + 1)
-
-                            int8 = temp7.IndexOf(ChrW(34))
-                            temp8 = temp7.Remove(int8, temp7.Length - int8)
-
-                            Dim icono As String = "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/" + id + "/" + temp8.Trim + ".jpg"
-
-                            Dim juego As New Juego(id, titulo, imagen, icono)
-
-                            Dim tituloBool As Boolean = False
-                            Dim k As Integer = 0
-                            While k < listaJuegos.Count
-                                If listaJuegos(k).ID = juego.ID Then
-                                    tituloBool = True
-                                End If
-                                k += 1
-                            End While
-
-                            If tituloBool = False Then
-                                listaJuegos.Add(juego)
-                            End If
+                    Dim añadir As Boolean = True
+                    Dim k As Integer = 0
+                    While k < listaJuegos.Count
+                        If listaJuegos(k).ID = juego2.ID Then
+                            añadir = False
                         End If
-                        i += 1
+                        k += 1
                     End While
-                End If
+
+                    If añadir = True Then
+                        listaJuegos.Add(juego2)
+                    End If
+                Next
             End If
         End If
 
         If Not listaJuegos Is Nothing Then
             If listaJuegos.Count > 0 Then
                 listaJuegos.Sort(Function(x, y) x.Titulo.CompareTo(y.Titulo))
-                Await helper.SaveFileAsync(Of List(Of Juego))("listaJuegos", listaJuegos)
-                CargarXaml(listaJuegos)
+                Await helper.SaveFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.Respuesta.Jugador(0).ID64, listaJuegos)
 
-                gridBusqueda.Visibility = Visibility.Visible
+                Dim gv As AdaptiveGridView = pagina.FindName("gvJuegos")
+                gv.Items.Clear()
+
+                If Await helper.FileExistsAsync("listaJuegosOcultos") = True Then
+                    listaJuegosOcultos = Await helper.ReadFileAsync(Of List(Of JuegoOculto))("listaJuegosOcultos")
+                End If
+
+                For Each juego In listaJuegos
+                    Dim añadir As Boolean = True
+
+                    If Not listaJuegosOcultos Is Nothing Then
+                        If listaJuegosOcultos.Count > 0 Then
+                            For Each oculto In listaJuegosOcultos
+                                If oculto.ID = juego.ID Then
+                                    añadir = False
+                                End If
+                            Next
+                        End If
+                    End If
+
+                    If añadir = True Then
+                        BotonEstilo(juego, gv)
+                    End If
+                Next
+
+                spBuscador.Visibility = Visibility.Visible
             End If
         End If
 
@@ -133,68 +100,279 @@ Module Juegos
 
     End Sub
 
-    Public Sub CargarXaml(listaJuegos As List(Of Juego))
+    Public Sub BotonEstilo(juego As Juego, gv As AdaptiveGridView)
+
+        Dim sp As New StackPanel With {
+            .Orientation = Orientation.Vertical,
+            .Tag = juego
+        }
+
+        Dim panel As New DropShadowPanel With {
+            .Margin = New Thickness(10, 10, 10, 10),
+            .ShadowOpacity = 0.9,
+            .BlurRadius = 10,
+            .MaxWidth = anchoColumna + 20,
+            .HorizontalAlignment = HorizontalAlignment.Center,
+            .VerticalAlignment = VerticalAlignment.Center,
+            .Tag = juego
+        }
+
+        Dim boton As New Button
+
+        Dim imagen As New ImageEx With {
+            .Source = juego.Imagen,
+            .IsCacheEnabled = True,
+            .Stretch = Stretch.Uniform,
+            .Padding = New Thickness(0, 0, 0, 0),
+            .HorizontalAlignment = HorizontalAlignment.Center,
+            .VerticalAlignment = VerticalAlignment.Center,
+            .Tag = juego
+        }
+
+        AddHandler imagen.ImageExOpened, AddressOf ImagenCarga
+        AddHandler imagen.ImageExFailed, AddressOf ImagenFalla
+
+        boton.Tag = juego
+        boton.Content = imagen
+        boton.Padding = New Thickness(0, 0, 0, 0)
+        boton.Background = New SolidColorBrush(Colors.Transparent)
+
+        panel.Content = boton
+
+        Dim tbToolTip As TextBlock = New TextBlock With {
+            .Text = juego.Titulo,
+            .FontSize = 16,
+            .TextWrapping = TextWrapping.Wrap
+        }
+
+        ToolTipService.SetToolTip(boton, tbToolTip)
+        ToolTipService.SetPlacement(boton, PlacementMode.Mouse)
+
+        AddHandler boton.Click, AddressOf AbrirLogros
+        AddHandler boton.PointerEntered, AddressOf UsuarioEntraBoton
+        AddHandler boton.PointerExited, AddressOf UsuarioSaleBoton
+
+        sp.Children.Add(panel)
+
+        '-----------------------------------------------------
+
+        Dim tbLogros As New TextBlock With {
+            .HorizontalAlignment = HorizontalAlignment.Right,
+            .Foreground = New SolidColorBrush(Colors.White),
+            .FontSize = 13,
+            .Margin = New Thickness(0, 2, 10, 15)
+        }
+
+        If juego.Logros Is Nothing Then
+            tbLogros.Text = String.Empty
+        Else
+            If juego.Logros.Count = 0 Then
+                tbLogros.Text = String.Empty
+            Else
+                Dim contadorLogrosTerminados As Integer = 0
+
+                For Each logro In juego.Logros
+                    If logro.Estado = "1" Then
+                        contadorLogrosTerminados += 1
+                    End If
+                Next
+
+                tbLogros.Text = contadorLogrosTerminados.ToString + "/" + juego.Logros.Count.ToString + " • " + (CInt((100 / juego.Logros.Count) * contadorLogrosTerminados)).ToString + "%"
+            End If
+        End If
+
+        sp.Children.Add(tbLogros)
+
+        gv.Items.Add(sp)
+
+    End Sub
+
+    Private Async Sub AbrirLogros(sender As Object, e As RoutedEventArgs)
 
         Dim frame As Frame = Window.Current.Content
         Dim pagina As Page = frame.Content
 
-        Dim gvJuegos As GridView = pagina.FindName("gvJuegos")
-        gvJuegos.Items.Clear()
+        Dim recursos As New Resources.ResourceLoader()
 
-        For Each juego In listaJuegos
-            Dim grid As New Grid With {
-                .Tag = juego
-            }
+        Dim boton As Button = sender
+        Dim juego As Juego = boton.Tag
 
-            Dim tbToolTip As TextBlock = New TextBlock With {
-                .Text = juego.Titulo,
-                .TextWrapping = TextWrapping.Wrap,
-                .FontSize = 16
-            }
+        Dim nvPrincipal As NavigationView = pagina.FindName("nvPrincipal")
 
-            ToolTipService.SetToolTip(grid, tbToolTip)
-            ToolTipService.SetPlacement(grid, PlacementMode.Mouse)
+        Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+        Dim cuenta As Cuenta = nvJuegos.Tag
 
-            Dim borde As New Border With {
-                .BorderBrush = New SolidColorBrush(App.Current.Resources("ColorSecundario")),
-                .BorderThickness = New Thickness(1, 1, 1, 1)
-            }
+        Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+        nvLogros.Visibility = Visibility.Visible
 
-            Dim imagen As New ImageEx With {
-                .Stretch = Stretch.UniformToFill,
-                .IsCacheEnabled = True,
-                .Width = 184,
-                .Height = 69
-            }
+        Dim tbToolTip As TextBlock = New TextBlock With {
+            .Text = juego.Titulo
+        }
 
-            Dim boolImagen As Boolean = False
+        ToolTipService.SetToolTip(nvLogros, tbToolTip)
 
-            Try
-                imagen.Source = New BitmapImage(New Uri(juego.Imagen))
-            Catch ex As Exception
-                boolImagen = True
-            End Try
+        Dim tb As New TextBlock With {
+            .Text = juego.Titulo,
+            .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimario")),
+            .Tag = recursos.GetString("Games")
+        }
 
-            If boolImagen = False Then
-                borde.Child = imagen
-                grid.Children.Add(borde)
+        nvLogros.Content = tb
 
-                AddHandler grid.PointerEntered, AddressOf UsuarioEntraBoton
-                AddHandler grid.PointerExited, AddressOf UsuarioSaleBoton
+        nvPrincipal.SelectedItem = nvLogros
 
-                gvJuegos.Items.Add(grid)
+        Dim gridLogros As Grid = pagina.FindName("gridLogros")
+        gridLogros.Visibility = Visibility.Visible
+
+        Dim transpariencia As New UISettings
+
+        If transpariencia.AdvancedEffectsEnabled = True Then
+            gridLogros.Background = App.Current.Resources("GridAcrilico")
+        Else
+            gridLogros.Background = New SolidColorBrush(Colors.LightGray)
+        End If
+
+        Dim helper As New LocalObjectStorageHelper
+        Dim listaCuentas As New List(Of Cuenta)
+
+        If Await helper.FileExistsAsync("listaCuentas2") = True Then
+            listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas2")
+        End If
+
+        Logros.Cargar(cuenta, juego, listaCuentas, listaJuegos, listaJuegosOcultos)
+
+    End Sub
+
+    Private Async Sub ImagenCarga(sender As Object, e As ImageExOpenedEventArgs)
+
+        Dim frame As Frame = Window.Current.Content
+        Dim pagina As Page = frame.Content
+
+        Dim gv As AdaptiveGridView = pagina.FindName("gvJuegos")
+
+        Dim imagen As ImageEx = sender
+        Dim juego As Juego = imagen.Tag
+
+        If juego.Logros.Count = 0 Then
+            Dim nvPrincipal As NavigationView = pagina.FindName("nvPrincipal")
+
+            Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+            Dim cuenta As Cuenta = nvJuegos.Tag
+
+            Dim logros2 As List(Of Logro) = Await Logros.SacarJuegoLogros(cuenta.Respuesta.Jugador(0).ID64, juego)
+
+            If logros2.Count = 0 Then
+                Dim id As String = String.Empty
+
+                For Each item In gv.Items
+                    Dim sp As StackPanel = item
+                    Dim juegoItem As Juego = sp.Tag
+
+                    If juego.ID = juegoItem.ID Then
+                        gv.Items.Remove(item)
+                        id = juego.ID
+                    End If
+                Next
+
+                If listaJuegosOcultos.Count > 0 Then
+                    Dim añadir As Boolean = True
+
+                    For Each oculto In listaJuegosOcultos
+                        If oculto.ID = id Then
+                            añadir = False
+                        End If
+                    Next
+
+                    If añadir = True Then
+                        listaJuegosOcultos.Add(New JuegoOculto(id, True))
+                    End If
+                Else
+                    listaJuegosOcultos.Add(New JuegoOculto(id, True))
+                End If
+            Else
+                For Each juego2 In listaJuegos
+                    If juego2.ID = juego.ID Then
+                        For Each logro2 In logros2
+                            juego2.Logros.Add(logro2)
+                        Next
+                    End If
+                Next
+
+                For Each item In gv.Items
+                    Dim sp As StackPanel = item
+                    Dim juegoItem As Juego = sp.Tag
+
+                    If juego.ID = juegoItem.ID Then
+                        Dim tbLogros As TextBlock = sp.Children(1)
+
+                        Dim contadorLogrosTerminados As Integer = 0
+
+                        For Each logro In logros2
+                            If logro.Estado = "1" Then
+                                contadorLogrosTerminados += 1
+                            End If
+                        Next
+
+                        tbLogros.Text = contadorLogrosTerminados.ToString + "/" + logros2.Count.ToString + " • " + (CInt((100 / juego.Logros.Count) * contadorLogrosTerminados)).ToString + "%"
+                    End If
+                Next
+            End If
+        End If
+
+    End Sub
+
+    Private Sub ImagenFalla(sender As Object, e As ImageExFailedEventArgs)
+
+        Dim frame As Frame = Window.Current.Content
+        Dim pagina As Page = frame.Content
+
+        Dim gv As AdaptiveGridView = pagina.FindName("gvJuegos")
+
+        Dim imagen As ImageEx = sender
+        Dim juego As Juego = imagen.Tag
+
+        Dim id As String = String.Empty
+
+        For Each item In gv.Items
+            Dim sp As StackPanel = item
+            Dim juegoItem As Juego = sp.Tag
+
+            If juego.ID = juegoItem.ID Then
+                gv.Items.Remove(item)
+                id = juego.ID
             End If
         Next
+
+        If Not id = String.Empty Then
+            If listaJuegosOcultos.Count > 0 Then
+                Dim añadir As Boolean = True
+
+                For Each oculto In listaJuegosOcultos
+                    If oculto.ID = id Then
+                        añadir = False
+                    End If
+                Next
+
+                If añadir = True Then
+                    listaJuegosOcultos.Add(New JuegoOculto(id, True))
+                End If
+            Else
+                listaJuegosOcultos.Add(New JuegoOculto(id, True))
+            End If
+        End If
 
     End Sub
 
     Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
 
-        Dim grid As Grid = sender
-        Dim borde As Border = grid.Children(0)
-        Dim imagen As ImageEx = borde.Child
+        Dim frame As Frame = Window.Current.Content
+        Dim pagina As Page = frame.Content
 
-        imagen.Saturation(0).Start()
+        Dim gv As AdaptiveGridView = pagina.FindName("gvJuegos")
+
+        Dim boton As Button = sender
+
+        boton.Saturation(0).Scale(1.05, 1.05, gv.DesiredWidth / 2, gv.ItemHeight / 2).Start()
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
 
@@ -202,11 +380,14 @@ Module Juegos
 
     Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
 
-        Dim grid As Grid = sender
-        Dim borde As Border = grid.Children(0)
-        Dim imagen As ImageEx = borde.Child
+        Dim frame As Frame = Window.Current.Content
+        Dim pagina As Page = frame.Content
 
-        imagen.Saturation(1).Start()
+        Dim gv As AdaptiveGridView = pagina.FindName("gvJuegos")
+
+        Dim boton As Button = sender
+
+        boton.Saturation(1).Scale(1, 1, gv.DesiredWidth / 2, gv.ItemHeight / 2).Start()
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 

@@ -1,14 +1,26 @@
-﻿Imports Microsoft.Toolkit.Uwp.UI.Animations
+﻿Imports Microsoft.Toolkit.Uwp.Helpers
+Imports Microsoft.Toolkit.Uwp.UI.Animations
 Imports Microsoft.Toolkit.Uwp.UI.Controls
+Imports Newtonsoft.Json
 Imports Windows.UI
 Imports Windows.UI.Core
 
 Module Logros
 
-    Public Async Sub Cargar(cuentaMaestra As Cuenta, juego As Juego, listaCuentas As List(Of Cuenta))
+    Public Async Sub Cargar(cuentaMaestra As Cuenta, juego As Juego, listaCuentas As List(Of Cuenta), listaJuegos As List(Of Juego), listaJuegosOcultos As List(Of JuegoOculto))
+
+        Dim helper As New LocalObjectStorageHelper
+        Await helper.SaveFileAsync(Of List(Of Juego))("listaJuegos" + cuentaMaestra.Respuesta.Jugador(0).ID64, listaJuegos)
+        Await helper.SaveFileAsync(Of List(Of JuegoOculto))("listaJuegosOcultos", listaJuegosOcultos)
 
         Dim frame As Frame = Window.Current.Content
         Dim pagina As Page = frame.Content
+
+        'imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
+        'tbJuegoSeleccionado.Text = juego.Titulo
+
+        Dim spBuscador As StackPanel = pagina.FindName("spBuscador")
+        spBuscador.Visibility = Visibility.Collapsed
 
         Dim pr As ProgressRing = pagina.FindName("prLogros")
         pr.Visibility = Visibility.Visible
@@ -161,7 +173,7 @@ Module Logros
 
                             Dim imagen As String = temp13.Trim
 
-                            Dim logro As New Logro(id, estado, nombre, descripcion, imagen, juego)
+                            Dim logro As New Logro(id, estado, nombre, descripcion, Nothing, imagen)
 
                             Dim tituloBool As Boolean = False
                             Dim k As Integer = 0
@@ -386,6 +398,29 @@ Module Logros
         pr.Visibility = Visibility.Collapsed
 
     End Sub
+
+    Public Async Function SacarJuegoLogros(idCuenta As String, juego As Juego) As Task(Of List(Of Logro))
+
+        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + idCuenta + "&appid=" + juego.ID))
+        Dim listaLogros As New List(Of Logro)
+
+        If Not htmlLogros = Nothing Then
+            Dim logros As SteamLogros = JsonConvert.DeserializeObject(Of SteamLogros)(htmlLogros)
+
+            If Not logros Is Nothing Then
+                If Not logros.Datos.Logros Is Nothing Then
+                    If logros.Datos.Logros.Count > 0 Then
+                        For Each logro In logros.Datos.Logros
+                            listaLogros.Add(New Logro(logro.NombreAPI, logro.Estado, Nothing, Nothing, logro.Fecha, Nothing))
+                        Next
+                    End If
+                End If
+            End If
+        End If
+
+        Return listaLogros
+
+    End Function
 
     Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
 

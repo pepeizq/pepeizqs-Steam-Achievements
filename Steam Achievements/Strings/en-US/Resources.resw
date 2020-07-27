@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountPrivacyMessage.Text" xml:space="preserve">
-    <value>The account must have the permissions in Public to be able to read the achievements</value>
+    <value>The Steam account must have the permissions in Public to be able to read the achievements.</value>
   </data>
   <data name="Accounts" xml:space="preserve">
     <value>Accounts</value>

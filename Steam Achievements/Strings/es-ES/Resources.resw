@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountPrivacyMessage.Text" xml:space="preserve">
-    <value>La cuenta debe tener los permisos en Público para poder leer los logros</value>
+    <value>La cuenta de Steam debe tener los permisos en Público para poder leer los logros.</value>
   </data>
   <data name="Accounts" xml:space="preserve">
     <value>Cuentas</value>

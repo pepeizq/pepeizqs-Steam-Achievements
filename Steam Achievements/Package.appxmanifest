@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Steam_Achievements.App">
-      <uap:VisualElements DisplayName="Steam Games Achievements" Square150x150Logo="Assets\Logos\Square150x150Logo.png" Square44x44Logo="Assets\Logos\Square44x44Logo.png" Description="https://pepeizqapps.com/" BackgroundColor="#6a5051">
+      <uap:VisualElements DisplayName="Steam Games Achievements" Square150x150Logo="Assets\Logos\Square150x150Logo.png" Square44x44Logo="Assets\Logos\Square44x44Logo.png" Description="https://pepeizqapps.com/" BackgroundColor="#2e5e7c">
         <uap:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\Logos\BadgeLogo.png" />
         <uap:DefaultTile Wide310x150Logo="Assets\Logos\Wide310x150Logo.png" ShortName="Steam Achievements" Square310x310Logo="Assets\Logos\LargeTile.png" Square71x71Logo="Assets\Logos\SmallTile.png">
           <uap:ShowNameOnTiles>
@@ -24,7 +24,7 @@
             <uap:ShowOn Tile="square310x310Logo" />
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\Logos\SplashScreen.png" BackgroundColor="#6a5051" />
+        <uap:SplashScreen Image="Assets\Logos\SplashScreen.png" BackgroundColor="#2e5e7c" />
       </uap:VisualElements>
     </Application>
   </Applications>
