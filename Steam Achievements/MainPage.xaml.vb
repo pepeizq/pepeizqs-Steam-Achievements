@@ -85,7 +85,7 @@ Public NotInheritable Class MainPage
         GridVisibilidad(gridCuentas, recursos.GetString("Accounts"))
 
         Buscador.Cargar()
-        Cuentas.CargarXaml()
+        Cuentas.BotonEstilo()
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
         nvJuegos.Visibility = Visibility.Collapsed
@@ -95,7 +95,7 @@ Public NotInheritable Class MainPage
 
     End Sub
 
-    Private Sub GridVisibilidad(grid As Grid, tag As String)
+    Public Sub GridVisibilidad(grid As Grid, tag As String)
 
         tbTitulo.Text = Package.Current.DisplayName + " (" + Package.Current.Id.Version.Major.ToString + "." + Package.Current.Id.Version.Minor.ToString + "." + Package.Current.Id.Version.Build.ToString + "." + Package.Current.Id.Version.Revision.ToString + ") - " + tag
 
@@ -147,49 +147,6 @@ Public NotInheritable Class MainPage
     Private Sub BotonAgregarUsuario_Click(sender As Object, e As RoutedEventArgs) Handles botonAgregarUsuario.Click
 
         Cuentas.Añadir(tbUsuarioCuenta.Text)
-
-    End Sub
-
-    Private Sub LvUsuarios_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvUsuarios.ItemClick
-
-        tbBuscarJuegos.Text = String.Empty
-
-        lvLogros.Items.Clear()
-
-        Dim recursos As New Resources.ResourceLoader()
-
-        Dim sp As StackPanel = e.ClickedItem
-        Dim cuenta As Cuenta = sp.Tag
-
-        spCuenta.Visibility = Visibility.Visible
-        imagenCuentaSeleccionada.Source = cuenta.Respuesta.Jugador(0).Avatar
-        tbCuentaSeleccionada.Text = cuenta.Respuesta.Jugador(0).Nombre
-
-        Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
-        nvJuegos.Visibility = Visibility.Visible
-
-        Dim tbToolTip As TextBlock = New TextBlock With {
-            .Text = cuenta.Respuesta.Jugador(0).Nombre
-        }
-
-        ToolTipService.SetToolTip(nvJuegos, tbToolTip)
-        nvJuegos.Tag = cuenta
-
-        nvPrincipal.SelectedItem = nvJuegos
-
-        Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
-        nvLogros.Visibility = Visibility.Collapsed
-
-        gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
-        gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
-        botonVolverListadoLogros.Visibility = Visibility.Collapsed
-
-        lvLogros.Visibility = Visibility.Visible
-        wvLogros.Visibility = Visibility.Collapsed
-
-        GridVisibilidad(gridJuegos, cuenta.Respuesta.Jugador(0).Nombre)
-
-        Juegos.Cargar(cuenta)
 
     End Sub
 

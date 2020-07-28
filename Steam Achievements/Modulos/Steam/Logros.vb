@@ -7,17 +7,20 @@ Imports Windows.UI.Core
 
 Module Logros
 
-    Public Async Sub Cargar(cuentaMaestra As Cuenta, juego As Juego, listaCuentas As List(Of Cuenta), listaJuegos As List(Of Juego), listaJuegosOcultos As List(Of JuegoOculto))
+    Public Async Sub Cargar(cuentaMaestra As SteamCuenta, juego As Juego, listaCuentas As List(Of SteamCuenta), listaJuegos As List(Of Juego), listaJuegosOcultos As List(Of JuegoOculto))
 
         Dim helper As New LocalObjectStorageHelper
-        Await helper.SaveFileAsync(Of List(Of Juego))("listaJuegos" + cuentaMaestra.Respuesta.Jugador(0).ID64, listaJuegos)
-        Await helper.SaveFileAsync(Of List(Of JuegoOculto))("listaJuegosOcultos", listaJuegosOcultos)
+        Await helper.SaveFileAsync(Of List(Of Juego))("listaJuegos" + cuentaMaestra.Datos.Jugador(0).ID64, listaJuegos)
+        Await helper.SaveFileAsync(Of List(Of JuegoOculto))("listaJuegosOcultos" + cuentaMaestra.Datos.Jugador(0).ID64, listaJuegosOcultos)
 
         Dim frame As Frame = Window.Current.Content
         Dim pagina As Page = frame.Content
 
-        'imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
-        'tbJuegoSeleccionado.Text = juego.Titulo
+        Dim imagenJuegoSeleccionado As ImageEx = pagina.FindName("imagenJuegoSeleccionado")
+        imagenJuegoSeleccionado.Source = New Uri(juego.Imagen)
+
+        Dim tbJuegoSeleccionado As TextBlock = pagina.FindName("tbJuegoSeleccionado")
+        tbJuegoSeleccionado.Text = juego.Titulo
 
         Dim spBuscador As StackPanel = pagina.FindName("spBuscador")
         spBuscador.Visibility = Visibility.Collapsed
@@ -28,9 +31,6 @@ Module Logros
         Dim lvLogros As ListView = pagina.FindName("lvLogros")
         lvLogros.Items.Clear()
         lvLogros.Visibility = Visibility.Visible
-
-        Dim panel As Grid = pagina.FindName("panelMensajeNoLogros")
-        panel.Visibility = Visibility.Collapsed
 
         Dim iconoYoutube As FontAwesome.UWP.FontAwesome = pagina.FindName("iconoYoutube")
         iconoYoutube.Visibility = Visibility.Visible
@@ -43,21 +43,24 @@ Module Logros
         Dim tb As TextBlock = pagina.FindName("tbJuegoSeleccionadoLogros")
         tb.Visibility = Visibility.Collapsed
 
-        Dim listaCuentasHtml As New List(Of CuentaHtml)
+        Dim listaCuentasHtml As New List(Of Cuenta)
 
         If Not listaCuentas Is Nothing Then
             For Each cuenta In listaCuentas
-                Dim htmlCuenta As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Respuesta.Jugador(0).ID64 + "&appid=" + juego.ID))
-                listaCuentasHtml.Add(New CuentaHtml(cuenta, htmlCuenta))
+                Dim htmlCuenta As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Datos.Jugador(0).ID64 + "&appid=" + juego.ID))
+                listaCuentasHtml.Add(New Cuenta(cuenta, htmlCuenta))
             Next
         End If
 
-        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuentaMaestra.Respuesta.Jugador(0).ID64 + "&appid=" + juego.ID))
+        Dim htmlLogros As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuentaMaestra.Datos.Jugador(0).ID64 + "&appid=" + juego.ID))
         Dim htmlInfo As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&appid=" + juego.ID))
 
         Dim listaLogros As New List(Of Logro)
 
         If Not htmlLogros = Nothing Then
+            Dim logros As SteamJugadorLogros = JsonConvert.DeserializeObject(Of SteamJugadorLogros)(htmlLogros)
+
+
             If Not htmlInfo = Nothing Then
                 Dim i As Integer = 0
                 While i < 5000
@@ -335,7 +338,7 @@ Module Logros
                                 End If
 
                                 If estado = True Then
-                                    If Not cuenta.Cuenta.Respuesta.Jugador(0).ID64 = cuentaMaestra.Respuesta.Jugador(0).ID64 Then
+                                    If Not cuenta.Cuenta.Datos.Jugador(0).ID64 = cuentaMaestra.Datos.Jugador(0).ID64 Then
                                         Dim imagenCuenta As New ImageEx With {
                                             .Stretch = Stretch.UniformToFill,
                                             .IsCacheEnabled = True,
@@ -345,7 +348,7 @@ Module Logros
                                         }
 
                                         Try
-                                            imagenCuenta.Source = New BitmapImage(New Uri(cuenta.Cuenta.Respuesta.Jugador(0).Avatar))
+                                            imagenCuenta.Source = New BitmapImage(New Uri(cuenta.Cuenta.Datos.Jugador(0).Avatar))
                                         Catch ex As Exception
 
                                         End Try
@@ -381,7 +384,7 @@ Module Logros
         End If
 
         If totalLogros > 0 Then
-            panel.Visibility = Visibility.Collapsed
+            'panel.Visibility = Visibility.Collapsed
             iconoYoutube.Visibility = Visibility.Visible
 
             pb.Visibility = Visibility.Visible
@@ -391,7 +394,7 @@ Module Logros
             tb.Visibility = Visibility.Visible
             tb.Text = "(" + conseguidosLogros.ToString + "/" + totalLogros.ToString + ")"
         Else
-            panel.Visibility = Visibility.Visible
+            'panel.Visibility = Visibility.Visible
             iconoYoutube.Visibility = Visibility.Visible
         End If
 
@@ -405,7 +408,7 @@ Module Logros
         Dim listaLogros As New List(Of Logro)
 
         If Not htmlLogros = Nothing Then
-            Dim logros As SteamLogros = JsonConvert.DeserializeObject(Of SteamLogros)(htmlLogros)
+            Dim logros As SteamJugadorLogros = JsonConvert.DeserializeObject(Of SteamJugadorLogros)(htmlLogros)
 
             If Not logros Is Nothing Then
                 If Not logros.Datos.Logros Is Nothing Then

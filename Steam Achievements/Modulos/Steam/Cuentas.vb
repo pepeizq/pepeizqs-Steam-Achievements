@@ -1,5 +1,4 @@
-﻿Imports FontAwesome.UWP
-Imports Microsoft.Toolkit.Uwp.Helpers
+﻿Imports Microsoft.Toolkit.Uwp.Helpers
 Imports Microsoft.Toolkit.Uwp.UI.Animations
 Imports Microsoft.Toolkit.Uwp.UI.Controls
 Imports Newtonsoft.Json
@@ -25,18 +24,16 @@ Module Cuentas
         boton.IsEnabled = False
 
         Dim helper As New LocalObjectStorageHelper
-        Dim listaCuentas As List(Of Cuenta) = Nothing
+        Dim listaCuentas As New List(Of SteamCuenta)
 
         If Await helper.FileExistsAsync("listaCuentas2") = True Then
-            listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas2")
-        Else
-            listaCuentas = New List(Of Cuenta)
+            listaCuentas = Await helper.ReadFileAsync(Of List(Of SteamCuenta))("listaCuentas2")
         End If
 
         Dim htmlID As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&vanityurl=" + usuario))
 
         If Not htmlID = Nothing Then
-            Dim cuentaVanidad As CuentaVanidad = JsonConvert.DeserializeObject(Of CuentaVanidad)(htmlID)
+            Dim cuentaVanidad As SteamCuentaVanidad = JsonConvert.DeserializeObject(Of SteamCuentaVanidad)(htmlID)
 
             Dim id64 As String = Nothing
 
@@ -52,12 +49,12 @@ Module Cuentas
                 Dim htmlDatos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamids=" + id64))
 
                 If Not htmlDatos = Nothing Then
-                    Dim cuenta As Cuenta = JsonConvert.DeserializeObject(Of Cuenta)(htmlDatos)
+                    Dim cuenta As SteamCuenta = JsonConvert.DeserializeObject(Of SteamCuenta)(htmlDatos)
 
                     Dim añadir As Boolean = True
                     Dim k As Integer = 0
                     While k < listaCuentas.Count
-                        If listaCuentas(k).Respuesta.Jugador(0).ID64 = cuenta.Respuesta.Jugador(0).ID64 Then
+                        If listaCuentas(k).Datos.Jugador(0).ID64 = cuenta.Datos.Jugador(0).ID64 Then
                             añadir = False
                         End If
                         k += 1
@@ -65,8 +62,8 @@ Module Cuentas
 
                     If añadir = True Then
                         listaCuentas.Add(cuenta)
-                        Await helper.SaveFileAsync(Of List(Of Cuenta))("listaCuentas2", listaCuentas)
-                        CargarXaml()
+                        Await helper.SaveFileAsync(Of List(Of SteamCuenta))("listaCuentas2", listaCuentas)
+                        BotonEstilo()
                     End If
                 End If
             End If
@@ -78,15 +75,13 @@ Module Cuentas
 
     End Sub
 
-    Public Async Sub CargarXaml()
+    Public Async Sub BotonEstilo()
 
         Dim helper As New LocalObjectStorageHelper
-        Dim listaCuentas As List(Of Cuenta) = Nothing
+        Dim listaCuentas As New List(Of SteamCuenta)
 
         If Await helper.FileExistsAsync("listaCuentas2") = True Then
-            listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas2")
-        Else
-            listaCuentas = New List(Of Cuenta)
+            listaCuentas = Await helper.ReadFileAsync(Of List(Of SteamCuenta))("listaCuentas2")
         End If
 
         Dim frame As Frame = Window.Current.Content
@@ -96,11 +91,11 @@ Module Cuentas
             Dim columna As ColumnDefinition = pagina.FindName("gridColumnaUsuarios")
             columna.Width = New GridLength(1, GridUnitType.Star)
 
-            Dim gridLista As Grid = pagina.FindName("gridListaUsuarios")
-            gridLista.Visibility = Visibility.Visible
+            Dim gridUsuarios As Grid = pagina.FindName("gridUsuarios")
+            gridUsuarios.Visibility = Visibility.Visible
 
-            Dim lvUsuarios As ListView = pagina.FindName("lvUsuarios")
-            lvUsuarios.Items.Clear()
+            Dim spUsuarios As StackPanel = pagina.FindName("spUsuarios")
+            spUsuarios.Children.Clear()
 
             For Each cuenta In listaCuentas
                 Dim sp As New StackPanel With {
@@ -112,13 +107,12 @@ Module Cuentas
                     .BlurRadius = 10,
                     .ShadowOpacity = 0.3,
                     .Color = Colors.Black,
-                    .Margin = New Thickness(5, 5, 5, 5)
+                    .Margin = New Thickness(0, 0, 0, 20)
                 }
 
                 Dim grid As New Grid With {
                     .Tag = cuenta,
-                    .Padding = New Thickness(10, 10, 10, 10),
-                    .Background = New SolidColorBrush(App.Current.Resources("ColorSecundario")),
+                    .Padding = New Thickness(20, 20, 20, 20),
                     .Width = 400
                 }
 
@@ -139,7 +133,7 @@ Module Cuentas
                 }
 
                 Try
-                    imagen.Source = New BitmapImage(New Uri(cuenta.Respuesta.Jugador(0).Avatar))
+                    imagen.Source = New BitmapImage(New Uri(cuenta.Datos.Jugador(0).Avatar))
                 Catch ex As Exception
 
                 End Try
@@ -150,21 +144,30 @@ Module Cuentas
                 '-------------------------------
 
                 Dim textoNombre As New TextBlock With {
-                    .Text = cuenta.Respuesta.Jugador(0).Nombre,
+                    .Text = cuenta.Datos.Jugador(0).Nombre,
                     .VerticalAlignment = VerticalAlignment.Center,
                     .TextWrapping = TextWrapping.Wrap,
                     .Foreground = New SolidColorBrush(Colors.White),
                     .MaxWidth = 400,
-                    .Margin = New Thickness(10, 0, 10, 0)
+                    .Margin = New Thickness(15, 0, 10, 0)
                 }
 
                 textoNombre.SetValue(Grid.ColumnProperty, 1)
                 grid.Children.Add(textoNombre)
 
-                AddHandler grid.PointerEntered, AddressOf UsuarioEntraBoton
-                AddHandler grid.PointerExited, AddressOf UsuarioSaleBoton
+                Dim botonCuenta As New Button With {
+                    .Background = New SolidColorBrush(App.Current.Resources("ColorSecundario")),
+                    .Content = grid,
+                    .Tag = cuenta,
+                    .Padding = New Thickness(0, 0, 0, 0),
+                    .Margin = New Thickness(0, 0, 0, 0)
+                }
 
-                panel1.Content = grid
+                AddHandler botonCuenta.Click, AddressOf AbrirCuenta
+                AddHandler botonCuenta.PointerEntered, AddressOf UsuarioEntraBoton
+                AddHandler botonCuenta.PointerExited, AddressOf UsuarioSaleBoton
+
+                panel1.Content = botonCuenta
                 sp.Children.Add(panel1)
 
                 '-------------------------------
@@ -173,19 +176,21 @@ Module Cuentas
                     .BlurRadius = 10,
                     .ShadowOpacity = 0.3,
                     .Color = Colors.Black,
-                    .Margin = New Thickness(25, 5, 5, 5),
+                    .Margin = New Thickness(35, 5, 5, 20),
                     .VerticalAlignment = VerticalAlignment.Center,
                     .HorizontalAlignment = HorizontalAlignment.Center
                 }
 
-                Dim iconoBorrar As New FontAwesome.UWP.FontAwesome With {
-                    .Icon = FontAwesomeIcon.Times
+                Dim iconoBorrar As New FontAwesome5.FontAwesome With {
+                    .Icon = FontAwesome5.EFontAwesomeIcon.Solid_Times,
+                    .Foreground = New SolidColorBrush(Colors.White),
+                    .FontSize = 20
                 }
 
                 Dim botonBorrar As New Button With {
                     .Background = New SolidColorBrush(App.Current.Resources("ColorSecundario")),
-                    .Foreground = New SolidColorBrush(Colors.White),
                     .Content = iconoBorrar,
+                    .Padding = New Thickness(15, 12, 15, 12),
                     .Tag = cuenta
                 }
 
@@ -196,24 +201,79 @@ Module Cuentas
                 panel2.Content = botonBorrar
                 sp.Children.Add(panel2)
 
-                lvUsuarios.Items.Add(sp)
+                spUsuarios.Children.Add(sp)
             Next
         End If
+
+    End Sub
+
+    Private Sub AbrirCuenta(sender As Object, e As RoutedEventArgs)
+
+        Dim frame As Frame = Window.Current.Content
+        Dim pagina As Page = frame.Content
+
+        Dim tbBuscarJuegos As TextBox = pagina.FindName("tbBuscarJuegos")
+        tbBuscarJuegos.Text = String.Empty
+
+        Dim lvLogros As ListView = pagina.FindName("lvLogros")
+        lvLogros.Items.Clear()
+
+        Dim recursos As New Resources.ResourceLoader()
+
+        Dim boton As Button = sender
+        Dim cuenta As SteamCuenta = boton.Tag
+
+        Dim spCuenta As StackPanel = pagina.FindName("spCuenta")
+        spCuenta.Visibility = Visibility.Visible
+
+        Dim imagenCuentaSeleccionada As ImageEx = pagina.FindName("imagenCuentaSeleccionada")
+        imagenCuentaSeleccionada.Source = cuenta.Datos.Jugador(0).Avatar
+
+        Dim tbCuentaSeleccionada As TextBlock = pagina.FindName("tbCuentaSeleccionada")
+        tbCuentaSeleccionada.Text = cuenta.Datos.Jugador(0).Nombre
+
+        Dim nvPrincipal As NavigationView = pagina.FindName("nvPrincipal")
+
+        Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+        nvJuegos.Visibility = Visibility.Visible
+
+        Dim tbToolTip As TextBlock = New TextBlock With {
+            .Text = cuenta.Datos.Jugador(0).Nombre
+        }
+
+        ToolTipService.SetToolTip(nvJuegos, tbToolTip)
+        nvJuegos.Tag = cuenta
+
+        nvPrincipal.SelectedItem = nvJuegos
+
+        Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+        nvLogros.Visibility = Visibility.Collapsed
+
+        Dim gridCuentas As Grid = pagina.FindName("gridCuentas")
+        gridCuentas.Visibility = Visibility.Collapsed
+
+        Dim gridJuegos As Grid = pagina.FindName("gridJuegos")
+        gridJuegos.Visibility = Visibility.Visible
+
+        Dim tbTitulo As TextBlock = pagina.FindName("tbTitulo")
+        tbTitulo.Text = Package.Current.DisplayName + " (" + Package.Current.Id.Version.Major.ToString + "." + Package.Current.Id.Version.Minor.ToString + "." + Package.Current.Id.Version.Build.ToString + "." + Package.Current.Id.Version.Revision.ToString + ") - " + cuenta.Datos.Jugador(0).Nombre
+
+        Juegos.Cargar(cuenta)
 
     End Sub
 
     Private Async Sub BorrarCuenta(sender As Object, e As RoutedEventArgs)
 
         Dim boton As Button = sender
-        Dim cuenta As Cuenta = boton.Tag
+        Dim cuenta As SteamCuenta = boton.Tag
 
         Dim helper As New LocalObjectStorageHelper
 
         If Await helper.FileExistsAsync("listaCuentas2") = True Then
-            Dim listaCuentas As List(Of Cuenta) = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas2")
+            Dim listaCuentas As List(Of SteamCuenta) = Await helper.ReadFileAsync(Of List(Of SteamCuenta))("listaCuentas2")
 
             For Each subcuenta In listaCuentas.ToList
-                If cuenta.Respuesta.Jugador(0).ID64 = subcuenta.Respuesta.Jugador(0).ID64 Then
+                If cuenta.Datos.Jugador(0).ID64 = subcuenta.Datos.Jugador(0).ID64 Then
                     listaCuentas.Remove(subcuenta)
                 End If
             Next
@@ -221,28 +281,40 @@ Module Cuentas
             Dim frame As Frame = Window.Current.Content
             Dim pagina As Page = frame.Content
 
-            Dim lista As ListView = pagina.FindName("lvUsuarios")
+            Dim spUsuarios As StackPanel = pagina.FindName("spUsuarios")
 
-            For Each item In lista.Items
-                Dim sp As StackPanel = item
-                Dim cuentaSp As Cuenta = sp.Tag
+            For Each hijo In spUsuarios.Children
+                Dim sp As StackPanel = hijo
+                Dim cuentaSp As SteamCuenta = sp.Tag
 
-                If cuentaSp.Respuesta.Jugador(0).ID64 = cuenta.Respuesta.Jugador(0).ID64 Then
-                    lista.Items.Remove(item)
+                If cuentaSp.Datos.Jugador(0).ID64 = cuenta.Datos.Jugador(0).ID64 Then
+                    spUsuarios.Children.Remove(hijo)
                 End If
             Next
 
-            Await helper.SaveFileAsync(Of List(Of Cuenta))("listaCuentas2", listaCuentas)
+            Await helper.SaveFileAsync(Of List(Of SteamCuenta))("listaCuentas2", listaCuentas)
+
+            If listaCuentas.Count = 0 Then
+                Dim columna As ColumnDefinition = pagina.FindName("gridColumnaUsuarios")
+                columna.Width = New GridLength(1, GridUnitType.Auto)
+
+                Dim gridUsuarios2 As Grid = pagina.FindName("gridUsuarios")
+                gridUsuarios2.Visibility = Visibility.Collapsed
+            End If
         End If
 
     End Sub
 
     Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
 
-        Dim grid As Grid = sender
+        Dim frame As Frame = Window.Current.Content
+        Dim pagina As Page = frame.Content
+
+        Dim boton As Button = sender
+        Dim grid As Grid = boton.Content
         Dim imagen As ImageEx = grid.Children(0)
 
-        imagen.Saturation(0).Start()
+        imagen.Saturation(0).Scale(1.1, 1.1, imagen.ActualWidth / 2, imagen.ActualHeight / 2).Start()
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
 
@@ -250,10 +322,14 @@ Module Cuentas
 
     Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
 
-        Dim grid As Grid = sender
+        Dim frame As Frame = Window.Current.Content
+        Dim pagina As Page = frame.Content
+
+        Dim boton As Button = sender
+        Dim grid As Grid = boton.Content
         Dim imagen As ImageEx = grid.Children(0)
 
-        imagen.Saturation(1).Start()
+        imagen.Saturation(1).Scale(1, 1, imagen.ActualWidth / 2, imagen.ActualHeight / 2).Start()
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 

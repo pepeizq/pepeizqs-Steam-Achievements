@@ -21,14 +21,14 @@ Public Class Logro
 
 End Class
 
-Public Class SteamLogros
+Public Class SteamJugadorLogros
 
     <JsonProperty("playerstats")>
-    Public Datos As SteamLogrosDatos
+    Public Datos As SteamJugadorLogrosDatos
 
 End Class
 
-Public Class SteamLogrosDatos
+Public Class SteamJugadorLogrosDatos
 
     <JsonProperty("success")>
     Public Estado As Boolean
@@ -40,11 +40,11 @@ Public Class SteamLogrosDatos
     Public TituloJuego As String
 
     <JsonProperty("achievements")>
-    Public Logros As List(Of SteamLogrosDatosLogro)
+    Public Logros As List(Of SteamJugadorLogrosDatosLogro)
 
 End Class
 
-Public Class SteamLogrosDatosLogro
+Public Class SteamJugadorLogrosDatosLogro
 
     <JsonProperty("apiname")>
     Public NombreAPI As String
@@ -54,5 +54,31 @@ Public Class SteamLogrosDatosLogro
 
     <JsonProperty("unlocktime")>
     Public Fecha As String
+
+End Class
+
+'-------------------------------------------------------------------------
+
+Public Class SteamJuegoLogros
+
+    <JsonProperty("game")>
+    Public Datos As SteamJuegoLogrosDatos
+
+End Class
+
+Public Class SteamJuegoLogrosDatos
+
+    <JsonProperty("gameName")>
+    Public TituloJuego As String
+
+    <JsonProperty("gameName")>
+    Public Datos2 As String
+
+End Class
+
+Public Class SteamJuegoLogrosDatos2
+
+    <JsonProperty("gameName")>
+    Public TituloJuego As String
 
 End Class

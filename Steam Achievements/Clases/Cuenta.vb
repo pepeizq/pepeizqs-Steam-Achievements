@@ -2,19 +2,31 @@ Imports Newtonsoft.Json
 
 Public Class Cuenta
 
-    <JsonProperty("response")>
-    Public Property Respuesta As CuentaRespuesta
+    Public Property Cuenta As SteamCuenta
+    Public Property HtmlLogros As String
+
+    Public Sub New(ByVal cuenta As SteamCuenta, ByVal htmllogros As String)
+        Me.Cuenta = cuenta
+        Me.HtmlLogros = htmllogros
+    End Sub
 
 End Class
 
-Public Class CuentaRespuesta
+Public Class SteamCuenta
+
+    <JsonProperty("response")>
+    Public Property Datos As SteamCuentaDatos
+
+End Class
+
+Public Class SteamCuentaDatos
 
     <JsonProperty("players")>
-    Public Property Jugador As List(Of CuentaJugadores)
+    Public Property Jugador As List(Of SteamCuentaDatosJugador)
 
 End Class
 
-Public Class CuentaJugadores
+Public Class SteamCuentaDatosJugador
 
     <JsonProperty("steamid")>
     Public Property ID64 As String
@@ -27,14 +39,14 @@ Public Class CuentaJugadores
 
 End Class
 
-Public Class CuentaVanidad
+Public Class SteamCuentaVanidad
 
     <JsonProperty("response")>
-    Public Property Respuesta As CuentaVanidadRespuesta
+    Public Property Respuesta As SteamCuentaVanidadID
 
 End Class
 
-Public Class CuentaVanidadRespuesta
+Public Class SteamCuentaVanidadID
 
     <JsonProperty("steamid")>
     Public Property ID64 As String

@@ -25,14 +25,14 @@ Module Buscador
         Dim nvPrincipal As NavigationView = pagina.FindName("nvPrincipal")
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
-        Dim cuenta As Cuenta = nvJuegos.Tag
+        Dim cuenta As SteamCuenta = nvJuegos.Tag
 
         Dim helper As New LocalObjectStorageHelper
 
         Dim listaJuegos As New List(Of Juego)
 
-        If Await helper.FileExistsAsync("listaJuegos" + cuenta.Respuesta.Jugador(0).ID64) = True Then
-            listaJuegos = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.Respuesta.Jugador(0).ID64)
+        If Await helper.FileExistsAsync("listaJuegos" + cuenta.Datos.Jugador(0).ID64) = True Then
+            listaJuegos = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.Datos.Jugador(0).ID64)
         End If
 
         If Not listaJuegos Is Nothing Then
@@ -45,12 +45,12 @@ Module Buscador
                     Dim busqueda As String = tbBuscador.Text.Trim
 
                     If LimpiarBusqueda(juego.Titulo).ToString.Contains(LimpiarBusqueda(busqueda)) Then
-                        BotonEstilo(juego, gv)
+                        Juegos.BotonEstilo(juego, gv)
                     End If
                 Next
             Else
                 For Each juego In listaJuegos
-                    BotonEstilo(juego, gv)
+                    Juegos.BotonEstilo(juego, gv)
                 Next
             End If
         End If

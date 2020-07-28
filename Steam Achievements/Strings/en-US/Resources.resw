@@ -130,7 +130,7 @@
     <value>Add User</value>
   </data>
   <data name="AddAccountInfo2.Text" xml:space="preserve">
-    <value>Add your Steam profile user:</value>
+    <value>Add a Steam user:</value>
   </data>
   <data name="Back.Text" xml:space="preserve">
     <value>Back</value>
