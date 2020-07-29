@@ -1,5 +1,5 @@
-﻿Imports Microsoft.Toolkit.Uwp.Helpers
-Imports Windows.ApplicationModel.Core
+﻿Imports Windows.ApplicationModel.Core
+Imports Windows.System
 Imports Windows.UI
 Imports Windows.UI.Core
 
@@ -139,7 +139,7 @@ Public NotInheritable Class MainPage
         Dim boton As Button = sender
         Dim sp As StackPanel = boton.Content
 
-        sp.Background = New SolidColorBrush("#892a2a".ToColor)
+        sp.Background = New SolidColorBrush(App.Current.Resources("ColorCajaRojaBotonHover"))
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
 
@@ -150,7 +150,7 @@ Public NotInheritable Class MainPage
         Dim boton As Button = sender
         Dim sp As StackPanel = boton.Content
 
-        sp.Background = New SolidColorBrush("#c84d4d".ToColor)
+        sp.Background = New SolidColorBrush(App.Current.Resources("ColorCajaRojaBoton"))
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 
@@ -183,6 +183,12 @@ Public NotInheritable Class MainPage
     Private Sub BotonAgregarUsuario_Click(sender As Object, e As RoutedEventArgs) Handles botonAgregarUsuario.Click
 
         Cuentas.Añadir(tbUsuarioCuenta.Text)
+
+    End Sub
+
+    Private Async Sub BotonAbrirYoutube_Click(sender As Object, e As RoutedEventArgs) Handles botonAbrirYoutube.Click
+
+        Await Launcher.LaunchUriAsync(New Uri("https://www.youtube.com/watch?v=BYQ6XFuynIo"))
 
     End Sub
 

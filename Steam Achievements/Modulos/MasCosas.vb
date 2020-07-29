@@ -1,4 +1,5 @@
 ﻿Imports Microsoft.Services.Store.Engagement
+Imports Microsoft.Toolkit.Uwp.UI.Animations
 Imports Windows.System
 Imports Windows.UI.Core
 
@@ -30,8 +31,8 @@ Module MasCosas
         ToolTipService.SetToolTip(itemMasCosas, tbToolTip)
         ToolTipService.SetPlacement(itemMasCosas, PlacementMode.Mouse)
 
-        AddHandler itemMasCosas.PointerEntered, AddressOf UsuarioEntraBoton
-        AddHandler itemMasCosas.PointerExited, AddressOf UsuarioSaleBoton
+        AddHandler itemMasCosas.PointerEntered, AddressOf UsuarioEntraBotonNVItem
+        AddHandler itemMasCosas.PointerExited, AddressOf UsuarioSaleBotonNVItem
 
         '---------------------------------------------
 
@@ -50,8 +51,8 @@ Module MasCosas
         }
 
         AddHandler menuItemMasApps.Click, AddressOf MenuItemMasAppsClick
-        AddHandler menuItemMasApps.PointerEntered, AddressOf UsuarioEntraBoton
-        AddHandler menuItemMasApps.PointerExited, AddressOf UsuarioSaleBoton
+        AddHandler menuItemMasApps.PointerEntered, AddressOf UsuarioEntraBotonMFItem
+        AddHandler menuItemMasApps.PointerExited, AddressOf UsuarioSaleBotonMFItem
 
         menu.Items.Add(menuItemMasApps)
 
@@ -65,8 +66,8 @@ Module MasCosas
         }
 
         AddHandler menuItemDeals.Click, AddressOf MenuItemDealsClick
-        AddHandler menuItemDeals.PointerEntered, AddressOf UsuarioEntraBoton
-        AddHandler menuItemDeals.PointerExited, AddressOf UsuarioSaleBoton
+        AddHandler menuItemDeals.PointerEntered, AddressOf UsuarioEntraBotonMFItem
+        AddHandler menuItemDeals.PointerExited, AddressOf UsuarioSaleBotonMFItem
 
         menu.Items.Add(menuItemDeals)
 
@@ -82,8 +83,8 @@ Module MasCosas
         }
 
         AddHandler menuItemVotar.Click, AddressOf MenuItemVotarClick
-        AddHandler menuItemVotar.PointerEntered, AddressOf UsuarioEntraBoton
-        AddHandler menuItemVotar.PointerExited, AddressOf UsuarioSaleBoton
+        AddHandler menuItemVotar.PointerEntered, AddressOf UsuarioEntraBotonMFItem
+        AddHandler menuItemVotar.PointerExited, AddressOf UsuarioSaleBotonMFItem
 
         menu.Items.Add(menuItemVotar)
 
@@ -97,8 +98,8 @@ Module MasCosas
         }
 
         AddHandler menuItemContacto.Click, AddressOf MenuItemContactoClick
-        AddHandler menuItemContacto.PointerEntered, AddressOf UsuarioEntraBoton
-        AddHandler menuItemContacto.PointerExited, AddressOf UsuarioSaleBoton
+        AddHandler menuItemContacto.PointerEntered, AddressOf UsuarioEntraBotonMFItem
+        AddHandler menuItemContacto.PointerExited, AddressOf UsuarioSaleBotonMFItem
 
         menu.Items.Add(menuItemContacto)
 
@@ -112,8 +113,8 @@ Module MasCosas
         }
 
         AddHandler menuItemReportar.Click, AddressOf MenuItemReportarClick
-        AddHandler menuItemReportar.PointerEntered, AddressOf UsuarioEntraBoton
-        AddHandler menuItemReportar.PointerExited, AddressOf UsuarioSaleBoton
+        AddHandler menuItemReportar.PointerEntered, AddressOf UsuarioEntraBotonMFItem
+        AddHandler menuItemReportar.PointerExited, AddressOf UsuarioSaleBotonMFItem
 
         menu.Items.Add(menuItemReportar)
 
@@ -129,8 +130,8 @@ Module MasCosas
             }
 
             AddHandler menuItemTraducir.Click, AddressOf MenuItemTraducirClick
-            AddHandler menuItemTraducir.PointerEntered, AddressOf UsuarioEntraBoton
-            AddHandler menuItemTraducir.PointerExited, AddressOf UsuarioSaleBoton
+            AddHandler menuItemTraducir.PointerEntered, AddressOf UsuarioEntraBotonMFItem
+            AddHandler menuItemTraducir.PointerExited, AddressOf UsuarioSaleBotonMFItem
 
             menu.Items.Add(New MenuFlyoutSeparator)
             menu.Items.Add(menuItemTraducir)
@@ -152,8 +153,8 @@ Module MasCosas
             }
 
             AddHandler menuItemCodigoFuente.Click, AddressOf MenuItemCodigoFuenteClick
-            AddHandler menuItemCodigoFuente.PointerEntered, AddressOf UsuarioEntraBoton
-            AddHandler menuItemCodigoFuente.PointerExited, AddressOf UsuarioSaleBoton
+            AddHandler menuItemCodigoFuente.PointerEntered, AddressOf UsuarioEntraBotonMFItem
+            AddHandler menuItemCodigoFuente.PointerExited, AddressOf UsuarioSaleBotonMFItem
 
             menu.Items.Add(menuItemCodigoFuente)
         End If
@@ -221,13 +222,41 @@ Module MasCosas
 
     End Sub
 
-    Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
+    Private Sub UsuarioEntraBotonNVItem(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim item As NavigationViewItem = sender
+        Dim icono As FontAwesome5.FontAwesome = item.Icon
+        icono.Saturation(1).Scale(1.2, 1.2, icono.ActualWidth / 2, icono.ActualHeight / 2).Start()
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
 
     End Sub
 
-    Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
+    Private Sub UsuarioSaleBotonNVItem(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim item As NavigationViewItem = sender
+        Dim icono As FontAwesome5.FontAwesome = item.Icon
+        icono.Saturation(1).Scale(1, 1, icono.ActualWidth / 2, icono.ActualHeight / 2).Start()
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
+
+    End Sub
+
+    Private Sub UsuarioEntraBotonMFItem(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim item As MenuFlyoutItem = sender
+        Dim icono As FontAwesome5.FontAwesome = item.Icon
+        icono.Saturation(1).Scale(1.1, 1.1, icono.ActualWidth / 2, icono.ActualHeight / 2).Start()
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
+
+    End Sub
+
+    Private Sub UsuarioSaleBotonMFItem(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim item As MenuFlyoutItem = sender
+        Dim icono As FontAwesome5.FontAwesome = item.Icon
+        icono.Saturation(1).Scale(1, 1, icono.ActualWidth / 2, icono.ActualHeight / 2).Start()
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 

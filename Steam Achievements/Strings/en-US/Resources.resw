@@ -192,7 +192,10 @@
   <data name="StoreTags" xml:space="preserve">
     <value>Steam;Achievements;Games</value>
   </data>
-  <data name="TooltipYoutube.Text" xml:space="preserve">
-    <value>If you click on the achievement a Youtube video will be loaded on how to obtain the achievement</value>
+  <data name="YoutubeDescription.Text" xml:space="preserve">
+    <value>Video on YouTube using the app</value>
+  </data>
+  <data name="YoutubeOpen.Text" xml:space="preserve">
+    <value>Open Video</value>
   </data>
 </root>

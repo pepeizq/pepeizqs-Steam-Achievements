@@ -192,7 +192,10 @@
   <data name="StoreTags" xml:space="preserve">
     <value>Steam;Logros;Juegos</value>
   </data>
-  <data name="TooltipYoutube.Text" xml:space="preserve">
-    <value>Si haces click en el logro se cargara un video de Youtube sobre como obtener el logro</value>
+  <data name="YoutubeDescription.Text" xml:space="preserve">
+    <value>Vídeo en YouTube usando la app</value>
+  </data>
+  <data name="YoutubeOpen.Text" xml:space="preserve">
+    <value>Abrir Vídeo</value>
   </data>
 </root>

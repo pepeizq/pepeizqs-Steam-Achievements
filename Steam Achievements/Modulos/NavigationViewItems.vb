@@ -1,4 +1,5 @@
-﻿Imports Windows.UI
+﻿Imports Microsoft.Toolkit.Uwp.UI.Animations
+Imports Windows.UI
 Imports Windows.UI.Core
 
 Module NavigationViewItems
@@ -38,11 +39,19 @@ Module NavigationViewItems
 
     Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
 
+        Dim item As NavigationViewItem = sender
+        Dim icono As FontAwesome5.FontAwesome = item.Icon
+        icono.Saturation(1).Scale(1.2, 1.2, icono.ActualWidth / 2, icono.ActualHeight / 2).Start()
+
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
 
     End Sub
 
     Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim item As NavigationViewItem = sender
+        Dim icono As FontAwesome5.FontAwesome = item.Icon
+        icono.Saturation(1).Scale(1, 1, icono.ActualWidth / 2, icono.ActualHeight / 2).Start()
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 
