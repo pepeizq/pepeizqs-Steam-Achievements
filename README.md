@@ -1,4 +1,4 @@
-### pepeizq's Steam Achievements
+# pepeizq's Steam Achievements
 
 App for Windows 10 written in Visual Basic for Universal Windows Platform (UWP).
 
