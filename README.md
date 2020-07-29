@@ -1,11 +1,15 @@
-# Steam Games Achievements
+# pepeizq's Steam Achievements
 
 App for Windows 10 written in Visual Basic for Universal Windows Platform (UWP).
 
 ### What does the app do?
 
-With this app you can check your achievements on Steam and watch videos of how you make missing achievements, more information [in my web](https://pepeizqapps.com/app/steam-games-achievements/).
+Check your achievements on Steam with this app, you can compare them with other users and if you need to finish achievements you can see videos on how to do them, more information [in my web](https://pepeizqapps.com/app/pepeizq-steam-achievements/).
 
-[![Image1](https://i.imgur.com/O2k2gHy.png)](https://pepeizqapps.com/app/steam-games-achievements/)
+### Video on Youtube
 
-[![Image2](https://i.imgur.com/ymjtq8Y.png)](https://pepeizqapps.com/app/steam-games-achievements/)
+https://www.youtube.com/watch?v=BYQ6XFuynIo
+
+[![Image1](https://i.imgur.com/sCL82Sm.png)](https://pepeizqapps.com/app/pepeizq-steam-achievements/)
+
+[![Image2](https://i.imgur.com/T1ycWAs.png)](https://pepeizqapps.com/app/pepeizq-steam-achievements/)
