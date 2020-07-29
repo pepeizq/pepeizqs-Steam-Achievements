@@ -92,8 +92,8 @@
                                 </Grid>
 
                                 <controls:DropShadowPanel Grid.Row="1" Color="#6b2121" Margin="0,10,0,0" ShadowOpacity="0.9" BlurRadius="5" HorizontalAlignment="Center">
-                                    <Button x:Name="botonAbrirPermisos" Background="#c84d4d" Padding="12" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
-                                        <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="botonAbrirPermisos" Padding="0" BorderThickness="0" PointerEntered="UsuarioEntraBotonRojo" PointerExited="UsuarioSaleBotonRojo">
+                                        <StackPanel Orientation="Horizontal" Padding="12" Background="#c84d4d">
                                             <TextBlock x:Uid="HowUnlock" Foreground="White"/>
                                         </StackPanel>
                                     </Button>

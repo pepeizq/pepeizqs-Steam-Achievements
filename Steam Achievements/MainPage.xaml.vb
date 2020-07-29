@@ -79,7 +79,7 @@ Public NotInheritable Class MainPage
     Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
 
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "es-ES"
-        Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
+        'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
 
         tbTitulo.Text = Package.Current.DisplayName
 
@@ -129,6 +129,28 @@ Public NotInheritable Class MainPage
     End Sub
 
     Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
+
+    End Sub
+
+    Private Sub UsuarioEntraBotonRojo(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim boton As Button = sender
+        Dim sp As StackPanel = boton.Content
+
+        sp.Background = New SolidColorBrush("#892a2a".ToColor)
+
+        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
+
+    End Sub
+
+    Private Sub UsuarioSaleBotonRojo(sender As Object, e As PointerRoutedEventArgs)
+
+        Dim boton As Button = sender
+        Dim sp As StackPanel = boton.Content
+
+        sp.Background = New SolidColorBrush("#c84d4d".ToColor)
 
         Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
 
