@@ -1,5 +1,4 @@
-﻿Imports FontAwesome.UWP
-Imports Windows.UI
+﻿Imports Windows.UI
 Imports Windows.UI.Core
 
 Module NavigationViewItems

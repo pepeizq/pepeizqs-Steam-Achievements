@@ -13,7 +13,7 @@ Module Juegos
     Dim listaJuegos As New List(Of Juego)
     Dim listaJuegosOcultos As New List(Of JuegoOculto)
 
-    Public Async Sub Cargar(cuenta As SteamCuenta)
+    Public Async Sub Cargar(cuenta As Cuenta)
 
         Dim frame As Frame = Window.Current.Content
         Dim pagina As Page = frame.Content
@@ -30,11 +30,16 @@ Module Juegos
         Dim helper As New LocalObjectStorageHelper
 
         listaJuegos.Clear()
-        If Await helper.FileExistsAsync("listaJuegos" + cuenta.Datos.Jugador(0).ID64) = True Then
-            listaJuegos = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.Datos.Jugador(0).ID64)
+        If Await helper.FileExistsAsync("listaJuegos" + cuenta.ID64) = True Then
+            listaJuegos = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.ID64)
         End If
 
-        Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.Datos.Jugador(0).ID64 + "&include_appinfo=1&include_played_free_games=1"))
+        listaJuegosOcultos.Clear()
+        If Await helper.FileExistsAsync("listaJuegosOcultos" + cuenta.ID64) = True Then
+            listaJuegosOcultos = Await helper.ReadFileAsync(Of List(Of JuegoOculto))("listaJuegosOcultos" + cuenta.ID64)
+        End If
+
+        Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.ID64 + "&include_appinfo=1&include_played_free_games=1"))
 
         If Not htmlJuegos = Nothing Then
             Dim juegos As SteamJuegos = JsonConvert.DeserializeObject(Of SteamJuegos)(htmlJuegos)
@@ -66,15 +71,10 @@ Module Juegos
         If Not listaJuegos Is Nothing Then
             If listaJuegos.Count > 0 Then
                 listaJuegos.Sort(Function(x, y) x.Titulo.CompareTo(y.Titulo))
-                Await helper.SaveFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.Datos.Jugador(0).ID64, listaJuegos)
+                Await helper.SaveFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.ID64, listaJuegos)
 
                 Dim gv As AdaptiveGridView = pagina.FindName("gvJuegos")
                 gv.Items.Clear()
-
-                listaJuegosOcultos.Clear()
-                If Await helper.FileExistsAsync("listaJuegosOcultos") = True Then
-                    listaJuegosOcultos = Await helper.ReadFileAsync(Of List(Of JuegoOculto))("listaJuegosOcultos" + cuenta.Datos.Jugador(0).ID64)
-                End If
 
                 For Each juego In listaJuegos
                     Dim añadir As Boolean = True
@@ -202,10 +202,11 @@ Module Juegos
         Dim nvPrincipal As NavigationView = pagina.FindName("nvPrincipal")
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
-        Dim cuenta As SteamCuenta = nvJuegos.Tag
+        Dim cuenta As Cuenta = nvJuegos.Tag
 
         Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
         nvLogros.Visibility = Visibility.Visible
+        nvLogros.Tag = juego
 
         Dim tbToolTip As TextBlock = New TextBlock With {
             .Text = juego.Titulo
@@ -235,10 +236,10 @@ Module Juegos
         End If
 
         Dim helper As New LocalObjectStorageHelper
-        Dim listaCuentas As New List(Of SteamCuenta)
+        Dim listaCuentas As New List(Of Cuenta)
 
-        If Await helper.FileExistsAsync("listaCuentas2") = True Then
-            listaCuentas = Await helper.ReadFileAsync(Of List(Of SteamCuenta))("listaCuentas2")
+        If Await helper.FileExistsAsync("listaCuentas3") = True Then
+            listaCuentas = Await helper.ReadFileAsync(Of List(Of Cuenta))("listaCuentas3")
         End If
 
         Logros.Cargar(cuenta, juego, listaCuentas, listaJuegos, listaJuegosOcultos)
@@ -259,9 +260,9 @@ Module Juegos
             Dim nvPrincipal As NavigationView = pagina.FindName("nvPrincipal")
 
             Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
-            Dim cuenta As SteamCuenta = nvJuegos.Tag
+            Dim cuenta As Cuenta = nvJuegos.Tag
 
-            Dim logros2 As List(Of Logro) = Await Logros.SacarJuegoLogros(cuenta.Datos.Jugador(0).ID64, juego)
+            Dim logros2 As List(Of Logro) = Await Logros.SacarJuegoLogros(cuenta.ID64, juego)
 
             If logros2.Count = 0 Then
                 Dim id As String = String.Empty
@@ -272,6 +273,7 @@ Module Juegos
 
                     If juego.ID = juegoItem.ID Then
                         gv.Items.Remove(item)
+                        id = juego.ID
                     End If
                 Next
 
@@ -314,7 +316,9 @@ Module Juegos
                             End If
                         Next
 
-                        tbLogros.Text = contadorLogrosTerminados.ToString + "/" + logros2.Count.ToString + " • " + (CInt((100 / juego.Logros.Count) * contadorLogrosTerminados)).ToString + "%"
+                        If juego.Logros.Count > 0 Then
+                            tbLogros.Text = contadorLogrosTerminados.ToString + "/" + logros2.Count.ToString + " • " + (CInt((100 / juego.Logros.Count) * contadorLogrosTerminados)).ToString + "%"
+                        End If
                     End If
                 Next
             End If

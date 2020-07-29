@@ -1,5 +1,4 @@
-﻿Imports FontAwesome.UWP
-Imports Microsoft.Services.Store.Engagement
+﻿Imports Microsoft.Services.Store.Engagement
 Imports Windows.System
 Imports Windows.UI.Core
 
@@ -9,8 +8,8 @@ Module MasCosas
 
         Dim recursos As New Resources.ResourceLoader()
 
-        Dim iconoMasCosas As New FontAwesome.UWP.FontAwesome With {
-            .Icon = FontAwesomeIcon.CaretDown,
+        Dim iconoMasCosas As New FontAwesome5.FontAwesome With {
+            .Icon = FontAwesome5.EFontAwesomeIcon.Solid_CaretDown,
             .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimario"))
         }
 
@@ -41,8 +40,8 @@ Module MasCosas
             .ShowMode = FlyoutShowMode.Transient
         }
 
-        Dim iconoMasApps As New FontAwesome.UWP.FontAwesome With {
-            .Icon = FontAwesomeIcon.Cube
+        Dim iconoMasApps As New FontAwesome5.FontAwesome With {
+            .Icon = FontAwesome5.EFontAwesomeIcon.Solid_Cube
         }
 
         Dim menuItemMasApps As New MenuFlyoutItem With {
@@ -56,8 +55,8 @@ Module MasCosas
 
         menu.Items.Add(menuItemMasApps)
 
-        Dim iconoDeals As New FontAwesome.UWP.FontAwesome With {
-            .Icon = FontAwesomeIcon.Cube
+        Dim iconoDeals As New FontAwesome5.FontAwesome With {
+            .Icon = FontAwesome5.EFontAwesomeIcon.Solid_Cube
         }
 
         Dim menuItemDeals As New MenuFlyoutItem With {
@@ -73,8 +72,8 @@ Module MasCosas
 
         menu.Items.Add(New MenuFlyoutSeparator)
 
-        Dim iconoVotar As New FontAwesome.UWP.FontAwesome With {
-            .Icon = FontAwesomeIcon.ThumbsOutlineUp
+        Dim iconoVotar As New FontAwesome5.FontAwesome With {
+            .Icon = FontAwesome5.EFontAwesomeIcon.Regular_ThumbsUp
         }
 
         Dim menuItemVotar As New MenuFlyoutItem With {
@@ -88,8 +87,8 @@ Module MasCosas
 
         menu.Items.Add(menuItemVotar)
 
-        Dim iconoContacto As New FontAwesome.UWP.FontAwesome With {
-            .Icon = FontAwesomeIcon.CommentOutline
+        Dim iconoContacto As New FontAwesome5.FontAwesome With {
+            .Icon = FontAwesome5.EFontAwesomeIcon.Regular_Comment
         }
 
         Dim menuItemContacto As New MenuFlyoutItem With {
@@ -103,8 +102,8 @@ Module MasCosas
 
         menu.Items.Add(menuItemContacto)
 
-        Dim iconoReportar As New FontAwesome.UWP.FontAwesome With {
-            .Icon = FontAwesomeIcon.Bug
+        Dim iconoReportar As New FontAwesome5.FontAwesome With {
+            .Icon = FontAwesome5.EFontAwesomeIcon.Solid_Bug
         }
 
         Dim menuItemReportar As New MenuFlyoutItem With {
@@ -119,8 +118,8 @@ Module MasCosas
         menu.Items.Add(menuItemReportar)
 
         If Not traduccion = Nothing Then
-            Dim iconoTraducir As New FontAwesome.UWP.FontAwesome With {
-                .Icon = FontAwesomeIcon.Globe
+            Dim iconoTraducir As New FontAwesome5.FontAwesome With {
+                .Icon = FontAwesome5.EFontAwesomeIcon.Solid_Globe
             }
 
             Dim menuItemTraducir As New MenuFlyoutItem With {
@@ -142,8 +141,8 @@ Module MasCosas
                 menu.Items.Add(New MenuFlyoutSeparator)
             End If
 
-            Dim iconoCodigoFuente As New FontAwesome.UWP.FontAwesome With {
-                .Icon = FontAwesomeIcon.Github
+            Dim iconoCodigoFuente As New FontAwesome5.FontAwesome With {
+                .Icon = FontAwesome5.EFontAwesomeIcon.Brands_Github
             }
 
             Dim menuItemCodigoFuente As New MenuFlyoutItem With {

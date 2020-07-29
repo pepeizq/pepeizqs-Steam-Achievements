@@ -126,6 +126,12 @@
   <data name="Achievements" xml:space="preserve">
     <value>Logros</value>
   </data>
+  <data name="AchievementsCompleted.Text" xml:space="preserve">
+    <value>Logros Completados</value>
+  </data>
+  <data name="AchievementsNotCompleted.Text" xml:space="preserve">
+    <value>Logros Pendientes</value>
+  </data>
   <data name="AddAccount.Text" xml:space="preserve">
     <value>Añadir Usuario</value>
   </data>
@@ -172,7 +178,7 @@
     <value>Este juego no tiene logros</value>
   </data>
   <data name="OtherUsersHasAchievement" xml:space="preserve">
-    <value>Otros usuarios tienen este logro</value>
+    <value>Otros usuarios tienen este logro:</value>
   </data>
   <data name="Search.Text" xml:space="preserve">
     <value>Busca y selecciona un juego</value>
@@ -181,7 +187,7 @@
     <value>Selecciona un usuario</value>
   </data>
   <data name="StoreDescription" xml:space="preserve">
-    <value>Busca información para obtener y comparar logros en Steam con esta aplicación.</value>
+    <value>Comprueba tus logros en Steam con esta app, podras compararlos con otros usuarios y si te faltan por terminar logros puedes ver videos sobre como hacerlos.</value>
   </data>
   <data name="StoreTags" xml:space="preserve">
     <value>Steam;Logros;Juegos</value>

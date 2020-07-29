@@ -1,6 +1,4 @@
-﻿Imports FontAwesome.UWP
-Imports Microsoft.Toolkit.Uwp.Helpers
-Imports Newtonsoft.Json
+﻿Imports Microsoft.Toolkit.Uwp.Helpers
 Imports Windows.ApplicationModel.Core
 Imports Windows.UI
 Imports Windows.UI.Core
@@ -21,6 +19,17 @@ Public NotInheritable Class MainPage
     End Sub
 
     Private Sub Nv_ItemInvoked(sender As NavigationView, args As NavigationViewItemInvokedEventArgs)
+
+        meYoutube.Stop()
+        meYoutube.Visibility = Visibility.Collapsed
+
+        Dim logros As NavigationViewItem = nvPrincipal.MenuItems(2)
+        Dim juegoTitulo As String = String.Empty
+
+        If logros.Visibility = Visibility.Visible Then
+            Dim juego As Juego = logros.Tag
+            juegoTitulo = juego.Titulo
+        End If
 
         Dim recursos As New Resources.ResourceLoader()
 
@@ -50,10 +59,15 @@ Public NotInheritable Class MainPage
 
                 spBuscador.Visibility = Visibility.Visible
 
-            ElseIf item.Text = recursos.GetString("Achievements") Then
+            ElseIf item.Text = juegoTitulo Then
                 GridVisibilidad(gridLogros, item.Text)
 
                 spBuscador.Visibility = Visibility.Collapsed
+
+                gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
+                gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
+                svLogrosJuego.Visibility = Visibility.Visible
+                gridJuegoSeleccionadoLogroControles.Visibility = Visibility.Collapsed
 
             ElseIf item.Text = recursos.GetString("MoreThings") Then
                 FlyoutBase.ShowAttachedFlyout(nvPrincipal.MenuItems.Item(nvPrincipal.MenuItems.Count - 1))
@@ -65,7 +79,7 @@ Public NotInheritable Class MainPage
     Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
 
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "es-ES"
-        'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
+        Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
 
         tbTitulo.Text = Package.Current.DisplayName
 
@@ -147,71 +161,6 @@ Public NotInheritable Class MainPage
     Private Sub BotonAgregarUsuario_Click(sender As Object, e As RoutedEventArgs) Handles botonAgregarUsuario.Click
 
         Cuentas.Añadir(tbUsuarioCuenta.Text)
-
-    End Sub
-
-    Private Async Sub LvLogros_ItemClick(sender As Object, e As ItemClickEventArgs) Handles lvLogros.ItemClick
-
-        Dim grid As Grid = e.ClickedItem
-        Dim logro As Logro = grid.Tag
-
-        gridJuegoSeleccionadoProgreso.Visibility = Visibility.Collapsed
-        gridJuegoSeleccionadoLogro.Visibility = Visibility.Visible
-        botonVolverListadoLogros.Visibility = Visibility.Visible
-
-        Try
-            imagenJuegoSeleccionadoLogro.Source = logro.Imagen
-            tbJuegoSeleccionadoLogro.Text = logro.Nombre
-        Catch ex As Exception
-
-        End Try
-
-        lvLogros.Visibility = Visibility.Collapsed
-
-        'Dim cadenaBusqueda As String = logro.Juego.Titulo.Replace(" ", "+") + "+" + logro.Nombre.Replace(" ", "+")
-        'Dim html As String = Await HttpClient(New Uri("https://www.youtube.com/results?search_query=" + cadenaBusqueda))
-
-        'If html.Contains(ChrW(34) + "https://i.ytimg.com/") Then
-        '    Dim temp, temp2 As String
-        '    Dim int, int2 As Integer
-
-        '    int = html.IndexOf(ChrW(34) + "https://i.ytimg.com/")
-        '    temp = html.Remove(0, int + 1)
-
-        '    int2 = temp.IndexOf("?")
-        '    temp2 = temp.Remove(int2, temp.Length - int2)
-
-        '    temp2 = temp2.Replace("https://i.ytimg.com/vi/", Nothing)
-        '    temp2 = temp2.Replace("/hqdefault.jpg", Nothing)
-        '    temp2 = temp2.Trim
-
-        '    Dim id As String = temp2
-        '    Dim html2 As String = Await Decompiladores.HttpClient(New Uri("https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=" + id + "&format=json"))
-
-        '    If Not html2 = Nothing Then
-        '        Dim video As YouTube = JsonConvert.DeserializeObject(Of YouTube)(html2)
-
-        '        If Not video Is Nothing Then
-        '            Dim html3 As String = video.Html
-        '            html3 = html3.Replace("width=" + ChrW(34) + "480", "width=" + ChrW(34) + "780")
-        '            html3 = html3.Replace("height=" + ChrW(34) + "270", "height=" + ChrW(34) + "485")
-
-        '            wvLogros.Visibility = Visibility.Visible
-        '            wvLogros.NavigateToString(html3)
-        '        End If
-        '    End If
-        'End If
-
-    End Sub
-
-    Private Sub BotonVolverListadoLogros_Click(sender As Object, e As RoutedEventArgs) Handles botonVolverListadoLogros.Click
-
-        gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
-        gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
-        botonVolverListadoLogros.Visibility = Visibility.Collapsed
-
-        lvLogros.Visibility = Visibility.Visible
-        wvLogros.Visibility = Visibility.Collapsed
 
     End Sub
 

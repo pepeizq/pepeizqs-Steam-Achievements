@@ -21,6 +21,20 @@ Public Class Logro
 
 End Class
 
+Public Class LogrosOtraCuenta
+
+    Public Property Cuenta As Cuenta
+    Public Property LogrosJuego As SteamJugadorLogros
+
+    Public Sub New(ByVal cuenta As Cuenta, ByVal logrosJuego As SteamJugadorLogros)
+        Me.Cuenta = cuenta
+        Me.LogrosJuego = logrosJuego
+    End Sub
+
+End Class
+
+'------------------------------------------------------------
+
 Public Class SteamJugadorLogros
 
     <JsonProperty("playerstats")>
@@ -71,14 +85,33 @@ Public Class SteamJuegoLogrosDatos
     <JsonProperty("gameName")>
     Public TituloJuego As String
 
-    <JsonProperty("gameName")>
-    Public Datos2 As String
+    <JsonProperty("availableGameStats")>
+    Public Datos2 As SteamJuegoLogrosDatos2
 
 End Class
 
 Public Class SteamJuegoLogrosDatos2
 
-    <JsonProperty("gameName")>
-    Public TituloJuego As String
+    <JsonProperty("achievements")>
+    Public Logros As List(Of SteamJuegoLogrosDatosLogro)
+
+End Class
+
+Public Class SteamJuegoLogrosDatosLogro
+
+    <JsonProperty("name")>
+    Public NombreAPI As String
+
+    <JsonProperty("displayName")>
+    Public NombreMostrar As String
+
+    <JsonProperty("description")>
+    Public Descripcion As String
+
+    <JsonProperty("icon")>
+    Public IconoCompletado As String
+
+    <JsonProperty("icongray")>
+    Public IconoPendiente As String
 
 End Class

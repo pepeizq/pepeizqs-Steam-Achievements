@@ -2,12 +2,14 @@ Imports Newtonsoft.Json
 
 Public Class Cuenta
 
-    Public Property Cuenta As SteamCuenta
-    Public Property HtmlLogros As String
+    Public Property ID64 As String
+    Public Property Nombre As String
+    Public Property Avatar As String
 
-    Public Sub New(ByVal cuenta As SteamCuenta, ByVal htmllogros As String)
-        Me.Cuenta = cuenta
-        Me.HtmlLogros = htmllogros
+    Public Sub New(ByVal id64 As String, ByVal nombre As String, ByVal avatar As String)
+        Me.ID64 = id64
+        Me.Nombre = nombre
+        Me.Avatar = avatar
     End Sub
 
 End Class

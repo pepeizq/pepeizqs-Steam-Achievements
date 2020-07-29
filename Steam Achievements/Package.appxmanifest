@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="5078pepeizq.SteamAchievementsEnhanced" Publisher="CN=C91088FC-231C-4E13-86D1-5F9658173DA7" Version="1.2.0.0" />
+  <Identity Name="5078pepeizq.SteamAchievementsEnhanced" Publisher="CN=C91088FC-231C-4E13-86D1-5F9658173DA7" Version="2.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="a674a1af-7c40-46aa-aeac-12f3b42bf9f1" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Steam Games Achievements</DisplayName>
+    <DisplayName>pepeizq&apos;s Steam Achievements</DisplayName>
     <PublisherDisplayName>pepeizq's apps</PublisherDisplayName>
     <Logo>Assets\Logos\StoreLogo.png</Logo>
   </Properties>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Steam_Achievements.App">
-      <uap:VisualElements DisplayName="Steam Games Achievements" Square150x150Logo="Assets\Logos\Square150x150Logo.png" Square44x44Logo="Assets\Logos\Square44x44Logo.png" Description="https://pepeizqapps.com/" BackgroundColor="#2e5e7c">
+      <uap:VisualElements DisplayName="pepeizq&apos;s Steam Achievements" Square150x150Logo="Assets\Logos\Square150x150Logo.png" Square44x44Logo="Assets\Logos\Square44x44Logo.png" Description="https://pepeizqapps.com/" BackgroundColor="#2e5e7c">
         <uap:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\Logos\BadgeLogo.png" />
         <uap:DefaultTile Wide310x150Logo="Assets\Logos\Wide310x150Logo.png" ShortName="Steam Achievements" Square310x310Logo="Assets\Logos\LargeTile.png" Square71x71Logo="Assets\Logos\SmallTile.png">
           <uap:ShowNameOnTiles>
