@@ -171,6 +171,9 @@
   <data name="MoreThings_SourceCode" xml:space="preserve">
     <value>Código Fuente</value>
   </data>
+  <data name="MoreThings_Video" xml:space="preserve">
+    <value>Vídeo en YouTube</value>
+  </data>
   <data name="MoreThings_VoteApp" xml:space="preserve">
     <value>Vota la App</value>
   </data>

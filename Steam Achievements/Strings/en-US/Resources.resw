@@ -171,6 +171,9 @@
   <data name="MoreThings_SourceCode" xml:space="preserve">
     <value>Source Code</value>
   </data>
+  <data name="MoreThings_Video" xml:space="preserve">
+    <value>Video on YouTube</value>
+  </data>
   <data name="MoreThings_VoteApp" xml:space="preserve">
     <value>Vote the App</value>
   </data>
