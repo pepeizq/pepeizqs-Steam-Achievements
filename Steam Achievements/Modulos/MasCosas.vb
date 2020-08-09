@@ -11,12 +11,12 @@ Module MasCosas
 
         Dim iconoMasCosas As New FontAwesome5.FontAwesome With {
             .Icon = FontAwesome5.EFontAwesomeIcon.Solid_CaretDown,
-            .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimero"))
+            .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimario"))
         }
 
         Dim tbMasCosas As New TextBlock With {
             .Text = recursos.GetString("MoreThings"),
-            .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimero"))
+            .Foreground = New SolidColorBrush(App.Current.Resources("ColorPrimario"))
         }
 
         Dim itemMasCosas As New NavigationViewItem With {
