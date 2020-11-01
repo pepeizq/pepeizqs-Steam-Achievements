@@ -297,8 +297,13 @@ Module Logros
 
         '-------------------------------
 
+        Dim fondoBoton As New SolidColorBrush With {
+            .Color = App.Current.Resources("ColorSecundario"),
+            .Opacity = 0.7
+        }
+
         Dim boton As New Button With {
-            .Background = New SolidColorBrush(App.Current.Resources("ColorSecundario")),
+            .Background = fondoBoton,
             .Padding = New Thickness(10, 10, 10, 10),
             .HorizontalAlignment = HorizontalAlignment.Stretch,
             .HorizontalContentAlignment = HorizontalAlignment.Stretch,

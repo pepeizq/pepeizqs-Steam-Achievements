@@ -144,6 +144,9 @@
   <data name="ButtonRemoveAds.Text" xml:space="preserve">
     <value>Remove Ads</value>
   </data>
+  <data name="BuyApp.Text" xml:space="preserve">
+    <value>Buy App</value>
+  </data>
   <data name="Games" xml:space="preserve">
     <value>Games</value>
   </data>
@@ -164,6 +167,12 @@
   </data>
   <data name="MoreThings_MoreApps" xml:space="preserve">
     <value>More Apps</value>
+  </data>
+  <data name="MoreThings_RateApp" xml:space="preserve">
+    <value>Rate the App</value>
+  </data>
+  <data name="MoreThings_RateAppThanks" xml:space="preserve">
+    <value>Thanks for rating the app</value>
   </data>
   <data name="MoreThings_ReportBug" xml:space="preserve">
     <value>Report a Bug</value>
@@ -194,6 +203,9 @@
   </data>
   <data name="StoreTags" xml:space="preserve">
     <value>Steam;Achievements;Games</value>
+  </data>
+  <data name="TrialMessage.Text" xml:space="preserve">
+    <value>You are using the trial version of the app, the video is limited to 30 seconds.</value>
   </data>
   <data name="YoutubeDescription.Text" xml:space="preserve">
     <value>Video on YouTube using the app</value>

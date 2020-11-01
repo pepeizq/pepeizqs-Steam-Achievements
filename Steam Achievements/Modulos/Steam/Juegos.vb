@@ -235,6 +235,14 @@ Module Juegos
             gridLogros.Background = New SolidColorBrush(Colors.LightGray)
         End If
 
+        Dim gridLogrosJuego As Grid = pagina.FindName("gridLogrosJuego")
+        Dim fondo As String = dominioImagenes + "/steam/apps/" + juego.ID + "/page_bg_generated_v6b.jpg"
+        Dim fondoBrush As New ImageBrush With {
+            .ImageSource = New BitmapImage(New Uri(fondo)),
+            .Stretch = Stretch.UniformToFill
+        }
+        gridLogrosJuego.Background = fondoBrush
+
         Dim helper As New LocalObjectStorageHelper
         Dim listaCuentas As New List(Of Cuenta)
 

@@ -30,11 +30,17 @@ Module Youtube
         RemoveHandler botonVolver.Click, AddressOf Volver
         AddHandler botonVolver.Click, AddressOf Volver
 
+        Dim gridMensajeTrial As Grid = pagina.FindName("gridMensajeTrial")
+        gridMensajeTrial.Visibility = Visibility.Collapsed
+
         Dim sv As ScrollViewer = pagina.FindName("svLogrosJuego")
         sv.Visibility = Visibility.Collapsed
 
+        Dim spVideo As StackPanel = pagina.FindName("spLogroVideo")
+        spVideo.Visibility = Visibility.Visible
+
         Dim mel As MediaElement = pagina.FindName("meYoutube")
-        mel.Visibility = Visibility.Visible
+        mel.AreTransportControlsEnabled = False
         mel.Source = Nothing
 
         Dim cadenaBusqueda As String = juego.Titulo + " achievement " + logro.Nombre
@@ -66,17 +72,23 @@ Module Youtube
                         End If
                     Next
 
-                    mel.Source = New Uri(enlaceMel)
-                    mel.Play()
+                    If Not enlaceMel = String.Empty Then
+                        mel.Source = New Uri(enlaceMel)
+
+                        If Await Trial.Detectar = False Then
+                            gridMensajeTrial.Visibility = Visibility.Collapsed
+                            mel.AreTransportControlsEnabled = True
+                            mel.Play()
+                        Else
+                            gridMensajeTrial.Visibility = Visibility.Visible
+                            mel.AreTransportControlsEnabled = False
+                            Await Task.Delay(30000)
+                            mel.Stop()
+                        End If
+                    End If
                 End If
             End If
         End If
-
-        Dim botonAbrir As Button = pagina.FindName("botonAbrirVideoYoutube")
-        botonAbrir.Tag = enlaceYoutube
-
-        RemoveHandler botonAbrir.Click, AddressOf AbrirVideo
-        AddHandler botonAbrir.Click, AddressOf AbrirVideo
 
     End Sub
 
@@ -98,8 +110,10 @@ Module Youtube
         sv.Visibility = Visibility.Visible
 
         Dim mel As MediaElement = pagina.FindName("meYoutube")
-        mel.Visibility = Visibility.Collapsed
         mel.Stop()
+
+        Dim spVideo As StackPanel = pagina.FindName("spLogroVideo")
+        spVideo.Visibility = Visibility.Collapsed
 
     End Sub
 

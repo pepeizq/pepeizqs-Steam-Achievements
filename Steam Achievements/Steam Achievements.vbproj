@@ -129,6 +129,7 @@
     <Compile Include="Modulos\Steam\Cuentas.vb" />
     <Compile Include="Modulos\Steam\Juegos.vb" />
     <Compile Include="Modulos\Steam\Logros.vb" />
+    <Compile Include="Modulos\Trial.vb" />
     <Compile Include="Modulos\Youtube.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
   </ItemGroup>
@@ -257,16 +258,16 @@
       <Version>10.1705.16001</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>6.1.0</Version>
+      <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>6.1.0</Version>
+      <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="VideoLibrary">
-      <Version>3.0.5</Version>
+      <Version>3.0.7</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -153,7 +153,14 @@
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Vertical" Padding="20" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1" Background="{StaticResource BrushPrimario}">
+                    <StackPanel Grid.Column="0" Orientation="Vertical" Padding="30" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1">
+                        <StackPanel.Background>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Color="#505e6a" Offset="0.5" />
+                                <GradientStop Color="#2a3a49" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </StackPanel.Background>
+                        
                         <Border BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1" Width="250">
                             <controls:ImageEx x:Name="imagenJuegoSeleccionado" Stretch="Uniform" IsCacheEnabled="True"/>
                         </Border>
@@ -184,26 +191,18 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button x:Name="botonVolverListadoLogros" Grid.Column="0" Padding="10" VerticalAlignment="Center" Background="{StaticResource BrushSecundario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
+                            <Button x:Name="botonVolverListadoLogros" Grid.Column="0" Padding="10" VerticalAlignment="Center" Background="Transparent" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
                                 <StackPanel Orientation="Horizontal">
                                     <iconos:FontAwesome Icon="Solid_ArrowLeft" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
                                     <TextBlock x:Uid="Back" Foreground="White"/>
                                 </StackPanel>
                             </Button>
-
-                            <Button x:Name="botonAbrirVideoYoutube" Grid.Column="2" Padding="10" VerticalAlignment="Center" Background="{StaticResource BrushSecundario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
-                                <StackPanel Orientation="Horizontal">
-                                    <iconos:FontAwesome Icon="Brands_Youtube" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
-                                    <TextBlock Text="YouTube" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
                         </Grid>
                     </StackPanel>
 
-                    <Grid Grid.Column="1" Margin="20" Padding="10" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1">
+                    <Grid x:Name="gridLogrosJuego" Grid.Column="1" Margin="20" Padding="10" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1">
                         <Grid.Background>
                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                 <GradientStop Color="#505e6a" Offset="0.5" />
@@ -241,7 +240,31 @@
                             </StackPanel> 
                         </ScrollViewer>
 
-                        <MediaElement x:Name="meYoutube" AreTransportControlsEnabled="True" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <StackPanel x:Name="spLogroVideo" Orientation="Vertical" Visibility="Collapsed">
+                            <Grid x:Name="gridMensajeTrial" Margin="0,0,0,30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <controls:DropShadowPanel Grid.Column="0" Color="{StaticResource ColorCajaRojaSombra}" ShadowOpacity="0.9" BlurRadius="5" HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal" Background="{StaticResource ColorCajaRojaFondo}" Padding="15">
+                                        <iconos:FontAwesome Icon="Solid_Exclamation" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White" FontSize="18"/>
+                                        <TextBlock x:Uid="TrialMessage" Foreground="White" VerticalAlignment="Center" LineHeight="20"/>
+                                    </StackPanel>
+                                </controls:DropShadowPanel>
+
+                                <Button x:Name="botonComprarApp" Grid.Column="1" VerticalAlignment="Center" Margin="30,0,0,0" Padding="15,10" Background="Transparent" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock x:Uid="BuyApp" Foreground="White"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                                                     
+                            <MediaElement x:Name="meYoutube" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        </StackPanel>
+                       
                     </Grid>                   
                 </Grid>
 

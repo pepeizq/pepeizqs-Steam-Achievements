@@ -1,4 +1,5 @@
 ﻿Imports Windows.ApplicationModel.Core
+Imports Windows.Services.Store
 Imports Windows.System
 Imports Windows.UI
 Imports Windows.UI.Core
@@ -21,7 +22,7 @@ Public NotInheritable Class MainPage
     Private Sub Nv_ItemInvoked(sender As NavigationView, args As NavigationViewItemInvokedEventArgs)
 
         meYoutube.Stop()
-        meYoutube.Visibility = Visibility.Collapsed
+        spLogroVideo.Visibility = Visibility.Collapsed
 
         Dim logros As NavigationViewItem = nvPrincipal.MenuItems(2)
         Dim juegoTitulo As String = String.Empty
@@ -189,6 +190,23 @@ Public NotInheritable Class MainPage
     Private Async Sub BotonAbrirYoutube_Click(sender As Object, e As RoutedEventArgs) Handles botonAbrirYoutube.Click
 
         Await Launcher.LaunchUriAsync(New Uri("https://www.youtube.com/watch?v=BYQ6XFuynIo"))
+
+    End Sub
+
+    'CONFIG-----------------------------------------------
+
+    Private Async Sub BotonComprarApp_Click(sender As Object, e As RoutedEventArgs) Handles botonComprarApp.Click
+
+        Dim usuarios As IReadOnlyList(Of User) = Await User.FindAllAsync
+
+        If Not usuarios Is Nothing Then
+            If usuarios.Count > 0 Then
+                Dim usuario As User = usuarios(0)
+
+                Dim contexto As StoreContext = StoreContext.GetForUser(usuario)
+                Await contexto.RequestPurchaseAsync("9NSD0JRNLMB7")
+            End If
+        End If
 
     End Sub
 

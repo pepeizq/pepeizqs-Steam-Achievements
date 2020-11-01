@@ -144,6 +144,9 @@
   <data name="ButtonRemoveAds.Text" xml:space="preserve">
     <value>Quitar Anuncios</value>
   </data>
+  <data name="BuyApp.Text" xml:space="preserve">
+    <value>Comprar App</value>
+  </data>
   <data name="Games" xml:space="preserve">
     <value>Juegos</value>
   </data>
@@ -165,6 +168,12 @@
   <data name="MoreThings_MoreApps" xml:space="preserve">
     <value>Más Apps</value>
   </data>
+  <data name="MoreThings_RateApp" xml:space="preserve">
+    <value>Califica la App</value>
+  </data>
+  <data name="MoreThings_RateAppThanks" xml:space="preserve">
+    <value>Gracias por calificar la app</value>
+  </data>
   <data name="MoreThings_ReportBug" xml:space="preserve">
     <value>Informa de un Fallo</value>
   </data>
@@ -173,9 +182,6 @@
   </data>
   <data name="MoreThings_Video" xml:space="preserve">
     <value>Vídeo en YouTube</value>
-  </data>
-  <data name="MoreThings_VoteApp" xml:space="preserve">
-    <value>Vota la App</value>
   </data>
   <data name="NoAchievements.Text" xml:space="preserve">
     <value>Este juego no tiene logros</value>
@@ -194,6 +200,9 @@
   </data>
   <data name="StoreTags" xml:space="preserve">
     <value>Steam;Logros;Juegos</value>
+  </data>
+  <data name="TrialMessage.Text" xml:space="preserve">
+    <value>Estás usando la versión de prueba de la app, el video está limitado a 30 segundos.</value>
   </data>
   <data name="YoutubeDescription.Text" xml:space="preserve">
     <value>Vídeo en YouTube usando la app</value>
