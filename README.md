@@ -10,6 +10,6 @@ Check your achievements on Steam with this app, you can compare them with other 
 
 https://www.youtube.com/watch?v=BYQ6XFuynIo
 
-[![Image1](https://i.imgur.com/sCL82Sm.png)](https://pepeizqapps.com/app/pepeizq-steam-achievements/)
+[![Image1](https://i.imgur.com/O8ge1Jo.png)](https://pepeizqapps.com/app/pepeizq-steam-achievements/)
 
-[![Image2](https://i.imgur.com/T1ycWAs.png)](https://pepeizqapps.com/app/pepeizq-steam-achievements/)
+[![Image2](https://i.imgur.com/hZ41mYN.png)](https://pepeizqapps.com/app/pepeizq-steam-achievements/)
