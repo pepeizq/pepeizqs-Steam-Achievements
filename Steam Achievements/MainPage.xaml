@@ -202,7 +202,7 @@
                             </StackPanel> 
                         </ScrollViewer>
 
-                        <StackPanel x:Name="spLogroVideo" Orientation="Vertical" Visibility="Collapsed">
+                        <StackPanel x:Name="spLogroVideo" Orientation="Vertical" Visibility="Collapsed" VerticalAlignment="Center">
                             <Grid x:Name="gridMensajeTrial" Margin="0,0,0,30">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -226,7 +226,7 @@
                                 </Button>
                             </Grid>
 
-                            <MediaElement x:Name="meYoutube" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                            <MediaElement x:Name="meYoutube" AreTransportControlsEnabled="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Grid>                   
                 </Grid>

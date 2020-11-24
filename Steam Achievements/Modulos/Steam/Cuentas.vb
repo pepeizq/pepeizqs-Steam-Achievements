@@ -165,7 +165,8 @@ Namespace Steam
                 For Each cuenta In listaCuentas
                     If Not cuenta Is Nothing Then
                         Dim spUsuario As New StackPanel With {
-                            .Orientation = Orientation.Horizontal
+                            .Orientation = Orientation.Horizontal,
+                            .Margin = New Thickness(0, 0, 0, 20)
                         }
 
                         '-------------------------------
