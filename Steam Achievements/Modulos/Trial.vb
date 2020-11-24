@@ -36,5 +36,19 @@ Module Trial
 
     End Function
 
+    Public Async Sub ComprarAppClick(sender As Object, e As RoutedEventArgs)
+
+        Dim usuarios As IReadOnlyList(Of User) = Await User.FindAllAsync
+
+        If Not usuarios Is Nothing Then
+            If usuarios.Count > 0 Then
+                Dim usuario As User = usuarios(0)
+
+                Dim contexto As StoreContext = StoreContext.GetForUser(usuario)
+                Await contexto.RequestPurchaseAsync("9NSD0JRNLMB7")
+            End If
+        End If
+
+    End Sub
 
 End Module

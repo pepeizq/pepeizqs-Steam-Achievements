@@ -30,6 +30,23 @@ Module Youtube
         RemoveHandler botonVolver.Click, AddressOf Volver
         AddHandler botonVolver.Click, AddressOf Volver
 
+        RemoveHandler botonVolver.PointerEntered, AddressOf Interfaz.Entra_Boton_IconoTexto
+        AddHandler botonVolver.PointerEntered, AddressOf Interfaz.Entra_Boton_IconoTexto
+
+        RemoveHandler botonVolver.PointerExited, AddressOf Interfaz.Sale_Boton_IconoTexto
+        AddHandler botonVolver.PointerExited, AddressOf Interfaz.Sale_Boton_IconoTexto
+
+        Dim botonComprarApp As Button = pagina.FindName("botonComprarApp")
+
+        RemoveHandler botonComprarApp.Click, AddressOf Trial.ComprarAppClick
+        AddHandler botonComprarApp.Click, AddressOf Trial.ComprarAppClick
+
+        RemoveHandler botonComprarApp.PointerEntered, AddressOf Interfaz.Entra_Boton_Texto
+        AddHandler botonComprarApp.PointerEntered, AddressOf Interfaz.Entra_Boton_Texto
+
+        RemoveHandler botonComprarApp.PointerExited, AddressOf Interfaz.Sale_Boton_Texto
+        AddHandler botonComprarApp.PointerExited, AddressOf Interfaz.Sale_Boton_Texto
+
         Dim gridMensajeTrial As Grid = pagina.FindName("gridMensajeTrial")
         gridMensajeTrial.Visibility = Visibility.Collapsed
 

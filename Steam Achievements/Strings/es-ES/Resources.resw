@@ -156,32 +156,50 @@
   <data name="MoreThings" xml:space="preserve">
     <value>Más Cosas</value>
   </data>
-  <data name="MoreThings_Back" xml:space="preserve">
-    <value>Volver</value>
-  </data>
-  <data name="MoreThings_Contact" xml:space="preserve">
+  <data name="MoreThingsContact" xml:space="preserve">
     <value>Contactar</value>
   </data>
-  <data name="MoreThings_HelpTranslate" xml:space="preserve">
+  <data name="MoreThingsHelpTranslate" xml:space="preserve">
     <value>Ayuda a Traducir</value>
   </data>
-  <data name="MoreThings_MoreApps" xml:space="preserve">
-    <value>Más Apps</value>
+  <data name="MoreThingsHelpTranslateDescription" xml:space="preserve">
+    <value>Si la aplicación no está en tu idioma, puedes ayudarme a traducirla a tu idioma usando la plataforma Poeditor.</value>
   </data>
-  <data name="MoreThings_RateApp" xml:space="preserve">
-    <value>Califica la App</value>
+  <data name="MoreThingsMyTwitterDescription" xml:space="preserve">
+    <value>En mi cuenta de Twitter iré comentando los avances que vaya realizando en mis aplicaciones y juegos, pero también pondré cosas relacionadas con plataformas de videojuegos de PC.</value>
   </data>
-  <data name="MoreThings_RateAppThanks" xml:space="preserve">
+  <data name="MoreThingsOpen" xml:space="preserve">
+    <value>Abrir</value>
+  </data>
+  <data name="MoreThingspepeizqappsDescription" xml:space="preserve">
+    <value>Si quieres contactar conmigo o ver otras aplicaciones y juegos que he creado, puedes visitar mi web.</value>
+  </data>
+  <data name="MoreThingspepeizqdealsDescription" xml:space="preserve">
+    <value>También he creado una web de ofertas de videojuegos para PC, os animo a visitar la web.</value>
+  </data>
+  <data name="MoreThingsRate" xml:space="preserve">
+    <value>Calificar</value>
+  </data>
+  <data name="MoreThingsRateApp" xml:space="preserve">
+    <value>Calificar la Aplicación</value>
+  </data>
+  <data name="MoreThingsRateAppDescription" xml:space="preserve">
+    <value>Puedes calificar la aplicación con la valoración que tu creas que merezca.</value>
+  </data>
+  <data name="MoreThingsRateAppThanks" xml:space="preserve">
     <value>Gracias por calificar la app</value>
   </data>
-  <data name="MoreThings_ReportBug" xml:space="preserve">
-    <value>Informa de un Fallo</value>
-  </data>
-  <data name="MoreThings_SourceCode" xml:space="preserve">
+  <data name="MoreThingsSourceCode" xml:space="preserve">
     <value>Código Fuente</value>
   </data>
-  <data name="MoreThings_Video" xml:space="preserve">
-    <value>Vídeo en YouTube</value>
+  <data name="MoreThingsSourceCodeDescription" xml:space="preserve">
+    <value>Puedes ver el código fuente de la aplicación en Github, si tienes cuenta puedes ponerle una estrella.</value>
+  </data>
+  <data name="MoreThingsVideo" xml:space="preserve">
+    <value>Vídeo en Youtube</value>
+  </data>
+  <data name="MoreThingsVideoDescription" xml:space="preserve">
+    <value>Por si tienes dudas de como usar la aplicación, he subido un video a Youtube.</value>
   </data>
   <data name="NoAchievements.Text" xml:space="preserve">
     <value>Este juego no tiene logros</value>
@@ -203,11 +221,5 @@
   </data>
   <data name="TrialMessage.Text" xml:space="preserve">
     <value>Estás usando la versión de prueba de la app, el video está limitado a 30 segundos.</value>
-  </data>
-  <data name="YoutubeDescription.Text" xml:space="preserve">
-    <value>Vídeo en YouTube usando la app</value>
-  </data>
-  <data name="YoutubeOpen.Text" xml:space="preserve">
-    <value>Abrir Vídeo</value>
   </data>
 </root>

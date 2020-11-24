@@ -11,18 +11,23 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded">
 
-    <Grid Background="{StaticResource ColorGridPrincipal}">
+    <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="gridTitulo" Grid.Row="0" Background="{StaticResource GridTituloBackground}">
-            <TextBlock x:Name="tbTitulo" Margin="15,0,0,0" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
+        <Grid x:Name="gridTitulo" Grid.Row="0" Background="{StaticResource AcrilicoFondo}">
+            <TextBlock x:Name="tbTitulo" Margin="15,0,0,0" FontSize="12" Foreground="White" VerticalAlignment="Center"/>
         </Grid>
 
-        <NavigationView x:Name="nvPrincipal" Grid.Row="1" Loaded="Nv_Loaded" ItemInvoked="Nv_ItemInvoked" IsPaneOpen="False"
+        <NavigationView x:Name="nvPrincipal" Grid.Row="1" Background="{StaticResource AcrilicoFondo}" Loaded="Nv_Loaded" ItemInvoked="Nv_ItemInvoked" IsPaneOpen="False"
                         AlwaysShowHeader="False" IsSettingsVisible="False" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed">
+
+            <NavigationView.Resources>
+                <SolidColorBrush x:Key="NavigationViewSelectionIndicatorForeground" Color="Transparent" />
+            </NavigationView.Resources>
+
             <NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel x:Name="spCuenta" Orientation="Horizontal" Visibility="Collapsed" Margin="0,0,30,0">
@@ -36,21 +41,8 @@
                     </StackPanel>
                 </StackPanel>
             </NavigationView.PaneFooter>
-            
-            <Grid>
-                <Grid.Transitions>
-                    <TransitionCollection>
-                        <EdgeUIThemeTransition Edge="Bottom"/>
-                    </TransitionCollection>
-                </Grid.Transitions>
 
-                <Grid.Background>
-                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                        <GradientStop Color="#505e6a" Offset="0.5" />
-                        <GradientStop Color="#2a3a49" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Grid.Background>
-
+            <Grid Padding="20">
                 <Grid x:Name="gridCuentas" Visibility="Collapsed" Padding="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -58,70 +50,51 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
-                        <controls:DropShadowPanel Color="Black" ShadowOpacity="0.5" BlurRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <StackPanel Width="500" Orientation="Vertical" Padding="10" Background="#505e6a">
-                                <TextBlock x:Uid="AddAccountInfo2" Margin="20" TextWrapping="Wrap" TextAlignment="Center" Foreground="White"/>
-                                <TextBox x:Name="tbUsuarioCuenta" HorizontalAlignment="Stretch" Margin="20,0" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <StackPanel Width="500" Orientation="Vertical" Padding="15" BorderBrush="{StaticResource ColorPrimario}" BorderThickness="1">
+                            <StackPanel.Background>
+                                <SolidColorBrush Color="{StaticResource ColorCuarto}" Opacity="0.8"/>
+                            </StackPanel.Background>
 
-                                <controls:DropShadowPanel Color="Black" Margin="0,30,0,15" ShadowOpacity="0.2" BlurRadius="10" HorizontalAlignment="Center">
-                                    <Button x:Name="botonAgregarUsuario" Padding="15" IsEnabled="False" Background="{StaticResource BrushSecundario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
-                                        <StackPanel Orientation="Horizontal">
-                                            <iconos:FontAwesome Icon="Solid_UserPlus" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
-                                            <TextBlock x:Uid="AddAccount" Foreground="White"/>
-                                        </StackPanel>
-                                    </Button>
-                                </controls:DropShadowPanel>                               
-                            </StackPanel>
-                        </controls:DropShadowPanel>
+                            <TextBlock x:Uid="AddAccountInfo2" Margin="20" TextWrapping="Wrap" TextAlignment="Center" Foreground="White"/>
+                            <TextBox x:Name="tbUsuarioCuenta" HorizontalAlignment="Stretch" Margin="20,0" TextWrapping="Wrap" TextAlignment="Center" RequestedTheme="Dark"/>
 
-                        <controls:DropShadowPanel Margin="0,40,0,0" Color="Black" ShadowOpacity="0.5" BlurRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Grid Width="500" Padding="15" Background="{StaticResource ColorCajaRojaFondo}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                            <Button x:Name="botonAñadirUsuario" Margin="0,30,0,15" IsEnabled="False" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="12,10" BorderThickness="0" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconos:FontAwesome Icon="Solid_UserPlus" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White"/>
+                                    <TextBlock x:Uid="AddAccount" Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
 
-                                <Grid Grid.Row="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
+                        <Grid Margin="0,40,0,0" Width="500" Padding="15" BorderBrush="{StaticResource ColorCajaRojaSombra}" BorderThickness="1">
+                            <Grid.Background>
+                                <SolidColorBrush Color="{StaticResource ColorCajaRojaFondo}" Opacity="0.8"/>
+                            </Grid.Background>
+                            
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                                    <iconos:FontAwesome Grid.Column="0" Icon="Solid_Exclamation" Margin="10,0" VerticalAlignment="Center" Foreground="White" FontSize="22"/>
-                                    <TextBlock Grid.Column="1" x:Uid="AccountPrivacyMessage" Margin="10,0" TextWrapping="Wrap" Foreground="White"/>
-                                </Grid>
-
-                                <controls:DropShadowPanel Grid.Row="1" Color="{StaticResource ColorCajaRojaSombra}" Margin="0,20,0,0" ShadowOpacity="0.9" BlurRadius="5" HorizontalAlignment="Center">
-                                    <Button x:Name="botonAbrirPermisos" Padding="0" BorderThickness="0" PointerEntered="UsuarioEntraBotonRojo" PointerExited="UsuarioSaleBotonRojo">
-                                        <StackPanel Orientation="Horizontal" Padding="12" Background="{StaticResource ColorCajaRojaBoton}">
-                                            <TextBlock x:Uid="HowUnlock" Foreground="White"/>
-                                        </StackPanel>
-                                    </Button>
-                                </controls:DropShadowPanel>                                 
-                            </Grid>
-                        </controls:DropShadowPanel>
-
-                        <controls:DropShadowPanel Margin="0,40,0,0" Color="Black" ShadowOpacity="0.5" BlurRadius="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Grid Width="500" Padding="10" Background="#505e6a">
+                            <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <iconos:FontAwesome Grid.Column="0" Icon="Brands_YoutubeSquare" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="White" FontSize="28"/>
+                                <iconos:FontAwesome Grid.Column="0" Icon="Solid_Exclamation" Margin="10,0" VerticalAlignment="Center" Foreground="White" FontSize="22"/>
+                                <TextBlock Grid.Column="1" x:Uid="AccountPrivacyMessage" Margin="10,0" TextWrapping="Wrap" Foreground="White"/>
+                            </Grid>
 
-                                <TextBlock x:Uid="YoutubeDescription" Grid.Column="1" Margin="15,0" VerticalAlignment="Center" Foreground="White"/>
-
-                                <controls:DropShadowPanel Grid.Column="2" Color="Black" ShadowOpacity="0.2" BlurRadius="10" HorizontalAlignment="Center">
-                                    <Button x:Name="botonAbrirYoutube" Padding="12" Background="{StaticResource BrushSecundario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock x:Uid="YoutubeOpen" Foreground="White"/>
-                                        </StackPanel>
-                                    </Button>
-                                </controls:DropShadowPanel>
-                            </Grid> 
-                        </controls:DropShadowPanel> 
+                            <Button x:Name="botonAbrirPermisos" Grid.Row="1" Margin="0,20,0,0" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCajaRojaFondo}" Padding="12,10" BorderThickness="0" HorizontalAlignment="Center">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconos:FontAwesome Icon="Solid_Unlock" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White"/>
+                                        <TextBlock x:Uid="HowUnlock" Foreground="White"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
                     </StackPanel>
 
                     <Grid x:Name="gridUsuarios" Grid.Column="1" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20">
@@ -153,14 +126,11 @@
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Vertical" Padding="30" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1">
+                    <StackPanel Grid.Column="0" Orientation="Vertical" Padding="30" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource ColorPrimario}" BorderThickness="1">
                         <StackPanel.Background>
-                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                <GradientStop Color="#505e6a" Offset="0.5" />
-                                <GradientStop Color="#2a3a49" Offset="1.0" />
-                            </LinearGradientBrush>
+                            <SolidColorBrush Color="{StaticResource ColorCuarto}" Opacity="0.8"/>
                         </StackPanel.Background>
-                        
+
                         <Border BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1" Width="250">
                             <controls:ImageEx x:Name="imagenJuegoSeleccionado" Stretch="Uniform" IsCacheEnabled="True"/>
                         </Border>
@@ -187,13 +157,8 @@
                             <TextBlock x:Name="tbJuegoSeleccionadoLogro" Grid.Column="1" VerticalAlignment="Center" Foreground="White"/>
                         </Grid>
 
-                        <Grid x:Name="gridJuegoSeleccionadoLogroControles" Margin="0,20,0,0" Visibility="Collapsed">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Button x:Name="botonVolverListadoLogros" Grid.Column="0" Padding="10" VerticalAlignment="Center" Background="Transparent" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
+                        <Grid x:Name="gridJuegoSeleccionadoLogroControles" Margin="0,20,0,0" Visibility="Collapsed" HorizontalAlignment="Center">
+                            <Button x:Name="botonVolverListadoLogros" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="12,10" BorderThickness="0">
                                 <StackPanel Orientation="Horizontal">
                                     <iconos:FontAwesome Icon="Solid_ArrowLeft" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
                                     <TextBlock x:Uid="Back" Foreground="White"/>
@@ -202,12 +167,9 @@
                         </Grid>
                     </StackPanel>
 
-                    <Grid x:Name="gridLogrosJuego" Grid.Column="1" Margin="20" Padding="10" BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1">
+                    <Grid x:Name="gridLogrosJuego" Grid.Column="1" Margin="20" Padding="10" BorderBrush="{StaticResource ColorPrimario}" BorderThickness="1">
                         <Grid.Background>
-                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                <GradientStop Color="#505e6a" Offset="0.5" />
-                                <GradientStop Color="#2a3a49" Offset="1.0" />
-                            </LinearGradientBrush>
+                            <SolidColorBrush Color="{StaticResource ColorCuarto}" Opacity="0.8"/>
                         </Grid.Background>
 
                         <ProgressRing x:Name="prLogros" Margin="30" Visibility="Collapsed" IsActive="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="White" Height="50" Width="50"/>
@@ -248,43 +210,47 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <controls:DropShadowPanel Grid.Column="0" Color="{StaticResource ColorCajaRojaSombra}" ShadowOpacity="0.9" BlurRadius="5" HorizontalAlignment="Left">
-                                    <StackPanel Orientation="Horizontal" Background="{StaticResource ColorCajaRojaFondo}" Padding="15">
-                                        <iconos:FontAwesome Icon="Solid_Exclamation" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White" FontSize="18"/>
-                                        <TextBlock x:Uid="TrialMessage" Foreground="White" VerticalAlignment="Center" LineHeight="20"/>
-                                    </StackPanel>
-                                </controls:DropShadowPanel>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" Padding="20" BorderBrush="{StaticResource ColorCajaRojaSombra}" BorderThickness="1" HorizontalAlignment="Left">
+                                    <StackPanel.Background>
+                                        <SolidColorBrush Color="{StaticResource ColorCajaRojaFondo}" Opacity="0.8"/>
+                                    </StackPanel.Background>
 
-                                <Button x:Name="botonComprarApp" Grid.Column="1" VerticalAlignment="Center" Margin="30,0,0,0" Padding="15,10" Background="Transparent" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
-                                    <StackPanel Orientation="Horizontal">
+                                    <iconos:FontAwesome Icon="Solid_Exclamation" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White" FontSize="18"/>
+                                    <TextBlock x:Uid="TrialMessage" Foreground="White" VerticalAlignment="Center" LineHeight="20"/>
+                                </StackPanel>
+
+                                <Button x:Name="botonComprarApp" Grid.Column="1" VerticalAlignment="Center" Margin="30,0,0,0" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="15,12" BorderThickness="0">
+                                    <Button.Content>
                                         <TextBlock x:Uid="BuyApp" Foreground="White"/>
-                                    </StackPanel>
+                                    </Button.Content>
                                 </Button>
                             </Grid>
-                                                     
+
                             <MediaElement x:Name="meYoutube" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         </StackPanel>
-                       
                     </Grid>                   
                 </Grid>
 
-                <Grid x:Name="gridPermisos" Visibility="Collapsed" Background="{StaticResource GridAcrilico}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <Grid x:Name="gridPermisos" Visibility="Collapsed">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel Orientation="Vertical" Padding="20" BorderBrush="{StaticResource ColorPrimario}" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel.Background>
+                                <SolidColorBrush Color="{StaticResource ColorCuarto}" Opacity="0.8"/>
+                            </StackPanel.Background>
 
-                    <controls:DropShadowPanel Grid.Row="0" Color="Black" Margin="0,20,0,0" ShadowOpacity="0.2" BlurRadius="10" HorizontalAlignment="Center">
-                        <Button x:Name="botonVolverPermisos" Padding="15,10" Background="{StaticResource BrushSecundario}" PointerEntered="UsuarioEntraBoton" PointerExited="UsuarioSaleBoton">
-                            <StackPanel Orientation="Horizontal">
-                                <iconos:FontAwesome Icon="Solid_ArrowLeft" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
-                                <TextBlock x:Uid="Back" Foreground="White"/>
-                            </StackPanel>
-                        </Button>
-                    </controls:DropShadowPanel> 
-                    
-                    <controls:ImageEx Grid.Row="1" Source="Assets/cuentapermisos.jpg" Margin="20" IsCacheEnabled="True" Stretch="None"/>
+                            <Button x:Name="botonVolverPermisos" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="12,10" BorderThickness="0" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconos:FontAwesome Icon="Solid_ArrowLeft" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
+                                    <TextBlock x:Uid="Back" Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+
+                            <controls:ImageEx Source="Assets/cuentapermisos.jpg" Margin="20" IsCacheEnabled="True" Stretch="None"/>
+                        </StackPanel>
+                    </ScrollViewer>
                 </Grid>
+
+                <Grid x:Name="gridMasCosas" Visibility="Collapsed"/>
             </Grid> 
         </NavigationView> 
     </Grid>

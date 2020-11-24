@@ -1,7 +1,6 @@
 ﻿Imports Windows.ApplicationModel.Core
-Imports Windows.Services.Store
-Imports Windows.System
-Imports Windows.UI
+Imports Windows.Storage
+Imports Windows.System.Threading
 Imports Windows.UI.Core
 
 Public NotInheritable Class MainPage
@@ -11,11 +10,11 @@ Public NotInheritable Class MainPage
 
         Dim recursos As New Resources.ResourceLoader()
 
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Accounts"), FontAwesome5.EFontAwesomeIcon.Brands_Steam, 0))
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Games"), FontAwesome5.EFontAwesomeIcon.Solid_Gamepad, 1))
-        nvPrincipal.MenuItems.Add(NavigationViewItems.Generar(recursos.GetString("Achievements"), FontAwesome5.EFontAwesomeIcon.Solid_Trophy, 2))
+        nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("Accounts"), FontAwesome5.EFontAwesomeIcon.Brands_Steam))
+        nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("Games"), FontAwesome5.EFontAwesomeIcon.Solid_Gamepad))
+        nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("Achievements"), FontAwesome5.EFontAwesomeIcon.Solid_Trophy))
         nvPrincipal.MenuItems.Add(New NavigationViewItemSeparator)
-        nvPrincipal.MenuItems.Add(MasCosas.Generar("https://github.com/pepeizq/Steam-Achievements", "https://poeditor.com/join/project/KTLlr1dy7d", "https://www.youtube.com/watch?v=BYQ6XFuynIo"))
+        nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("MoreThings"), FontAwesome5.EFontAwesomeIcon.Solid_Cube))
 
     End Sub
 
@@ -34,44 +33,46 @@ Public NotInheritable Class MainPage
 
         Dim recursos As New Resources.ResourceLoader()
 
-        Dim item As TextBlock = args.InvokedItem
+        If TypeOf args.InvokedItem Is TextBlock Then
+            Dim item As TextBlock = args.InvokedItem
 
-        If Not item Is Nothing Then
-            If item.Text = recursos.GetString("Accounts") Then
-                GridVisibilidad(gridCuentas, item.Text)
+            If Not item Is Nothing Then
+                If item.Text = recursos.GetString("Accounts") Then
+                    Interfaz.Pestañas.Visibilidad_Pestañas(gridCuentas, item.Text)
 
-                Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
-                nvJuegos.Visibility = Visibility.Collapsed
+                    Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+                    nvJuegos.Visibility = Visibility.Collapsed
 
-                Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
-                nvLogros.Visibility = Visibility.Collapsed
+                    Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+                    nvLogros.Visibility = Visibility.Collapsed
 
-                spCuenta.Visibility = Visibility.Collapsed
-                imagenCuentaSeleccionada.Source = Nothing
-                tbCuentaSeleccionada.Text = String.Empty
+                    spCuenta.Visibility = Visibility.Collapsed
+                    imagenCuentaSeleccionada.Source = Nothing
+                    tbCuentaSeleccionada.Text = String.Empty
 
-                spBuscador.Visibility = Visibility.Collapsed
+                    spBuscador.Visibility = Visibility.Collapsed
 
-            ElseIf item.Text = recursos.GetString("Games") Then
-                GridVisibilidad(gridJuegos, item.Text)
+                ElseIf item.Text = recursos.GetString("Games") Then
+                    Interfaz.Pestañas.Visibilidad_Pestañas(gridJuegos, item.Text)
 
-                Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
-                nvLogros.Visibility = Visibility.Collapsed
+                    Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
+                    nvLogros.Visibility = Visibility.Collapsed
 
-                spBuscador.Visibility = Visibility.Visible
+                    spBuscador.Visibility = Visibility.Visible
 
-            ElseIf item.Text = juegoTitulo Then
-                GridVisibilidad(gridLogros, item.Text)
+                ElseIf item.Text = juegoTitulo Then
+                    Interfaz.Pestañas.Visibilidad_Pestañas(gridLogros, item.Text)
 
-                spBuscador.Visibility = Visibility.Collapsed
+                    spBuscador.Visibility = Visibility.Collapsed
 
-                gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
-                gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
-                svLogrosJuego.Visibility = Visibility.Visible
-                gridJuegoSeleccionadoLogroControles.Visibility = Visibility.Collapsed
+                    gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
+                    gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
+                    svLogrosJuego.Visibility = Visibility.Visible
+                    gridJuegoSeleccionadoLogroControles.Visibility = Visibility.Collapsed
 
-            ElseIf item.Text = recursos.GetString("MoreThings") Then
-                FlyoutBase.ShowAttachedFlyout(nvPrincipal.MenuItems.Item(nvPrincipal.MenuItems.Count - 1))
+                ElseIf item.Text = recursos.GetString("MoreThings") Then
+                    Interfaz.Pestañas.Visibilidad_Pestañas(gridMasCosas, item.Text)
+                End If
             End If
         End If
 
@@ -82,25 +83,12 @@ Public NotInheritable Class MainPage
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "es-ES"
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
 
-        tbTitulo.Text = Package.Current.DisplayName
-
-        Dim coreBarra As CoreApplicationViewTitleBar = CoreApplication.GetCurrentView.TitleBar
-        coreBarra.ExtendViewIntoTitleBar = True
-
-        Dim barra As ApplicationViewTitleBar = ApplicationView.GetForCurrentView().TitleBar
-        barra.ButtonBackgroundColor = Colors.Transparent
-        barra.ButtonForegroundColor = Colors.White
-        barra.ButtonInactiveBackgroundColor = Colors.Transparent
-        barra.ButtonInactiveForegroundColor = Colors.White
-
-        '---------------------------------------------
-
         Dim recursos As New Resources.ResourceLoader()
 
-        GridVisibilidad(gridCuentas, recursos.GetString("Accounts"))
-
+        Interfaz.Pestañas.Visibilidad_Pestañas(gridCuentas, recursos.GetString("Accounts"))
+        Steam.Cuentas.Cargar()
         Buscador.Cargar()
-        Cuentas.BotonEstilo()
+        MasCosas.Cargar()
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
         nvJuegos.Visibility = Visibility.Collapsed
@@ -108,104 +96,15 @@ Public NotInheritable Class MainPage
         Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
         nvLogros.Visibility = Visibility.Collapsed
 
-    End Sub
+        Dim config As ApplicationDataContainer = ApplicationData.Current.LocalSettings
 
-    Public Sub GridVisibilidad(grid As Grid, tag As String)
-
-        tbTitulo.Text = Package.Current.DisplayName + " (" + Package.Current.Id.Version.Major.ToString + "." + Package.Current.Id.Version.Minor.ToString + "." + Package.Current.Id.Version.Build.ToString + "." + Package.Current.Id.Version.Revision.ToString + ") - " + tag
-
-        gridCuentas.Visibility = Visibility.Collapsed
-        gridJuegos.Visibility = Visibility.Collapsed
-        gridLogros.Visibility = Visibility.Collapsed
-        gridPermisos.Visibility = Visibility.Collapsed
-
-        grid.Visibility = Visibility.Visible
-
-    End Sub
-
-    Private Sub UsuarioEntraBoton(sender As Object, e As PointerRoutedEventArgs)
-
-        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
-
-    End Sub
-
-    Private Sub UsuarioSaleBoton(sender As Object, e As PointerRoutedEventArgs)
-
-        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
-
-    End Sub
-
-    Private Sub UsuarioEntraBotonRojo(sender As Object, e As PointerRoutedEventArgs)
-
-        Dim boton As Button = sender
-        Dim sp As StackPanel = boton.Content
-
-        sp.Background = New SolidColorBrush(App.Current.Resources("ColorCajaRojaBotonHover"))
-
-        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
-
-    End Sub
-
-    Private Sub UsuarioSaleBotonRojo(sender As Object, e As PointerRoutedEventArgs)
-
-        Dim boton As Button = sender
-        Dim sp As StackPanel = boton.Content
-
-        sp.Background = New SolidColorBrush(App.Current.Resources("ColorCajaRojaBoton"))
-
-        Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
-
-    End Sub
-
-    'CUENTAS-----------------------------------------------
-
-    Private Sub BotonAbrirPermisos_Click(sender As Object, e As RoutedEventArgs) Handles botonAbrirPermisos.Click
-
-        gridPermisos.Visibility = Visibility.Visible
-
-    End Sub
-
-    Private Sub BotonVolverPermisos_Click(sender As Object, e As RoutedEventArgs) Handles botonVolverPermisos.Click
-
-        gridPermisos.Visibility = Visibility.Collapsed
-
-    End Sub
-
-    Private Sub TbUsuarioCuenta_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbUsuarioCuenta.TextChanged
-
-        If tbUsuarioCuenta.Text.Length > 4 Then
-            botonAgregarUsuario.IsEnabled = True
-        Else
-            botonAgregarUsuario.IsEnabled = False
-        End If
-
-    End Sub
-
-    Private Sub BotonAgregarUsuario_Click(sender As Object, e As RoutedEventArgs) Handles botonAgregarUsuario.Click
-
-        Cuentas.Añadir(tbUsuarioCuenta.Text)
-
-    End Sub
-
-    Private Async Sub BotonAbrirYoutube_Click(sender As Object, e As RoutedEventArgs) Handles botonAbrirYoutube.Click
-
-        Await Launcher.LaunchUriAsync(New Uri("https://www.youtube.com/watch?v=BYQ6XFuynIo"))
-
-    End Sub
-
-    'CONFIG-----------------------------------------------
-
-    Private Async Sub BotonComprarApp_Click(sender As Object, e As RoutedEventArgs) Handles botonComprarApp.Click
-
-        Dim usuarios As IReadOnlyList(Of User) = Await User.FindAllAsync
-
-        If Not usuarios Is Nothing Then
-            If usuarios.Count > 0 Then
-                Dim usuario As User = usuarios(0)
-
-                Dim contexto As StoreContext = StoreContext.GetForUser(usuario)
-                Await contexto.RequestPurchaseAsync("9NSD0JRNLMB7")
-            End If
+        If config.Values("Calificar_App") = 0 Then
+            Dim periodoCalificar As TimeSpan = TimeSpan.FromSeconds(300)
+            Dim contadorCalificar As ThreadPoolTimer = ThreadPoolTimer.CreatePeriodicTimer(Async Sub()
+                                                                                               Await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, Sub()
+                                                                                                                                                                                                MasCosas.CalificarApp(True)
+                                                                                                                                                                                            End Sub)
+                                                                                           End Sub, periodoCalificar)
         End If
 
     End Sub

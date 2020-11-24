@@ -156,35 +156,50 @@
   <data name="MoreThings" xml:space="preserve">
     <value>More Things</value>
   </data>
-  <data name="MoreThings_Back" xml:space="preserve">
-    <value>Back</value>
-  </data>
-  <data name="MoreThings_Contact" xml:space="preserve">
+  <data name="MoreThingsContact" xml:space="preserve">
     <value>Contact</value>
   </data>
-  <data name="MoreThings_HelpTranslate" xml:space="preserve">
+  <data name="MoreThingsHelpTranslate" xml:space="preserve">
     <value>Help to Translate</value>
   </data>
-  <data name="MoreThings_MoreApps" xml:space="preserve">
-    <value>More Apps</value>
+  <data name="MoreThingsHelpTranslateDescription" xml:space="preserve">
+    <value>If the application is not in your language, you can help me translate it into your language using the Poeditor platform.</value>
   </data>
-  <data name="MoreThings_RateApp" xml:space="preserve">
+  <data name="MoreThingsMyTwitterDescription" xml:space="preserve">
+    <value>In my Twitter account I will comment on the progress that I make in my applications and games, but I will also post things related to PC video game platforms.</value>
+  </data>
+  <data name="MoreThingsOpen" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="MoreThingspepeizqappsDescription" xml:space="preserve">
+    <value>If you want to contact me or see other applications and games that I have created, you can visit my website.</value>
+  </data>
+  <data name="MoreThingspepeizqdealsDescription" xml:space="preserve">
+    <value>I have also created a web of video game deals for PC, I encourage you to visit it.</value>
+  </data>
+  <data name="MoreThingsRate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="MoreThingsRateApp" xml:space="preserve">
     <value>Rate the App</value>
   </data>
-  <data name="MoreThings_RateAppThanks" xml:space="preserve">
+  <data name="MoreThingsRateAppDescription" xml:space="preserve">
+    <value>You can rate the application with the rating that you think it deserves.</value>
+  </data>
+  <data name="MoreThingsRateAppThanks" xml:space="preserve">
     <value>Thanks for rating the app</value>
   </data>
-  <data name="MoreThings_ReportBug" xml:space="preserve">
-    <value>Report a Bug</value>
-  </data>
-  <data name="MoreThings_SourceCode" xml:space="preserve">
+  <data name="MoreThingsSourceCode" xml:space="preserve">
     <value>Source Code</value>
   </data>
-  <data name="MoreThings_Video" xml:space="preserve">
-    <value>Video on YouTube</value>
+  <data name="MoreThingsSourceCodeDescription" xml:space="preserve">
+    <value>You can see the source code of the application on Github, if you have an account you can put a star on it.</value>
   </data>
-  <data name="MoreThings_VoteApp" xml:space="preserve">
-    <value>Vote the App</value>
+  <data name="MoreThingsVideo" xml:space="preserve">
+    <value>Video on Youtube</value>
+  </data>
+  <data name="MoreThingsVideoDescription" xml:space="preserve">
+    <value>In case you have questions about how to use the application, I have uploaded a video to Youtube.</value>
   </data>
   <data name="NoAchievements.Text" xml:space="preserve">
     <value>This game has no achievements</value>
@@ -206,11 +221,5 @@
   </data>
   <data name="TrialMessage.Text" xml:space="preserve">
     <value>You are using the trial version of the app, the video is limited to 30 seconds.</value>
-  </data>
-  <data name="YoutubeDescription.Text" xml:space="preserve">
-    <value>Video on YouTube using the app</value>
-  </data>
-  <data name="YoutubeOpen.Text" xml:space="preserve">
-    <value>Open Video</value>
   </data>
 </root>

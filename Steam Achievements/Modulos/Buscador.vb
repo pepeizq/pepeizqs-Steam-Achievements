@@ -45,12 +45,12 @@ Module Buscador
                     Dim busqueda As String = tbBuscador.Text.Trim
 
                     If LimpiarBusqueda(juego.Titulo).ToString.Contains(LimpiarBusqueda(busqueda)) Then
-                        Juegos.BotonEstilo(juego, gv)
+                        Steam.Juegos.BotonEstilo(juego, gv)
                     End If
                 Next
             Else
                 For Each juego In listaJuegos
-                    Juegos.BotonEstilo(juego, gv)
+                    Steam.Juegos.BotonEstilo(juego, gv)
                 Next
             End If
         End If
