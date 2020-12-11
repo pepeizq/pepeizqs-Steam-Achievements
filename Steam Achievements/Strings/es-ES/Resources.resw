@@ -153,6 +153,18 @@
   <data name="HowUnlock.Text" xml:space="preserve">
     <value>Como Desbloquear</value>
   </data>
+  <data name="MoreSteam" xml:space="preserve">
+    <value>Más Steam</value>
+  </data>
+  <data name="MoreSteamError" xml:space="preserve">
+    <value>No se ha podido cargar el listado de aplicaciones, pero puedes visitar mi web para verlas.</value>
+  </data>
+  <data name="MoreSteamOpen" xml:space="preserve">
+    <value>Abrir App en la Tienda</value>
+  </data>
+  <data name="MoreSteamOpenWeb" xml:space="preserve">
+    <value>Abrir Web</value>
+  </data>
   <data name="MoreThings" xml:space="preserve">
     <value>Más Cosas</value>
   </data>

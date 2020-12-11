@@ -153,6 +153,18 @@
   <data name="HowUnlock.Text" xml:space="preserve">
     <value>How Unlock</value>
   </data>
+  <data name="MoreSteam" xml:space="preserve">
+    <value>More Steam</value>
+  </data>
+  <data name="MoreSteamError" xml:space="preserve">
+    <value>The list of applications could not be loaded, but you can visit my website to see them.</value>
+  </data>
+  <data name="MoreSteamOpen" xml:space="preserve">
+    <value>Open App in Store</value>
+  </data>
+  <data name="MoreSteamOpenWeb" xml:space="preserve">
+    <value>Open Web</value>
+  </data>
   <data name="MoreThings" xml:space="preserve">
     <value>More Things</value>
   </data>

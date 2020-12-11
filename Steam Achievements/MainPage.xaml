@@ -250,6 +250,8 @@
                     </ScrollViewer>
                 </Grid>
 
+                <Grid x:Name="gridMasSteam" Visibility="Collapsed"/>
+
                 <Grid x:Name="gridMasCosas" Visibility="Collapsed"/>
             </Grid> 
         </NavigationView> 

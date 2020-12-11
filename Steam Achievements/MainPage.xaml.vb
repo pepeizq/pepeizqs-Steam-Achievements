@@ -14,6 +14,7 @@ Public NotInheritable Class MainPage
         nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("Games"), FontAwesome5.EFontAwesomeIcon.Solid_Gamepad))
         nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("Achievements"), FontAwesome5.EFontAwesomeIcon.Solid_Trophy))
         nvPrincipal.MenuItems.Add(New NavigationViewItemSeparator)
+        nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("MoreSteam"), FontAwesome5.EFontAwesomeIcon.Brands_Steam))
         nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("MoreThings"), FontAwesome5.EFontAwesomeIcon.Solid_Cube))
 
     End Sub
@@ -70,6 +71,8 @@ Public NotInheritable Class MainPage
                     svLogrosJuego.Visibility = Visibility.Visible
                     gridJuegoSeleccionadoLogroControles.Visibility = Visibility.Collapsed
 
+                ElseIf item.Text = recursos.GetString("MoreSteam") Then
+                    Interfaz.Pestañas.Visibilidad_Pestañas(gridMasSteam, item.Text)
                 ElseIf item.Text = recursos.GetString("MoreThings") Then
                     Interfaz.Pestañas.Visibilidad_Pestañas(gridMasCosas, item.Text)
                 End If
@@ -88,6 +91,7 @@ Public NotInheritable Class MainPage
         Interfaz.Pestañas.Visibilidad_Pestañas(gridCuentas, recursos.GetString("Accounts"))
         Steam.Cuentas.Cargar()
         Buscador.Cargar()
+        Interfaz.MasSteam.Cargar()
         MasCosas.Cargar()
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
