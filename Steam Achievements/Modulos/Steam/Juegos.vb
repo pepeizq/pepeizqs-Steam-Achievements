@@ -127,7 +127,8 @@ Namespace Steam
                 .Padding = New Thickness(0, 0, 0, 0),
                 .HorizontalAlignment = HorizontalAlignment.Center,
                 .VerticalAlignment = VerticalAlignment.Center,
-                .Tag = juego
+                .Tag = juego,
+                .EnableLazyLoading = True
             }
 
             AddHandler imagen.ImageExOpened, AddressOf ImagenCarga
