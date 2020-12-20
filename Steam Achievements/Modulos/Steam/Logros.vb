@@ -211,7 +211,8 @@ Namespace Steam
                 .Stretch = Stretch.UniformToFill,
                 .IsCacheEnabled = True,
                 .Width = 64,
-                .Height = 64
+                .Height = 64,
+                .EnableLazyLoading = True
             }
 
             Try
@@ -348,7 +349,8 @@ Namespace Steam
                                         .IsCacheEnabled = True,
                                         .Width = 32,
                                         .Height = 32,
-                                        .Margin = New Thickness(5, 0, 0, 0)
+                                        .Margin = New Thickness(5, 0, 0, 0),
+                                        .EnableLazyLoading = True
                                     }
 
                                     Try
