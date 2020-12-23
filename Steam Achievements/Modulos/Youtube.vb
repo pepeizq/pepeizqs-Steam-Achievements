@@ -77,17 +77,19 @@ Module Youtube
                     Dim enlaceMel As String = String.Empty
                     Dim resolucion As Integer = 0
 
-                    For Each resultado In resultados
-                        If resultado.Resolution > resolucion Then
-                            resolucion = resultado.Resolution
+                    If Not resultados Is Nothing Then
+                        For Each resultado In resultados
+                            If resultado.Resolution > resolucion Then
+                                resolucion = resultado.Resolution
 
-                            enlaceMel = resultado.Uri
+                                enlaceMel = resultado.Uri
 
-                            If resolucion >= 720 Then
-                                Exit For
+                                If resolucion >= 720 Then
+                                    Exit For
+                                End If
                             End If
-                        End If
-                    Next
+                        Next
+                    End If
 
                     If Not enlaceMel = String.Empty Then
                         mel.Source = New Uri(enlaceMel)

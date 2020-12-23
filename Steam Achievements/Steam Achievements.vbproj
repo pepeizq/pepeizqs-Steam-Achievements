@@ -261,7 +261,7 @@
       <Version>2.0.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.10</Version>
+      <Version>6.2.11</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Services.Store.SDK">
       <Version>10.1705.16001</Version>
@@ -276,7 +276,7 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="VideoLibrary">
-      <Version>3.0.7</Version>
+      <Version>3.0.8</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
