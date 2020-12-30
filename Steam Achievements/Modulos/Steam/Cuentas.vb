@@ -314,7 +314,7 @@ Namespace Steam
 
             Dim gridJuegos As Grid = pagina.FindName("gridJuegos")
 
-            Interfaz.Pestañas.Visibilidad_Pestañas(gridJuegos, cuenta.Nombre)
+            Interfaz.Pestañas.Visibilidad(gridJuegos, cuenta.Nombre, Nothing)
 
             Juegos.Cargar(cuenta)
 
@@ -369,7 +369,7 @@ Namespace Steam
             Dim pagina As Page = frame.Content
 
             Dim gridPermisos As Grid = pagina.FindName("gridPermisos")
-            Interfaz.Pestañas.Visibilidad_Pestañas(gridPermisos, Nothing)
+            Interfaz.Pestañas.Visibilidad(gridPermisos, Nothing, sender)
 
         End Sub
 
@@ -381,7 +381,7 @@ Namespace Steam
             Dim pagina As Page = frame.Content
 
             Dim gridCuentas As Grid = pagina.FindName("gridCuentas")
-            Interfaz.Pestañas.Visibilidad_Pestañas(gridCuentas, recursos.GetString("Accounts"))
+            Interfaz.Pestañas.Visibilidad(gridCuentas, recursos.GetString("Accounts"), Nothing)
 
         End Sub
 

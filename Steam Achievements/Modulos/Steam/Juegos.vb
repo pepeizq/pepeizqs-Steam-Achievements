@@ -226,7 +226,7 @@ Namespace Steam
             nvPrincipal.SelectedItem = nvLogros
 
             Dim gridLogros As Grid = pagina.FindName("gridLogros")
-            Interfaz.Pestañas.Visibilidad_Pestañas(gridLogros, juego.Titulo)
+            Interfaz.Pestañas.Visibilidad(gridLogros, juego.Titulo, sender)
 
             Dim imagenJuegoSeleccionado As ImageEx = pagina.FindName("imagenJuegoSeleccionado")
             imagenJuegoSeleccionado.Source = imagen.Source

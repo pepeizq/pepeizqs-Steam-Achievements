@@ -14,8 +14,6 @@ Public NotInheritable Class MainPage
         nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("Games"), FontAwesome5.EFontAwesomeIcon.Solid_Gamepad))
         nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("Achievements"), FontAwesome5.EFontAwesomeIcon.Solid_Trophy))
         nvPrincipal.MenuItems.Add(New NavigationViewItemSeparator)
-        nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("MoreSteam"), FontAwesome5.EFontAwesomeIcon.Brands_Steam))
-        nvPrincipal.MenuItems.Add(Interfaz.NavigationViewItems.Generar(recursos.GetString("MoreThings"), FontAwesome5.EFontAwesomeIcon.Solid_Cube))
 
     End Sub
 
@@ -39,7 +37,7 @@ Public NotInheritable Class MainPage
 
             If Not item Is Nothing Then
                 If item.Text = recursos.GetString("Accounts") Then
-                    Interfaz.Pestañas.Visibilidad_Pestañas(gridCuentas, item.Text)
+                    Interfaz.Pestañas.Visibilidad(gridCuentas, item.Text, item)
 
                     Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
                     nvJuegos.Visibility = Visibility.Collapsed
@@ -54,7 +52,7 @@ Public NotInheritable Class MainPage
                     spBuscador.Visibility = Visibility.Collapsed
 
                 ElseIf item.Text = recursos.GetString("Games") Then
-                    Interfaz.Pestañas.Visibilidad_Pestañas(gridJuegos, item.Text)
+                    Interfaz.Pestañas.Visibilidad(gridJuegos, item.Text, item)
 
                     Dim nvLogros As NavigationViewItem = nvPrincipal.MenuItems(2)
                     nvLogros.Visibility = Visibility.Collapsed
@@ -62,7 +60,7 @@ Public NotInheritable Class MainPage
                     spBuscador.Visibility = Visibility.Visible
 
                 ElseIf item.Text = juegoTitulo Then
-                    Interfaz.Pestañas.Visibilidad_Pestañas(gridLogros, item.Text)
+                    Interfaz.Pestañas.Visibilidad(gridLogros, item.Text, item)
 
                     spBuscador.Visibility = Visibility.Collapsed
 
@@ -70,11 +68,6 @@ Public NotInheritable Class MainPage
                     gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
                     svLogrosJuego.Visibility = Visibility.Visible
                     gridJuegoSeleccionadoLogroControles.Visibility = Visibility.Collapsed
-
-                ElseIf item.Text = recursos.GetString("MoreSteam") Then
-                    Interfaz.Pestañas.Visibilidad_Pestañas(gridMasSteam, item.Text)
-                ElseIf item.Text = recursos.GetString("MoreThings") Then
-                    Interfaz.Pestañas.Visibilidad_Pestañas(gridMasCosas, item.Text)
                 End If
             End If
         End If
@@ -88,10 +81,10 @@ Public NotInheritable Class MainPage
 
         Dim recursos As New Resources.ResourceLoader()
 
-        Interfaz.Pestañas.Visibilidad_Pestañas(gridCuentas, recursos.GetString("Accounts"))
+        Interfaz.Pestañas.Visibilidad(gridCuentas, recursos.GetString("Accounts"), Nothing)
         Steam.Cuentas.Cargar()
         Buscador.Cargar()
-        Interfaz.MasSteam.Cargar()
+        MasSteam.Cargar()
         MasCosas.Cargar()
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)

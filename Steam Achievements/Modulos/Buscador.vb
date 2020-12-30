@@ -25,14 +25,14 @@ Module Buscador
         Dim nvPrincipal As NavigationView = pagina.FindName("nvPrincipal")
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
-        Dim cuenta As SteamCuenta = nvJuegos.Tag
+        Dim cuenta As Cuenta = nvJuegos.Tag
 
         Dim helper As New LocalObjectStorageHelper
 
         Dim listaJuegos As New List(Of Juego)
 
-        If Await helper.FileExistsAsync("listaJuegos" + cuenta.Datos.Jugador(0).ID64) = True Then
-            listaJuegos = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.Datos.Jugador(0).ID64)
+        If Await helper.FileExistsAsync("listaJuegos" + cuenta.ID64) = True Then
+            listaJuegos = Await helper.ReadFileAsync(Of List(Of Juego))("listaJuegos" + cuenta.ID64)
         End If
 
         If Not listaJuegos Is Nothing Then
