@@ -30,7 +30,7 @@ Public NotInheritable Class MainPage
             juegoTitulo = juego.Titulo
         End If
 
-        Dim recursos As New Resources.ResourceLoader()
+        Dim recursos As New Resources.ResourceLoader
 
         If TypeOf args.InvokedItem Is TextBlock Then
             Dim item As TextBlock = args.InvokedItem
@@ -67,7 +67,6 @@ Public NotInheritable Class MainPage
                     gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
                     gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
                     svLogrosJuego.Visibility = Visibility.Visible
-                    gridJuegoSeleccionadoLogroControles.Visibility = Visibility.Collapsed
                 End If
             End If
         End If
@@ -79,13 +78,14 @@ Public NotInheritable Class MainPage
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "es-ES"
         'Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US"
 
-        Dim recursos As New Resources.ResourceLoader()
+        Dim recursos As New Resources.ResourceLoader
 
-        Interfaz.Pestañas.Visibilidad(gridCuentas, recursos.GetString("Accounts"), Nothing)
+        Interfaz.Logros.Cargar()
         Steam.Cuentas.Cargar()
         Buscador.Cargar()
         MasSteam.Cargar()
         MasCosas.Cargar()
+        Interfaz.Pestañas.Visibilidad(gridCuentas, recursos.GetString("Accounts"), Nothing)
 
         Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
         nvJuegos.Visibility = Visibility.Collapsed

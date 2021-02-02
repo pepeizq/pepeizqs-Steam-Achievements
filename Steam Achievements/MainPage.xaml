@@ -93,8 +93,8 @@
                 </StackPanel>
             </NavigationView.PaneFooter>
 
-            <Grid Padding="20">
-                <Grid x:Name="gridCuentas" Visibility="Collapsed" Padding="10">
+            <Grid>
+                <Grid x:Name="gridCuentas" Visibility="Collapsed" Padding="30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition x:Name="gridColumnaUsuarios" Width="Auto"/>
@@ -109,7 +109,7 @@
                             <TextBlock x:Uid="AddAccountInfo2" Margin="20" TextWrapping="Wrap" TextAlignment="Center" Foreground="White"/>
                             <TextBox x:Name="tbUsuarioCuenta" HorizontalAlignment="Stretch" Margin="20,0" TextWrapping="Wrap" TextAlignment="Center" RequestedTheme="Dark"/>
 
-                            <Button x:Name="botonAñadirUsuario" Margin="0,30,0,15" IsEnabled="False" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="12,10" BorderThickness="0" HorizontalAlignment="Center">
+                            <Button x:Name="botonAñadirUsuario" Margin="0,30,0,15" IsEnabled="False" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="15,12" BorderThickness="0" HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
                                     <iconos:FontAwesome Icon="Solid_UserPlus" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White"/>
                                     <TextBlock x:Uid="AddAccount" Foreground="White"/>
@@ -137,7 +137,7 @@
                                 <TextBlock Grid.Column="1" x:Uid="AccountPrivacyMessage" Margin="10,0" TextWrapping="Wrap" Foreground="White"/>
                             </Grid>
 
-                            <Button x:Name="botonAbrirPermisos" Grid.Row="1" Margin="0,20,0,0" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCajaRojaFondo}" Padding="12,10" BorderThickness="0" HorizontalAlignment="Center">
+                            <Button x:Name="botonAbrirPermisos" Grid.Row="1" Margin="0,20,0,0" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCajaRojaFondo}" Padding="15,12" BorderThickness="0" HorizontalAlignment="Center">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <iconos:FontAwesome Icon="Solid_Unlock" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White"/>
@@ -162,11 +162,10 @@
                     </Grid>
                 </Grid>
 
-                <Grid x:Name="gridJuegos" Visibility="Collapsed">
+                <Grid x:Name="gridJuegos" Visibility="Collapsed" Padding="20">
                     <ProgressRing x:Name="prJuegos" Visibility="Collapsed" IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Height="50" Width="50"/>
 
-                    <controls:AdaptiveGridView x:Name="gvJuegos" Padding="15,10,10,10"
-                                       IsItemClickEnabled="True" DesiredWidth="200" 
+                    <controls:AdaptiveGridView x:Name="gvJuegos" IsItemClickEnabled="True" DesiredWidth="200" Padding="0,0,10,0"
                                        animations:ReorderGridAnimation.Duration="250">
                     </controls:AdaptiveGridView>
                 </Grid>
@@ -177,28 +176,42 @@
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Vertical" Padding="30" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource ColorPrimario}" BorderThickness="1">
-                        <StackPanel.Background>
-                            <SolidColorBrush Color="{StaticResource ColorCuarto}" Opacity="0.8"/>
-                        </StackPanel.Background>
+                    <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="30">
+                        <Button x:Name="botonJuegoAbrirTienda" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,30">
+                            <ToolTipService.ToolTip>
+                                <ToolTip>
+                                    <TextBlock x:Uid="OpenGameSteam"/>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                            
+                            <Button.Content>
+                                <StackPanel Padding="0">
+                                    <StackPanel.Background>
+                                        <SolidColorBrush Color="{StaticResource ColorCuarto}" Opacity="0.8"/>
+                                    </StackPanel.Background>
 
-                        <Border BorderBrush="{StaticResource BrushSecundario}" BorderThickness="1" Width="250">
-                            <controls:ImageEx x:Name="imagenJuegoSeleccionado" Stretch="Uniform" IsCacheEnabled="True"/>
-                        </Border>
+                                    <controls:ImageEx x:Name="imagenJuegoSeleccionado" Stretch="Uniform" IsCacheEnabled="True"/>
 
-                        <TextBlock x:Name="tbJuegoSeleccionado" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Margin="0,15"/>
+                                    <TextBlock x:Name="tbJuegoSeleccionado" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Margin="15"/>
 
-                        <Grid x:Name="gridJuegoSeleccionadoProgreso">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                                    <Grid x:Name="gridJuegoSeleccionadoProgreso" Padding="20,10,20,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                            <ProgressBar x:Name="pbJuegoSeleccionado" Grid.Column="0" VerticalAlignment="Center" Value="0" Foreground="White" Margin="0,0,15,0" Height="10"/>
-                            <TextBlock x:Name="tbJuegoSeleccionadoLogros" Grid.Column="1" VerticalAlignment="Center" Foreground="White"/>
-                        </Grid>
+                                        <ProgressBar x:Name="pbJuegoSeleccionado" Grid.Column="0" VerticalAlignment="Center" Value="0" Foreground="White" Margin="0,0,20,0" Height="10"/>
+                                        <TextBlock x:Name="tbJuegoSeleccionadoLogros" Grid.Column="1" VerticalAlignment="Center" Foreground="White"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        
+                        <Grid x:Name="gridJuegoSeleccionadoLogro" Visibility="Collapsed" Margin="0,0,0,30" Padding="30">
+                            <Grid.Background>
+                                <SolidColorBrush Color="{StaticResource ColorCuarto}" Opacity="0.8"/>
+                            </Grid.Background>
 
-                        <Grid x:Name="gridJuegoSeleccionadoLogro" Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -208,21 +221,64 @@
                             <TextBlock x:Name="tbJuegoSeleccionadoLogro" Grid.Column="1" VerticalAlignment="Center" Foreground="White"/>
                         </Grid>
 
-                        <Grid x:Name="gridJuegoSeleccionadoLogroControles" Margin="0,20,0,0" Visibility="Collapsed" HorizontalAlignment="Center">
-                            <Button x:Name="botonVolverListadoLogros" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="12,10" BorderThickness="0">
-                                <StackPanel Orientation="Horizontal">
-                                    <iconos:FontAwesome Icon="Solid_ArrowLeft" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
-                                    <TextBlock x:Uid="Back" Foreground="White"/>
-                                </StackPanel>
+                        <StackPanel x:Name="spLogrosBotonesAdicionales" Orientation="Vertical" Margin="0,0,0,30" HorizontalAlignment="Stretch">
+                            <Button x:Name="botonJuegoAbrirGuias" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="15,12" BorderThickness="0" HorizontalAlignment="Stretch">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <iconos:FontAwesome Icon="Brands_Steam" Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White"/>
+                                    <TextBlock x:Uid="GuidesSteam" Grid.Column="1" Foreground="White"/>
+                                </Grid>
                             </Button>
-                        </Grid>
+
+                            <Button x:Name="botonJuegoAbrirVideo" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="15,12" BorderThickness="0" HorizontalAlignment="Stretch">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <iconos:FontAwesome Icon="Brands_Youtube" Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White"/>
+                                    <TextBlock x:Uid="OpenVideoYoutube" Grid.Column="1" Foreground="White"/>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+
+                        <Button x:Name="botonVolverLogros" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="15,12" BorderThickness="0" HorizontalAlignment="Center" Margin="0,0,0,30">
+                            <StackPanel Orientation="Horizontal">
+                                <iconos:FontAwesome Icon="Solid_ArrowLeft" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBlock x:Uid="Back" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <StackPanel x:Name="spMensajeTrial" Orientation="Vertical" Margin="0,0,0,30" HorizontalAlignment="Stretch">
+                            <Grid Padding="20" BorderBrush="{StaticResource ColorCajaRojaSombra}" BorderThickness="1" HorizontalAlignment="Stretch" Margin="0,0,0,20">
+                                <Grid.Background>
+                                    <SolidColorBrush Color="{StaticResource ColorCajaRojaFondo}" Opacity="0.8"/>
+                                </Grid.Background>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <iconos:FontAwesome Icon="Solid_Exclamation" Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White" FontSize="18"/>
+                                <TextBlock x:Uid="TrialMessage" Grid.Column="1" Foreground="White" VerticalAlignment="Center" LineHeight="20" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <Button x:Name="botonComprarApp" Grid.Column="1" HorizontalAlignment="Center" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="18,15" BorderThickness="0">
+                                <Button.Content>
+                                    <TextBlock x:Uid="BuyApp" Foreground="White" FontSize="16"/>
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
+
                     </StackPanel>
 
-                    <Grid x:Name="gridLogrosJuego" Grid.Column="1" Margin="20" Padding="10" BorderBrush="{StaticResource ColorPrimario}" BorderThickness="1">
-                        <Grid.Background>
-                            <SolidColorBrush Color="{StaticResource ColorCuarto}" Opacity="0.8"/>
-                        </Grid.Background>
-
+                    <Grid x:Name="gridLogrosJuego" Grid.Column="1" Padding="10">
                         <ProgressRing x:Name="prLogros" Margin="30" Visibility="Collapsed" IsActive="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="White" Height="50" Width="50"/>
 
                         <ScrollViewer x:Name="svLogrosJuego" VerticalScrollBarVisibility="Visible" Padding="0,0,25,0">
@@ -254,35 +310,14 @@
                         </ScrollViewer>
 
                         <StackPanel x:Name="spLogroVideo" Orientation="Vertical" Visibility="Collapsed" VerticalAlignment="Center">
-                            <Grid x:Name="gridMensajeTrial" Margin="0,0,0,30">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                            
 
-                                <StackPanel Grid.Column="0" Orientation="Horizontal" Padding="20" BorderBrush="{StaticResource ColorCajaRojaSombra}" BorderThickness="1" HorizontalAlignment="Left">
-                                    <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource ColorCajaRojaFondo}" Opacity="0.8"/>
-                                    </StackPanel.Background>
-
-                                    <iconos:FontAwesome Icon="Solid_Exclamation" Margin="0,0,15,0" VerticalAlignment="Center" Foreground="White" FontSize="18"/>
-                                    <TextBlock x:Uid="TrialMessage" Foreground="White" VerticalAlignment="Center" LineHeight="20"/>
-                                </StackPanel>
-
-                                <Button x:Name="botonComprarApp" Grid.Column="1" VerticalAlignment="Center" Margin="30,0,0,0" Style="{ThemeResource ButtonRevealStyle}" Background="{StaticResource ColorCuarto}" Padding="15,12" BorderThickness="0">
-                                    <Button.Content>
-                                        <TextBlock x:Uid="BuyApp" Foreground="White"/>
-                                    </Button.Content>
-                                </Button>
-                            </Grid>
-
-                            <MediaElement x:Name="meYoutube" AreTransportControlsEnabled="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <MediaElement x:Name="meYoutube" AreTransportControlsEnabled="True" HorizontalAlignment="Center" VerticalAlignment="Center" RequestedTheme="Dark"/>
                         </StackPanel>
                     </Grid>                   
                 </Grid>
 
-                <Grid x:Name="gridPermisos" Visibility="Collapsed">
+                <Grid x:Name="gridPermisos" Visibility="Collapsed" Padding="20">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Orientation="Vertical" Padding="20" BorderBrush="{StaticResource ColorPrimario}" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <StackPanel.Background>

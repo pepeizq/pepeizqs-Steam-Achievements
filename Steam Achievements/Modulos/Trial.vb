@@ -25,9 +25,6 @@ Module Trial
             End If
         End If
 
-        Dim frame As Frame = Window.Current.Content
-        Dim pagina As Page = frame.Content
-
         If config.Values("Estado_App") = 1 Then
             Return False
         Else

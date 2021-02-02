@@ -301,6 +301,8 @@ Namespace Steam
             Dim boton As New Button With {
                 .Background = fondoBoton,
                 .Padding = New Thickness(10, 10, 10, 10),
+                .BorderThickness = New Thickness(0, 0, 0, 0),
+                .BorderBrush = New SolidColorBrush(Colors.Transparent),
                 .HorizontalAlignment = HorizontalAlignment.Stretch,
                 .HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 .VerticalContentAlignment = VerticalAlignment.Stretch,
@@ -310,8 +312,8 @@ Namespace Steam
             }
 
             AddHandler boton.Click, AddressOf AbrirYoutube
-            AddHandler boton.PointerEntered, AddressOf Interfaz.Entra_Basico
-            AddHandler boton.PointerExited, AddressOf Interfaz.Sale_Basico
+            AddHandler boton.PointerEntered, AddressOf Interfaz.EfectosHover.Entra_Boton_1_02
+            AddHandler boton.PointerExited, AddressOf Interfaz.EfectosHover.Sale_Boton_1_02
 
             Dim sp As New StackPanel With {
                 .Orientation = Orientation.Vertical,

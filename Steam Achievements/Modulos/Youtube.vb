@@ -22,33 +22,8 @@ Module Youtube
         Dim tbJuegoSeleccionadoLogro As TextBlock = pagina.FindName("tbJuegoSeleccionadoLogro")
         tbJuegoSeleccionadoLogro.Text = logro.Nombre
 
-        Dim gridJuegoSeleccionadoLogroControles As Grid = pagina.FindName("gridJuegoSeleccionadoLogroControles")
-        gridJuegoSeleccionadoLogroControles.Visibility = Visibility.Visible
-
-        Dim botonVolver As Button = pagina.FindName("botonVolverListadoLogros")
-
-        RemoveHandler botonVolver.Click, AddressOf Volver
-        AddHandler botonVolver.Click, AddressOf Volver
-
-        RemoveHandler botonVolver.PointerEntered, AddressOf Interfaz.Entra_Boton_IconoTexto
-        AddHandler botonVolver.PointerEntered, AddressOf Interfaz.Entra_Boton_IconoTexto
-
-        RemoveHandler botonVolver.PointerExited, AddressOf Interfaz.Sale_Boton_IconoTexto
-        AddHandler botonVolver.PointerExited, AddressOf Interfaz.Sale_Boton_IconoTexto
-
-        Dim botonComprarApp As Button = pagina.FindName("botonComprarApp")
-
-        RemoveHandler botonComprarApp.Click, AddressOf Trial.ComprarAppClick
-        AddHandler botonComprarApp.Click, AddressOf Trial.ComprarAppClick
-
-        RemoveHandler botonComprarApp.PointerEntered, AddressOf Interfaz.Entra_Boton_Texto
-        AddHandler botonComprarApp.PointerEntered, AddressOf Interfaz.Entra_Boton_Texto
-
-        RemoveHandler botonComprarApp.PointerExited, AddressOf Interfaz.Sale_Boton_Texto
-        AddHandler botonComprarApp.PointerExited, AddressOf Interfaz.Sale_Boton_Texto
-
-        Dim gridMensajeTrial As Grid = pagina.FindName("gridMensajeTrial")
-        gridMensajeTrial.Visibility = Visibility.Collapsed
+        Dim botonJuegoAbrirGuias As Button = pagina.FindName("botonJuegoAbrirGuias")
+        botonJuegoAbrirGuias.Visibility = Visibility.Collapsed
 
         Dim sv As ScrollViewer = pagina.FindName("svLogrosJuego")
         sv.Visibility = Visibility.Collapsed
@@ -71,6 +46,10 @@ Module Youtube
             If Not videos Is Nothing Then
                 If videos.Resultados.Count > 0 Then
                     enlaceYoutube = "https://www.youtube.com/watch?v=" + videos.Resultados(0).ID.VideoID
+
+                    Dim botonJuegoAbrirVideo As Button = pagina.FindName("botonJuegoAbrirVideo")
+                    botonJuegoAbrirVideo.Tag = enlaceYoutube
+                    botonJuegoAbrirVideo.Visibility = Visibility.Visible
 
                     Dim libreria As VideoLibrary.YouTube = VideoLibrary.YouTube.Default
                     Dim resultados As IEnumerable(Of YouTubeVideo) = libreria.GetAllVideos("https://www.youtube.com/watch?v=" + videos.Resultados(0).ID.VideoID)
@@ -95,11 +74,9 @@ Module Youtube
                         mel.Source = New Uri(enlaceMel)
 
                         If Await Trial.Detectar = False Then
-                            gridMensajeTrial.Visibility = Visibility.Collapsed
                             mel.AreTransportControlsEnabled = True
                             mel.Play()
                         Else
-                            gridMensajeTrial.Visibility = Visibility.Visible
                             mel.AreTransportControlsEnabled = False
                             Await Task.Delay(30000)
                             mel.Stop()
@@ -108,40 +85,6 @@ Module Youtube
                 End If
             End If
         End If
-
-    End Sub
-
-    Private Sub Volver(sender As Object, e As RoutedEventArgs)
-
-        Dim frame As Frame = Window.Current.Content
-        Dim pagina As Page = frame.Content
-
-        Dim gridJuegoSeleccionadoProgreso As Grid = pagina.FindName("gridJuegoSeleccionadoProgreso")
-        gridJuegoSeleccionadoProgreso.Visibility = Visibility.Visible
-
-        Dim gridJuegoSeleccionadoLogro As Grid = pagina.FindName("gridJuegoSeleccionadoLogro")
-        gridJuegoSeleccionadoLogro.Visibility = Visibility.Collapsed
-
-        Dim gridJuegoSeleccionadoLogroControles As Grid = pagina.FindName("gridJuegoSeleccionadoLogroControles")
-        gridJuegoSeleccionadoLogroControles.Visibility = Visibility.Collapsed
-
-        Dim sv As ScrollViewer = pagina.FindName("svLogrosJuego")
-        sv.Visibility = Visibility.Visible
-
-        Dim mel As MediaElement = pagina.FindName("meYoutube")
-        mel.Stop()
-
-        Dim spVideo As StackPanel = pagina.FindName("spLogroVideo")
-        spVideo.Visibility = Visibility.Collapsed
-
-    End Sub
-
-    Private Async Sub AbrirVideo(sender As Object, e As RoutedEventArgs)
-
-        Dim boton As Button = sender
-        Dim enlace As String = boton.Tag
-
-        Await Launcher.LaunchUriAsync(New Uri(enlace))
 
     End Sub
 

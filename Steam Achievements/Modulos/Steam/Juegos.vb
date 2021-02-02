@@ -113,20 +113,19 @@ Namespace Steam
                 .ShadowOpacity = 0.9,
                 .BlurRadius = 10,
                 .MaxWidth = anchoColumna + 20,
-                .HorizontalAlignment = HorizontalAlignment.Center,
-                .VerticalAlignment = VerticalAlignment.Center,
-                .Tag = juego
+                .HorizontalAlignment = HorizontalAlignment.Stretch,
+                .VerticalAlignment = VerticalAlignment.Stretch,
+                .Tag = juego,
+                .Color = App.Current.Resources("ColorPrimario")
             }
-
-            Dim boton As New Button
 
             Dim imagen As New ImageEx With {
                 .Source = juego.Imagen,
                 .IsCacheEnabled = True,
                 .Stretch = Stretch.Uniform,
                 .Padding = New Thickness(0, 0, 0, 0),
-                .HorizontalAlignment = HorizontalAlignment.Center,
-                .VerticalAlignment = VerticalAlignment.Center,
+                .HorizontalAlignment = HorizontalAlignment.Stretch,
+                .VerticalAlignment = VerticalAlignment.Stretch,
                 .Tag = juego,
                 .EnableLazyLoading = True
             }
@@ -134,10 +133,13 @@ Namespace Steam
             AddHandler imagen.ImageExOpened, AddressOf ImagenCarga
             AddHandler imagen.ImageExFailed, AddressOf ImagenFalla
 
-            boton.Tag = juego
-            boton.Content = imagen
-            boton.Padding = New Thickness(0, 0, 0, 0)
-            boton.Background = New SolidColorBrush(Colors.Transparent)
+            Dim boton As New Button With {
+                .Tag = juego,
+                .Content = imagen,
+                .Padding = New Thickness(0, 0, 0, 0),
+                .Background = New SolidColorBrush(App.Current.Resources("ColorCuarto")),
+                .MinHeight = 200
+            }
 
             panel.Content = boton
 
@@ -151,8 +153,8 @@ Namespace Steam
             ToolTipService.SetPlacement(boton, PlacementMode.Mouse)
 
             AddHandler boton.Click, AddressOf AbrirLogros
-            AddHandler boton.PointerEntered, AddressOf Interfaz.Entra_Boton_Imagen
-            AddHandler boton.PointerExited, AddressOf Interfaz.Sale_Boton_Imagen
+            AddHandler boton.PointerEntered, AddressOf Interfaz.EfectosHover.Entra_Boton_1_02
+            AddHandler boton.PointerExited, AddressOf Interfaz.EfectosHover.Sale_Boton_1_02
 
             sp.Children.Add(panel)
 
@@ -229,16 +231,30 @@ Namespace Steam
             Interfaz.Pestañas.Visibilidad(gridLogros, juego.Titulo, sender)
 
             Dim imagenJuegoSeleccionado As ImageEx = pagina.FindName("imagenJuegoSeleccionado")
-            imagenJuegoSeleccionado.Source = imagen.Source
+            Dim imagenJuegoNueva As String = imagen.Source.ToString
+
+            If imagenJuegoNueva.Contains("/library_600x900.") Then
+                imagenJuegoNueva = imagenJuegoNueva.Replace("/library_600x900.", "/header.")
+            End If
+
+            imagenJuegoSeleccionado.Source = imagenJuegoNueva
             imagenJuegoSeleccionado.Tag = juego
 
-            Dim gridLogrosJuego As Grid = pagina.FindName("gridLogrosJuego")
             Dim fondo As String = dominioImagenes + "/steam/apps/" + juego.ID + "/page_bg_generated_v6b.jpg"
             Dim fondoBrush As New ImageBrush With {
                 .ImageSource = New BitmapImage(New Uri(fondo)),
                 .Stretch = Stretch.UniformToFill
             }
-            gridLogrosJuego.Background = fondoBrush
+            gridLogros.Background = fondoBrush
+
+            Dim botonAbrirTienda As Button = pagina.FindName("botonJuegoAbrirTienda")
+            botonAbrirTienda.Tag = "https://store.steampowered.com/app/" + juego.ID + "/?curator_clanid=33500256"
+
+            Dim botonAbrirGuias As Button = pagina.FindName("botonJuegoAbrirGuias")
+            botonAbrirGuias.Tag = "https://steamcommunity.com/app/" + juego.ID + "/guides/?curator_clanid=33500256"
+
+            Dim botonAbrirVideo As Button = pagina.FindName("botonJuegoAbrirVideo")
+            botonAbrirVideo.Visibility = Visibility.Collapsed
 
             Dim helper As New LocalObjectStorageHelper
             Dim listaCuentas As New List(Of Cuenta)
@@ -343,8 +359,8 @@ Namespace Steam
             Dim imagen As ImageEx = sender
             Dim imagenFuente As String = imagen.Source
 
-            If imagenFuente.Contains("/library_600x900.jpg") Then
-                imagen.Source = imagenFuente.Replace("/library_600x900.jpg", "/header.jpg")
+            If imagenFuente.Contains("/library_600x900.") Then
+                imagen.Source = imagenFuente.Replace("/library_600x900.", "/header.")
                 cambiar = False
             End If
 
