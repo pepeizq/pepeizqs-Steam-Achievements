@@ -6,10 +6,9 @@ Imports Windows.UI
 Namespace Steam
     Module Logros
 
-        Public Async Sub Cargar(cuentaMaestra As Cuenta, juego As Juego, otrasCuentas As List(Of Cuenta), listaJuegos As List(Of Juego), listaJuegosOcultos As List(Of JuegoOculto))
+        Public Async Sub Cargar(cuentaMaestra As Cuenta, juego As Juego, otrasCuentas As List(Of Cuenta), listaJuegos As List(Of Juego))
 
             Dim helper As New LocalObjectStorageHelper
-            Await helper.SaveFileAsync(Of List(Of JuegoOculto))("listaJuegosOcultos" + cuentaMaestra.ID64, listaJuegosOcultos)
 
             Dim frame As Frame = Window.Current.Content
             Dim pagina As Page = frame.Content

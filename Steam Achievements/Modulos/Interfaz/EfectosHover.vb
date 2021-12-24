@@ -172,6 +172,26 @@ Namespace Interfaz
 
         End Sub
 
+        Public Sub Entra_Boton_StackPanel(sender As Object, e As PointerRoutedEventArgs)
+
+            Dim boton As Button = sender
+            Dim sp As StackPanel = boton.Content
+            sp.Saturation(1).Scale(1.02, 1.02, sp.ActualWidth / 2, sp.ActualHeight / 2).Start()
+
+            Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Hand, 1)
+
+        End Sub
+
+        Public Sub Sale_Boton_StackPanel(sender As Object, e As PointerRoutedEventArgs)
+
+            Dim boton As Button = sender
+            Dim sp As StackPanel = boton.Content
+            sp.Saturation(1).Scale(1, 1, sp.ActualWidth / 2, sp.ActualHeight / 2).Start()
+
+            Window.Current.CoreWindow.PointerCursor = New CoreCursor(CoreCursorType.Arrow, 1)
+
+        End Sub
+
         Public Sub Entra_MFItem_Icono(sender As Object, e As PointerRoutedEventArgs)
 
             Dim item As MenuFlyoutItem = sender

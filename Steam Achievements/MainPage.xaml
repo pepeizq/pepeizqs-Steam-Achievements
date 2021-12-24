@@ -89,6 +89,7 @@
                     <StackPanel x:Name="spBuscador" Orientation="Horizontal" Visibility="Collapsed">
                         <iconos:FontAwesome Icon="Solid_Search" Foreground="{StaticResource BrushPrimario}" Margin="0,0,15,0"/>
                         <TextBox x:Name="tbBuscarJuegos" MinWidth="180" Margin="0,4,10,4"/>
+                        <ProgressRing x:Name="prBuscador" Foreground="{StaticResource BrushPrimario}" Visibility="Collapsed" Margin="0,0,5,0"/>
                     </StackPanel>
                 </StackPanel>
             </NavigationView.PaneFooter>

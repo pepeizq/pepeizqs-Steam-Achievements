@@ -7,6 +7,7 @@ Public Class Juego
     Public Property Imagen As String
     Public Property Icono As String
     Public Property Logros As List(Of Logro)
+    Public Property Escaneado As Boolean
 
     Public Sub New(ByVal id As String, ByVal titulo As String, ByVal imagen As String, ByVal icono As String, ByVal logros As List(Of Logro))
         Me.ID = id
@@ -14,18 +15,6 @@ Public Class Juego
         Me.Imagen = imagen
         Me.Icono = icono
         Me.Logros = logros
-    End Sub
-
-End Class
-
-Public Class JuegoOculto
-
-    Public Property ID As String
-    Public Property Estado As Boolean
-
-    Public Sub New(ByVal id As String, ByVal estado As Boolean)
-        Me.ID = id
-        Me.Estado = estado
     End Sub
 
 End Class
