@@ -156,6 +156,12 @@
   <data name="HowUnlock.Text" xml:space="preserve">
     <value>Como Desbloquear</value>
   </data>
+  <data name="LoadingMessage1" xml:space="preserve">
+    <value>Cargando juegos</value>
+  </data>
+  <data name="LoadingMessage2" xml:space="preserve">
+    <value>Buscando nuevos juegos</value>
+  </data>
   <data name="MoreSteam" xml:space="preserve">
     <value>Más Steam</value>
   </data>

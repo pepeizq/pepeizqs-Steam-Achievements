@@ -18,11 +18,16 @@ Namespace Steam
             Dim frame As Frame = Window.Current.Content
             Dim pagina As Page = frame.Content
 
+            Dim recursos As New Resources.ResourceLoader()
+
             Dim gvJuegos As GridView = pagina.FindName("gvJuegos")
             gvJuegos.Items.Clear()
 
-            Dim pr As ProgressRing = pagina.FindName("prJuegos")
-            pr.Visibility = Visibility.Visible
+            Dim gridCarga As Grid = pagina.FindName("gridJuegosCarga")
+            gridCarga.Visibility = Visibility.Visible
+
+            Dim tbMensajeCarga As TextBlock = pagina.FindName("tbJuegosCargaMensaje")
+            tbMensajeCarga.Text = recursos.GetString("LoadingMessage1")
 
             Dim spBuscador As StackPanel = pagina.FindName("spBuscador")
             spBuscador.Visibility = Visibility.Collapsed
@@ -72,13 +77,14 @@ Namespace Steam
                 listaJuegos = New List(Of Juego)
             End If
 
+            tbMensajeCarga.Text = recursos.GetString("LoadingMessage2")
+
             Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.ID64 + "&include_appinfo=1&include_played_free_games=1"))
 
             If Not htmlJuegos = Nothing Then
                 Dim juegos As SteamJuegos = JsonConvert.DeserializeObject(Of SteamJuegos)(htmlJuegos)
 
                 If Not juegos Is Nothing Then
-                    Dim i As Integer = 0
                     For Each juego In juegos.Respuesta.Juegos
                         Dim imagen As String = dominioImagenes + "/steam/apps/" + juego.ID + "/library_600x900.jpg"
 
@@ -98,10 +104,6 @@ Namespace Steam
                         If añadir = True Then
                             listaJuegos.Add(juego2)
                         End If
-
-                        'pbProgreso.Value = CInt((100 / juegos.Respuesta.Juegos.Count) * i)
-                        'tbProgreso.Text = i.ToString + "/" + juegos.Respuesta.Juegos.Count.ToString
-                        i += 1
                     Next
                 End If
             End If
@@ -149,7 +151,8 @@ Namespace Steam
                 End If
             End If
 
-            pr.Visibility = Visibility.Collapsed
+            tbMensajeCarga.Text = String.Empty
+            gridCarga.Visibility = Visibility.Collapsed
 
         End Sub
 
@@ -380,26 +383,38 @@ Namespace Steam
 
         End Sub
 
-        Private Sub ImagenFalla(sender As Object, e As ImageExFailedEventArgs)
+        Private Async Sub ImagenFalla(sender As Object, e As ImageExFailedEventArgs)
 
             Dim cambiar As Boolean = True
 
             Dim frame As Frame = Window.Current.Content
             Dim pagina As Page = frame.Content
 
+            Dim nvPrincipal As NavigationView = pagina.FindName("nvPrincipal")
+
+            Dim nvJuegos As NavigationViewItem = nvPrincipal.MenuItems(1)
+            Dim cuenta As Cuenta = nvJuegos.Tag
+
             Dim gv As AdaptiveGridView = pagina.FindName("gvJuegos")
 
             Dim imagen As ImageEx = sender
+            Dim juego As Juego = imagen.Tag
             Dim imagenFuente As String = imagen.Source
 
             If imagenFuente.Contains("/library_600x900.") Then
                 imagen.Source = imagenFuente.Replace("/library_600x900.", "/header.")
+                juego.Imagen = imagen.Source
                 cambiar = False
+
+                Dim helper As New LocalObjectStorageHelper
+                Try
+                    Await helper.SaveFileAsync(Of Juego)("Juegos_" + cuenta.ID64 + "\juego_" + juego.ID, juego)
+                Catch ex As Exception
+
+                End Try
             End If
 
             If cambiar = True Then
-                Dim juego As Juego = imagen.Tag
-
                 For Each item In gv.Items
                     Dim boton As Button = item
                     Dim juegoItem As Juego = boton.Tag

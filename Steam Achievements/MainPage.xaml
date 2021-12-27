@@ -164,8 +164,16 @@
                 </Grid>
 
                 <Grid x:Name="gridJuegos" Visibility="Collapsed" Padding="20">
-                    <ProgressRing x:Name="prJuegos" Visibility="Collapsed" IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Height="50" Width="50"/>
-
+                    <Grid x:Name="gridJuegosCarga" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock x:Name="tbJuegosCargaMensaje" Grid.Row="0" Foreground="White" HorizontalAlignment="Center"/>
+                        <ProgressBar x:Name="pbJuegosCarga" Grid.Row="1" Foreground="White" Margin="0,30,0,0" Width="250" IsIndeterminate="True"/>
+                    </Grid>
+                                       
                     <controls:AdaptiveGridView x:Name="gvJuegos" IsItemClickEnabled="True" DesiredWidth="200" Padding="0,0,10,0"
                                        animations:ReorderGridAnimation.Duration="250">
                     </controls:AdaptiveGridView>

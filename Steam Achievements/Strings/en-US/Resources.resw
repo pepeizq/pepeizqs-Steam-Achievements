@@ -156,6 +156,12 @@
   <data name="HowUnlock.Text" xml:space="preserve">
     <value>How Unlock</value>
   </data>
+  <data name="LoadingMessage1" xml:space="preserve">
+    <value>Loading games</value>
+  </data>
+  <data name="LoadingMessage2" xml:space="preserve">
+    <value>Searching new games</value>
+  </data>
   <data name="MoreSteam" xml:space="preserve">
     <value>More Steam</value>
   </data>
