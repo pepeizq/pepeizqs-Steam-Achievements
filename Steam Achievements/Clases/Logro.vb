@@ -9,8 +9,8 @@ Public Class Logro
     Public Property Imagen As String
     Public Property Fecha As String
 
-    Public Sub New(ByVal id As String, ByVal estado As String, ByVal nombre As String, ByVal descripcion As String,
-                   ByVal fecha As String, ByVal imagen As String)
+    Public Sub New(id As String, estado As String, nombre As String, descripcion As String,
+                   fecha As String, imagen As String)
         Me.ID = id
         Me.Estado = estado
         Me.Nombre = nombre
@@ -26,7 +26,7 @@ Public Class LogrosOtraCuenta
     Public Property Cuenta As Cuenta
     Public Property LogrosJuego As SteamJugadorLogros
 
-    Public Sub New(ByVal cuenta As Cuenta, ByVal logrosJuego As SteamJugadorLogros)
+    Public Sub New(cuenta As Cuenta, logrosJuego As SteamJugadorLogros)
         Me.Cuenta = cuenta
         Me.LogrosJuego = logrosJuego
     End Sub

@@ -6,7 +6,7 @@ Public Class Cuenta
     Public Property Nombre As String
     Public Property Avatar As String
 
-    Public Sub New(ByVal id64 As String, ByVal nombre As String, ByVal avatar As String)
+    Public Sub New(id64 As String, nombre As String, avatar As String)
         Me.ID64 = id64
         Me.Nombre = nombre
         Me.Avatar = avatar

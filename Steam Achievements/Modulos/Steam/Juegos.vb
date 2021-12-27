@@ -29,10 +29,17 @@ Namespace Steam
             Dim tbMensajeCarga As TextBlock = pagina.FindName("tbJuegosCargaMensaje")
             tbMensajeCarga.Text = recursos.GetString("LoadingMessage1")
 
+            Dim pbCarga As ProgressBar = pagina.FindName("pbJuegosCarga")
+            pbCarga.Value = 0
+
+            Dim tbCargaPorcentaje As TextBlock = pagina.FindName("tbJuegosCargaPorcentaje")
+            tbCargaPorcentaje.Text = "0%"
+
             Dim spBuscador As StackPanel = pagina.FindName("spBuscador")
             spBuscador.Visibility = Visibility.Collapsed
 
             Dim helper As New LocalObjectStorageHelper
+            Dim i As Integer = 0
 
             listaJuegos.Clear()
 
@@ -68,6 +75,11 @@ Namespace Steam
                                     listaJuegos.Add(temp)
                                 End If
                             End If
+
+                            pbCarga.Value = CInt((100 / listaFicheros.Count) * i)
+                            tbCargaPorcentaje.Text = CInt((100 / listaFicheros.Count) * i).ToString + "%"
+
+                            i += 1
                         Next
                     End If
                 End If
@@ -78,6 +90,9 @@ Namespace Steam
             End If
 
             tbMensajeCarga.Text = recursos.GetString("LoadingMessage2")
+            i = 0
+            pbCarga.Value = 0
+            tbCargaPorcentaje.Text = "0%"
 
             Dim htmlJuegos As String = Await Decompiladores.HttpClient(New Uri("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=41F2D73A0B5024E9101F8D4E8D8AC21E&steamid=" + cuenta.ID64 + "&include_appinfo=1&include_played_free_games=1"))
 
@@ -104,6 +119,11 @@ Namespace Steam
                         If añadir = True Then
                             listaJuegos.Add(juego2)
                         End If
+
+                        pbCarga.Value = CInt((100 / juegos.Respuesta.Juegos.Count) * i)
+                        tbCargaPorcentaje.Text = CInt((100 / juegos.Respuesta.Juegos.Count) * i).ToString + "%"
+
+                        i += 1
                     Next
                 End If
             End If

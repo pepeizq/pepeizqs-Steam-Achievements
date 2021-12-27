@@ -171,7 +171,11 @@
                         </Grid.RowDefinitions>
                         
                         <TextBlock x:Name="tbJuegosCargaMensaje" Grid.Row="0" Foreground="White" HorizontalAlignment="Center"/>
-                        <ProgressBar x:Name="pbJuegosCarga" Grid.Row="1" Foreground="White" Margin="0,30,0,0" Width="250" IsIndeterminate="True"/>
+
+                        <StackPanel Grid.Row="1" Margin="0,20,0,0" Orientation="Horizontal">
+                            <ProgressBar x:Name="pbJuegosCarga" Foreground="White" Width="250" VerticalAlignment="Center" Margin="0,0,25,0"/>
+                            <TextBlock x:Name="tbJuegosCargaPorcentaje" Foreground="White" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </Grid>
                                        
                     <controls:AdaptiveGridView x:Name="gvJuegos" IsItemClickEnabled="True" DesiredWidth="200" Padding="0,0,10,0"
